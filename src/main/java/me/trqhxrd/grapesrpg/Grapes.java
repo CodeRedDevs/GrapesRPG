@@ -3,10 +3,12 @@ package me.trqhxrd.grapesrpg;
 import me.trqhxrd.grapesrpg.api.common.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.utils.Prefix;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
+import me.trqhxrd.grapesrpg.api.world.generators.WorldGenerator;
 import me.trqhxrd.grapesrpg.event.PlayerJoinListener;
 import me.trqhxrd.grapesrpg.event.PlayerQuitListener;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -74,5 +76,16 @@ public class Grapes extends JavaPlugin {
      */
     public Utils getUtils() {
         return utils;
+    }
+
+    /**
+     * This allows you to use our WorldGenerator in your world.
+     * @param worldName The name of the world. Is not used in the moment.
+     * @param id The ID of the WorldGenerator. This isn't used either.
+     * @return The CHunkGenerator.
+     */
+    @Override
+    public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
+        return new WorldGenerator();
     }
 }

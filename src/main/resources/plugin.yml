@@ -1,3 +1,8 @@
 name: GrapesRPG
-main: me.trqhxrd.grapesRPG.Grapes
+main: me.trqhxrd.grapesrpg.Grapes
 version: ${project.version}
+authors:
+  - Trqhxrd
+  - Tabbyplayz
+load: STARTUP
+api-version: 1.13
