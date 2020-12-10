@@ -60,6 +60,59 @@ public class GrapesPlayer {
     }
 
     /**
+     * Used to get a player by his {@link UUID}.
+     * Replacement for deprecated {@link GrapesPlayer#getByName(String)}.
+     *
+     * @param uuid The {@link UUID} of the GrapesPlayer you want to get.
+     * @return The GrapesPlayer with the UUID given as an argument. In case, that there is no GrapesPlayer, it will return null.
+     */
+    public static GrapesPlayer getByUniqueId(UUID uuid) {
+        for (GrapesPlayer p : GrapesPlayer.getPlayers())
+            if (p.getUniqueId().equals(uuid)) return p;
+        return null;
+    }
+
+    /**
+     * This method is deprecated.
+     * The replacement is {@link GrapesPlayer#getUniqueId()}.
+     * <p>
+     * This method is able to get a Player with a certain name, but only if that player is online.
+     *
+     * @param name The name of the Player you want to get.
+     * @return The GrapesPlayer with the name, which was give in the arguments. In case there is no Player with the given name, this method will return null.
+     * @deprecated
+     */
+    public static GrapesPlayer getByName(String name) {
+        for (GrapesPlayer p : GrapesPlayer.getPlayers())
+            if (p.getName().equals(name)) return p;
+        return null;
+    }
+
+    /**
+     * This method returns true, if the Player with the {@see UUID} exists.
+     *
+     * @param uuid The UUID, for which you want to check id there is a player.
+     * @return true -> Player exists / false -> Player doesn't exists.
+     */
+    public static boolean exists(UUID uuid) {
+        for (GrapesPlayer player : players)
+            if (player.getUniqueId().equals(uuid)) return true;
+        return false;
+    }
+
+    /**
+     * Returns true, if the player with a certain name exists.
+     * @param name The name for which you want to check.
+     * @return true -> player exists / false -> player doesn't exists.
+     * @deprecated
+     */
+    public static boolean exists(String name) {
+        for (GrapesPlayer player : players)
+            if (player.getName().equals(name)) return true;
+        return false;
+    }
+
+    /**
      * Returns the legacy-spigot-{@link Player}.
      *
      * @return The Spigot-Player, for which this is the extension.
@@ -113,34 +166,5 @@ public class GrapesPlayer {
      */
     public UUID getUniqueId() {
         return spigotPlayer.getUniqueId();
-    }
-
-    /**
-     * Used to get a player by his {@link UUID}.
-     * Replacement for deprecated {@link GrapesPlayer#getByName(String)}.
-     *
-     * @param uuid The {@link UUID} of the GrapesPlayer you want to get.
-     * @return The GrapesPlayer with the UUID given as an argument. In case, that there is no GrapesPlayer, it will return null.
-     */
-    public GrapesPlayer getByUniqueId(UUID uuid) {
-        for (GrapesPlayer p : GrapesPlayer.getPlayers())
-            if (p.getUniqueId().equals(uuid)) return p;
-        return null;
-    }
-
-    /**
-     * This method is deprecated.
-     * The replacement is {@link GrapesPlayer#getUniqueId()}.
-     * <p>
-     * This method is able to get a Player with a certain name, but only if that player is online.
-     *
-     * @param name The name of the Player you want to get.
-     * @return The GrapesPlayer with the name, which was give in the arguments. In case there is no Player with the given name, this method will return null.
-     * @deprecated
-     */
-    public GrapesPlayer getByName(String name) {
-        for (GrapesPlayer p : GrapesPlayer.getPlayers())
-            if (p.getName().equals(name)) return p;
-        return null;
     }
 }

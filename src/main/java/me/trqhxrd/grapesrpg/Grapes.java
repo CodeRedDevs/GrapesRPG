@@ -3,6 +3,8 @@ package me.trqhxrd.grapesrpg;
 import me.trqhxrd.grapesrpg.api.common.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.utils.Prefix;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
+import me.trqhxrd.grapesrpg.event.PlayerJoinListener;
+import me.trqhxrd.grapesrpg.event.PlayerQuitListener;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -49,6 +51,10 @@ public class Grapes extends JavaPlugin {
         grapes = this;
         this.utils = new Utils(Prefix.of("&c[&aGra&bpes&c] &7"));
         for (Player p : Bukkit.getOnlinePlayers()) new GrapesPlayer(p);
+
+        //Registering Listeners:
+        new PlayerJoinListener();
+        new PlayerQuitListener();
     }
 
     /**
