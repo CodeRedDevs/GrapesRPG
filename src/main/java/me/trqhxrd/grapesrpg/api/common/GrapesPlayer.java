@@ -69,7 +69,7 @@ public class GrapesPlayer {
     public static GrapesPlayer getByUniqueId(UUID uuid) {
         for (GrapesPlayer p : GrapesPlayer.getPlayers())
             if (p.getUniqueId().equals(uuid)) return p;
-        return null;
+        throw new NullPointerException("The Player with UUID=" + uuid.toString() + " is null.");
     }
 
     /**
@@ -102,6 +102,7 @@ public class GrapesPlayer {
 
     /**
      * Returns true, if the player with a certain name exists.
+     *
      * @param name The name for which you want to check.
      * @return true -> player exists / false -> player doesn't exists.
      * @deprecated
