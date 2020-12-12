@@ -1,7 +1,9 @@
 package me.trqhxrd.grapesrpg.api.common;
 
 import me.trqhxrd.grapesrpg.Grapes;
+import me.trqhxrd.grapesrpg.api.event.GrapesPlayerInitEvent;
 import me.trqhxrd.grapesrpg.api.utils.Prefix;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -37,7 +39,12 @@ public class GrapesPlayer {
      */
     public GrapesPlayer(Player spigotPlayer) {
         this.spigotPlayer = spigotPlayer;
-        players.add(this);
+
+        //Call GrapesPlayerInitEvent
+        GrapesPlayerInitEvent event = new GrapesPlayerInitEvent(Grapes.getGrapes(), this);
+        Bukkit.getPluginManager().callEvent(event);
+
+        if (!event.isCancelled()) players.add(this);
     }
 
     /**
@@ -69,7 +76,7 @@ public class GrapesPlayer {
     public static GrapesPlayer getByUniqueId(UUID uuid) {
         for (GrapesPlayer p : GrapesPlayer.getPlayers())
             if (p.getUniqueId().equals(uuid)) return p;
-        return null;
+        throw new NullPointerException("The Player with UUID=" + uuid.toString() + " is null.");
     }
 
     /**
@@ -102,6 +109,7 @@ public class GrapesPlayer {
 
     /**
      * Returns true, if the player with a certain name exists.
+     *
      * @param name The name for which you want to check.
      * @return true -> player exists / false -> player doesn't exists.
      * @deprecated

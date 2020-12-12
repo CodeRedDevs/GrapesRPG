@@ -42,7 +42,7 @@ public class Prefix {
     }
 
     /**
-     * A static method, which creates a Prefix with {@param raw} as the text and the default color-char.
+     * A static method, which creates a Prefix with raw as the text and the default color-char.
      *
      * @param raw The Text, which you want to have in front of your message.
      * @return A new Prefix with the set values.
