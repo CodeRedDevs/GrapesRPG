@@ -1,7 +1,9 @@
 package me.trqhxrd.grapesrpg.api.common;
 
 import me.trqhxrd.grapesrpg.Grapes;
+import me.trqhxrd.grapesrpg.api.event.GrapesPlayerInitEvent;
 import me.trqhxrd.grapesrpg.api.utils.Prefix;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -37,7 +39,12 @@ public class GrapesPlayer {
      */
     public GrapesPlayer(Player spigotPlayer) {
         this.spigotPlayer = spigotPlayer;
-        players.add(this);
+
+        //Call GrapesPlayerInitEvent
+        GrapesPlayerInitEvent event = new GrapesPlayerInitEvent(Grapes.getGrapes(), this);
+        Bukkit.getPluginManager().callEvent(event);
+
+        if (!event.isCancelled()) players.add(this);
     }
 
     /**

@@ -2,6 +2,7 @@ package me.trqhxrd.grapesrpg.event;
 
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.common.GrapesPlayer;
+import me.trqhxrd.grapesrpg.api.event.GrapesPlayerQuitEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -24,12 +25,17 @@ public class PlayerQuitListener implements Listener {
     /**
      * This Method will be executed, everytime, the a player quits.
      *
-     * @param e The {@see PlayerQuitEvent} with all important data about the Player.
+     * @param e The {@link PlayerQuitEvent} with all important data about the Player.
      */
     @EventHandler(ignoreCancelled = true)
     public void onPlayerQuit(PlayerQuitEvent e) {
         if (GrapesPlayer.exists(e.getPlayer().getUniqueId())) {
             GrapesPlayer p = GrapesPlayer.getByUniqueId(e.getPlayer().getUniqueId());
+
+            GrapesPlayerQuitEvent event = new GrapesPlayerQuitEvent(Grapes.getGrapes(), p);
+            Bukkit.getPluginManager().callEvent(event);
+            e.setQuitMessage(event.getQuitMessage());
+
             //PLAYER DESTROY:
             GrapesPlayer.getPlayers().remove(p);
         }
