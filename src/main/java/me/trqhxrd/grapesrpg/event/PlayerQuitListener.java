@@ -9,7 +9,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 /**
  * @author Trqhxrd
- * This Class handles players, who are quitting using a {@see PlayerQuitEvent}.
+ * This Class handles players, who are quitting using a {@link PlayerQuitEvent}.
  */
 public class PlayerQuitListener implements Listener {
 
@@ -24,7 +24,7 @@ public class PlayerQuitListener implements Listener {
     /**
      * This Method will be executed, everytime, the a player quits.
      *
-     * @param e The {@see PlayerQuitEvent} with all important data about the Player.
+     * @param e The {@link PlayerQuitEvent} with all important data about the Player.
      */
     @EventHandler(ignoreCancelled = true)
     public void onPlayerQuit(PlayerQuitEvent e) {

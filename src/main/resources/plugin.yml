@@ -1,3 +1,4 @@
 name: GrapesRPG
-main: me.trqhxrd.grapesRPG.Grapes
+main: me.trqhxrd.grapesrpg.Grapes
 version: ${project.version}
+api-version: 1.16

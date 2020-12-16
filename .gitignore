@@ -3,10 +3,11 @@
 .project
 .settings/
 
-# Intellij
-.idea/
+# IntelliJ
 *.iml
 *.iws
+.idea/*
+!.idea/runConfigurations/
 
 # Mac
 .DS_Store
@@ -14,3 +15,13 @@
 # Maven
 log/
 target/
+dependency-reduced-pom.xml
+
+# Javadoc
+JavaDoc/
+
+#Project-specific stuff
+TestServer/
+libs/*
+!libs/install.bat
+!libs/SafeNBT.jar
