@@ -23,7 +23,7 @@ public class Prefix {
     /**
      * Creates a new Prefix-Object.
      *
-     * @param raw The String you want to have as your prefix. (Use '&' + 0-9 / a-f / k-r to symbolize a color. https://minecraft.gamepedia.com/Formatting_codes for color-codes)
+     * @param raw The String you want to have as your prefix. ({@literal Use '&' + 0-9 / a-f / k-r} to symbolize a color. https://minecraft.gamepedia.com/Formatting_codes for color-codes)
      */
     public Prefix(String raw) {
         this.raw = raw;

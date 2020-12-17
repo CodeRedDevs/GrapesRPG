@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>me.trqhxrd</groupId>
-    <artifactId>grapesrpg</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>grapes-rpg</artifactId>
+    <version>1.1-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -25,6 +25,7 @@
     </distributionManagement>
 
     <build>
+        <finalName>GrapesRPG</finalName>
         <resources>
             <resource>
                 <directory>${basedir}/src/main/resources</directory>
@@ -48,15 +49,26 @@
                         <configuration>
                             <filters>
                                 <filter>
-                                    <artifact>*:*</artifact>
+                                    <artifact>com.github.jojodmo:SafeNBT</artifact>
                                     <includes>
                                         <include>**</include>
                                     </includes>
+                                    <excludes>
+                                        <exclude>plugin.yml</exclude>
+                                    </excludes>
                                 </filter>
                             </filters>
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <outputDirectory>${project.basedir}/TestServer/plugins</outputDirectory>
+                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -67,14 +79,33 @@
             <name>Spigot-Repo</name>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
+        <repository>
+            <id>central</id>
+            <name>Maven Central</name>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
     </repositories>
 
     <dependencies>
+        <!-- Spigot Dependency -->
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
             <version>1.16.4-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+        <!-- SafeNBT Dependency -->
+        <dependency>
+            <groupId>com.github.jojodmo</groupId>
+            <artifactId>SafeNBT</artifactId>
+            <version>2.0</version>
+        </dependency>
+        <!-- JUnit Dependency -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.7.0</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

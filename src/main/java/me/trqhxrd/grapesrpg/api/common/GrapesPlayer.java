@@ -57,7 +57,8 @@ public class GrapesPlayer {
     }
 
     /**
-     * Short way for {@link GrapesPlayer#getPlayers()#forEach(Consumer)}.
+     * Can iterate through every Player.
+     * Needs a Consumer.
      *
      * @param action The Action you want to perform for every Player.
      * @see Consumer
@@ -96,10 +97,10 @@ public class GrapesPlayer {
     }
 
     /**
-     * This method returns true, if the Player with the {@see UUID} exists.
+     * This method returns true, if the Player with the {@link UUID} exists.
      *
      * @param uuid The UUID, for which you want to check id there is a player.
-     * @return true -> Player exists / false -> Player doesn't exists.
+     * @return {@literal true -> Player exists / false -> Player doesn't exists.}
      */
     public static boolean exists(UUID uuid) {
         for (GrapesPlayer player : players)
@@ -111,7 +112,7 @@ public class GrapesPlayer {
      * Returns true, if the player with a certain name exists.
      *
      * @param name The name for which you want to check.
-     * @return true -> player exists / false -> player doesn't exists.
+     * @return {@literal  true -> player exists / false -> player doesn't exists.}
      * @deprecated
      */
     public static boolean exists(String name) {
@@ -130,7 +131,7 @@ public class GrapesPlayer {
     }
 
     /**
-     * Short way for {@link GrapesPlayer#getSpigotPlayer()#getName()}.
+     * Gets the Players name.
      *
      * @return The players name.
      */
@@ -139,7 +140,7 @@ public class GrapesPlayer {
     }
 
     /**
-     * Short way for {@link GrapesPlayer#getSpigotPlayer()#getLocation()}.
+     * Returns the Players {@link Location}.
      *
      * @return The players {@link Location}.
      */
@@ -150,7 +151,7 @@ public class GrapesPlayer {
     /**
      * Sends the player a message using the default Plugin {@link Prefix}.
      *
-     * @param s The Message, which you want to send. ('&' can also be used for color-codes.)
+     * @param s The Message, which you want to send. {@literal ('&' can also be used for color-codes.)}
      */
     public void sendMessage(String s) {
         Grapes.getGrapes().getUtils().sendMessage(this, s);
@@ -168,7 +169,6 @@ public class GrapesPlayer {
 
     /**
      * Short way to get the legacy-{@link Player}s {@link UUID}.
-     * Long way would be {@link GrapesPlayer#getSpigotPlayer()#getUniqueId()}.
      *
      * @return The Players UUID.
      */

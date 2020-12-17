@@ -10,7 +10,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 /**
  * @author Trqhxrd
- * This Class handles players, who are quitting using a {@see PlayerQuitEvent}.
+ * This Class handles players, who are quitting using a {@link PlayerQuitEvent}.
  */
 public class PlayerQuitListener implements Listener {
 
