@@ -2,6 +2,8 @@ package me.trqhxrd.grapesrpg.api.common;
 
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.event.GrapesPlayerInitEvent;
+import me.trqhxrd.grapesrpg.api.objects.item.artifact.GrapesArtifact;
+import me.trqhxrd.grapesrpg.api.objects.item.artifact.GrapesArtifactSet;
 import me.trqhxrd.grapesrpg.api.utils.Prefix;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -26,6 +28,12 @@ public class GrapesPlayer {
      * Players will be added automatically added as soon as the {@link GrapesPlayer#GrapesPlayer(Player)} Constructor is called.
      */
     private static final Set<GrapesPlayer> players = new HashSet<>();
+
+    /**
+     * This Field contains a Collection of all Artifacts, the Player has equipped.
+     */
+    private final GrapesArtifactSet artifacts;
+
     /**
      * An instance of the legacy Spigot {@link Player}.
      * Will be set in the {@link GrapesPlayer#GrapesPlayer(Player)} Constructor.
@@ -39,6 +47,9 @@ public class GrapesPlayer {
      */
     public GrapesPlayer(Player spigotPlayer) {
         this.spigotPlayer = spigotPlayer;
+
+        //Load Artifacts from File
+        this.artifacts = GrapesArtifact.load(this);
 
         //Call GrapesPlayerInitEvent
         GrapesPlayerInitEvent event = new GrapesPlayerInitEvent(Grapes.getGrapes(), this);
@@ -174,5 +185,14 @@ public class GrapesPlayer {
      */
     public UUID getUniqueId() {
         return spigotPlayer.getUniqueId();
+    }
+
+    /**
+     * This method gets the Artifacts the Player is wearing.
+     *
+     * @return The artifacts, the player is wearing.
+     */
+    public GrapesArtifactSet getArtifacts() {
+        return artifacts;
     }
 }

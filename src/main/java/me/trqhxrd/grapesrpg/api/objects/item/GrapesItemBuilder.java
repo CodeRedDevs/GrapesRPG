@@ -1,4 +1,4 @@
-package me.trqhxrd.grapesrpg.api.objects;
+package me.trqhxrd.grapesrpg.api.objects.item;
 
 import com.jojodmo.safeNBT.api.SafeNBT;
 import me.trqhxrd.grapesrpg.api.utils.EnchantmentNames;
@@ -281,39 +281,47 @@ public class GrapesItemBuilder {
             }
 
             //SET DISPLAY NAME
-            meta.setDisplayName(GrapesItem.getNBTValueString(itemStack, "grapes.name"));
+            if (GrapesItem.getName(itemStack) != null) {
+                meta.setDisplayName(GrapesItem.getName(itemStack));
+            }
 
             //SET LORE
             List<String> list = new ArrayList<>();
 
             //REAL LORE
-            list.add("");
-            String line;
-            int i = 0;
-            while (!(line = GrapesItem.getNBTValueString(itemStack, "grapes.lore." + i++)).equals("")) list.add(line);
-
+            if (GrapesItem.getNBTValueString(itemStack, "grapes.lore." + 0) != null) {
+                list.add("");
+                String line;
+                int i = 0;
+                while (!(line = GrapesItem.getNBTValueString(itemStack, "grapes.lore." + i++)).equals(""))
+                    list.add(line);
+            }
             //ENCHANTS
-            list.add("");
-            for (Group2<Enchantment, Integer> entry : enchantments) {
-                Enchantment ench = entry.getX();
-                int level = entry.getY();
-                meta.addEnchant(ench, level, true);
-                list.add("&7" + EnchantmentNames.getName(ench) + " " + EnchantmentNames.getLevel(level));
+            if (enchantments.size() != 0) {
+                list.add("");
+                for (Group2<Enchantment, Integer> entry : enchantments) {
+                    Enchantment ench = entry.getX();
+                    int level = entry.getY();
+                    meta.addEnchant(ench, level, true);
+                    list.add("&7" + EnchantmentNames.getName(ench) + " " + EnchantmentNames.getLevel(level));
+                }
             }
 
             //DURABILITY
-            list.add("");
             Group2<Integer, Integer> durabilityValues = GrapesItem.getDurability(itemStack);
-            double percent = (((double) durabilityValues.getX()) / ((double) durabilityValues.getY())) * 100;
-            char color = 'a';
-            if (percent <= 50) color = 'e';
-            if (percent <= 25) color = 'c';
-            if (percent <= 0) color = '4';
-            String durability;
-            if (percent > 0)
-                durability = "&" + color + "Durability: " + durabilityValues.getX() + "/" + durabilityValues.getY();
-            else durability = "&" + color + "BROKEN";
-            list.add(ChatColor.translateAlternateColorCodes('&', durability));
+            if (durabilityValues.getX() != 0 && durabilityValues.getY() != 0) {
+                list.add("");
+                double percent = (((double) durabilityValues.getX()) / ((double) durabilityValues.getY())) * 100;
+                char color = 'a';
+                if (percent <= 50) color = 'e';
+                if (percent <= 25) color = 'c';
+                if (percent <= 0) color = '4';
+                String durability;
+                if (percent > 0)
+                    durability = "&" + color + "Durability: " + durabilityValues.getX() + "/" + durabilityValues.getY();
+                else durability = "&" + color + "BROKEN";
+                list.add(ChatColor.translateAlternateColorCodes('&', durability));
+            }
 
             //TRANSLATE COLORS
             List<String> finalList = new ArrayList<>();

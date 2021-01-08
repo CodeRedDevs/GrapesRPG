@@ -23,6 +23,7 @@ public class Grapes extends JavaPlugin {
      * Also if you want to use Plugin-Specific {@link Utils}, it is usable to get this Plugins Utils.
      */
     private static Grapes grapes;
+
     /**
      * This object is used for sending Messages to the Player.
      *

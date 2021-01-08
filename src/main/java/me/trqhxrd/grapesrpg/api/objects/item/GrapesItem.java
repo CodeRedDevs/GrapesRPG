@@ -1,4 +1,4 @@
-package me.trqhxrd.grapesrpg.api.objects;
+package me.trqhxrd.grapesrpg.api.objects.item;
 
 import com.jojodmo.safeNBT.api.SafeNBT;
 import me.trqhxrd.grapesrpg.api.utils.group.Group2;

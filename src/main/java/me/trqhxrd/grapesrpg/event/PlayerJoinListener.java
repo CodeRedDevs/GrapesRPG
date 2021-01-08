@@ -2,13 +2,15 @@ package me.trqhxrd.grapesrpg.event;
 
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.common.GrapesPlayer;
-import me.trqhxrd.grapesrpg.api.objects.GrapesItemBuilder;
+import me.trqhxrd.grapesrpg.api.event.GrapesPlayerJoinEvent;
+import me.trqhxrd.grapesrpg.api.objects.item.GrapesItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
@@ -40,7 +42,7 @@ public class PlayerJoinListener implements Listener {
     /**
      * This Method handles PlayerJoins using the {@link PlayerJoinEvent}
      *
-     * @param e A PlayerJoinEvent
+     * @param e A PlayerLoginEvent
      */
     @EventHandler(ignoreCancelled = true)
     public void onPlayerLogin(PlayerLoginEvent e) {
@@ -71,12 +73,30 @@ public class PlayerJoinListener implements Listener {
 
     /**
      * If the PlayerLoginEvent doesn't cancel the join, the join-message will be set.
+     *
      * @param e A PlayerJoinEvent.
      */
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
         try {
             GrapesPlayer player = GrapesPlayer.getByUniqueId(e.getPlayer().getUniqueId());
+            //Place Chest for extra-inventory in players inventory.
+            int slot = 35;
+            if (Grapes.getGrapes().getConfig().contains("settings.inventory.extra-slots-icon.slot"))
+                slot = Grapes.getGrapes().getConfig().getInt("settings.inventory.extra-slots-icon.slot");
+            Grapes.getGrapes().getConfig().set("settings.inventory.extra-slots-icon.slot", slot);
+            Grapes.getGrapes().saveConfig();
+            ItemStack item = new GrapesItemBuilder(Material.ENDER_CHEST)
+                    .setName("&bYour Equipment")
+                    .setLore(
+                            "&7Click this Item to open the",
+                            "&7inventory, which contains",
+                            "&7your artifacts, stats",
+                            "&7and much more!"
+                    )
+                    .build();
+            player.getSpigotPlayer().getInventory().setItem(slot, item);
+
             String message = joins.get(player.getUniqueId());
             e.setJoinMessage(message);
             joins.remove(e.getPlayer().getUniqueId());

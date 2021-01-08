@@ -17,15 +17,27 @@
     </properties>
 
     <distributionManagement>
+        <!-- GitHub Repository
         <repository>
             <id>github</id>
             <name>GitHub Trqhxrd Apache Maven Packages</name>
             <url>https://maven.pkg.github.com/CodeRedDevs/GrapesRPG</url>
+        </repository> -->
+        <repository>
+            <id>deployment</id>
+            <name>My Repository</name>
+            <url>http://localhost:8081/repository/GrapesRPG-RELEASE/</url>
         </repository>
+        <snapshotRepository>
+            <id>deployment</id>
+            <name>My Repository</name>
+            <url>http://localhost:8081/repository/GrapesRPG-SNAPSHOT/</url>
+        </snapshotRepository>
     </distributionManagement>
 
     <build>
         <finalName>GrapesRPG</finalName>
+        <testSourceDirectory>src/test/java</testSourceDirectory>
         <resources>
             <resource>
                 <directory>${basedir}/src/main/resources</directory>
@@ -57,7 +69,15 @@
                                         <exclude>plugin.yml</exclude>
                                     </excludes>
                                 </filter>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/MANIFEST.MF</exclude>
+                                        <exclude>module-info.class</exclude>
+                                    </excludes>
+                                </filter>
                             </filters>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
                         </configuration>
                     </execution>
                 </executions>
@@ -70,10 +90,22 @@
                     <outputDirectory>${project.basedir}/TestServer/plugins</outputDirectory>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M5</version>
+                <configuration>
+                    <testSourceDirectory>src/test/java</testSourceDirectory>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
     <repositories>
+        <repository>
+            <id>papermc</id>
+            <url>https://papermc.io/repo/repository/maven-public/</url>
+        </repository>
         <repository>
             <id>spigot</id>
             <name>Spigot-Repo</name>
@@ -84,13 +116,18 @@
             <name>Maven Central</name>
             <url>https://repo1.maven.org/maven2/</url>
         </repository>
+        <repository>
+            <id>deployment</id>
+            <name>My Repository</name>
+            <url>http://localhost:8081/repository/craftbukkit</url>
+        </repository>
     </repositories>
 
     <dependencies>
-        <!-- Spigot Dependency -->
+        <!-- Paper Dependency -->
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
+            <groupId>com.destroystokyo.paper</groupId>
+            <artifactId>paper-api</artifactId>
             <version>1.16.4-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
@@ -100,12 +137,11 @@
             <artifactId>SafeNBT</artifactId>
             <version>2.0</version>
         </dependency>
-        <!-- JUnit Dependency -->
+        <!-- CraftBukkit Dependency -->
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.7.0</version>
-            <scope>test</scope>
+            <groupId>org.bukkit</groupId>
+            <artifactId>craftbukkit</artifactId>
+            <version>1.16.4-R0.3-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>

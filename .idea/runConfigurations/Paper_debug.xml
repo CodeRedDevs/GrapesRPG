@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Spigot debug" type="Remote">
+  <configuration default="false" name="Paper debug" type="Remote">
     <module name="grapes-rpg" />
     <option name="USE_SOCKET_TRANSPORT" value="true" />
     <option name="SERVER_MODE" value="false" />
@@ -12,7 +12,7 @@
       <option name="LOCAL" value="false" />
     </RunnerSettings>
     <method v="2">
-      <option name="RunConfigurationTask" enabled="true" run_configuration_name="Start Spigot" run_configuration_type="JarApplication" />
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="Paper Server" run_configuration_type="JarApplication" />
     </method>
   </configuration>
 </component>

@@ -3,6 +3,7 @@ package me.trqhxrd.grapesrpg.event;
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.common.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.event.GrapesPlayerQuitEvent;
+import me.trqhxrd.grapesrpg.api.objects.item.artifact.GrapesArtifact;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -37,6 +38,7 @@ public class PlayerQuitListener implements Listener {
             e.setQuitMessage(event.getQuitMessage());
 
             //PLAYER DESTROY:
+            GrapesArtifact.store(p);
             GrapesPlayer.getPlayers().remove(p);
         }
     }
