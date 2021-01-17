@@ -2,14 +2,10 @@ package me.trqhxrd.grapesrpg.event;
 
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.common.GrapesPlayer;
-import me.trqhxrd.grapesrpg.api.objects.GrapesItemBuilder;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map;

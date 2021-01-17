@@ -21,7 +21,7 @@ dependency-reduced-pom.xml
 JavaDoc/
 
 #Project-specific stuff
-TestServer/
-libs/*
-!libs/install.bat
-!libs/SafeNBT.jar
+TestServer/*
+!TestServer/paper-1.16.4-416.jar
+!TestServer/eula.txt
+!TestServer/ops.json

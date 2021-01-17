@@ -6,7 +6,8 @@
 
     <groupId>me.trqhxrd</groupId>
     <artifactId>grapes-rpg</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.1-SNAPSHOT-FEATURE-ITEMS</version>
+    <name>GrapesRPG</name>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -25,7 +26,7 @@
     </distributionManagement>
 
     <build>
-        <finalName>GrapesRPG</finalName>
+        <finalName>${project.name}-${project.version}</finalName>
         <resources>
             <resource>
                 <directory>${basedir}/src/main/resources</directory>
@@ -49,18 +50,18 @@
                         <configuration>
                             <filters>
                                 <filter>
-                                    <artifact>com.github.jojodmo:SafeNBT</artifact>
-                                    <includes>
-                                        <include>**</include>
-                                    </includes>
+                                    <artifact>*:*</artifact>
                                     <excludes>
-                                        <exclude>plugin.yml</exclude>
+                                        <exclude>META-INF/MANIFEST.MF</exclude>
                                     </excludes>
                                 </filter>
                             </filters>
                         </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -70,42 +71,53 @@
                     <outputDirectory>${project.basedir}/TestServer/plugins</outputDirectory>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${project.basedir}/TestServer/plugins</directory>
+                            <includes>
+                                <include>*.jar</include>
+                            </includes>
+                            <followSymlinks>false</followSymlinks>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
     <repositories>
         <repository>
-            <id>spigot</id>
-            <name>Spigot-Repo</name>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+            <id>papermc</id>
+            <url>https://papermc.io/repo/repository/maven-public/</url>
         </repository>
         <repository>
             <id>central</id>
             <name>Maven Central</name>
             <url>https://repo1.maven.org/maven2/</url>
         </repository>
+        <repository>
+            <id>deployment</id>
+            <url>http://localhost:8081/repository/craftbukkit/</url>
+        </repository>
     </repositories>
 
     <dependencies>
-        <!-- Spigot Dependency -->
+        <!-- Paper Dependency -->
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
+            <groupId>com.destroystokyo.paper</groupId>
+            <artifactId>paper-api</artifactId>
             <version>1.16.4-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-        <!-- SafeNBT Dependency -->
         <dependency>
-            <groupId>com.github.jojodmo</groupId>
-            <artifactId>SafeNBT</artifactId>
-            <version>2.0</version>
-        </dependency>
-        <!-- JUnit Dependency -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.7.0</version>
-            <scope>test</scope>
+            <groupId>org.bukkit</groupId>
+            <artifactId>craftbukkit</artifactId>
+            <version>1.16.4-R0.3-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>

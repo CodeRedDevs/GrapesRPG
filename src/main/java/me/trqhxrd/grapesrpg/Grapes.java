@@ -1,5 +1,7 @@
 package me.trqhxrd.grapesrpg;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import me.trqhxrd.grapesrpg.api.common.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.utils.Prefix;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
@@ -23,6 +25,15 @@ public class Grapes extends JavaPlugin {
      * Also if you want to use Plugin-Specific {@link Utils}, it is usable to get this Plugins Utils.
      */
     private static Grapes grapes;
+
+    /**
+     * This constant is the serialisation engine used for items, recipes (coming soon), etc.
+     */
+    public static final Gson GSON = new GsonBuilder()
+            .setPrettyPrinting()
+            .serializeNulls()
+            .create();
+
     /**
      * This object is used for sending Messages to the Player.
      *
@@ -63,9 +74,7 @@ public class Grapes extends JavaPlugin {
      * @see JavaPlugin#onDisable()
      */
     @Override
-    public void onDisable() {
-
-    }
+    public void onDisable() { }
 
     /**
      * Getter for the {@link Utils}
