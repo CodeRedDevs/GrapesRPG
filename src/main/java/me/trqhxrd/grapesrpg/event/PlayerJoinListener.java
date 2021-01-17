@@ -2,10 +2,12 @@ package me.trqhxrd.grapesrpg.event;
 
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.common.GrapesPlayer;
+import me.trqhxrd.grapesrpg.api.event.GrapesPlayerJoinEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,17 +54,6 @@ public class PlayerJoinListener implements Listener {
                 GrapesPlayer.getPlayers().remove(player);
             }
         }
-
-        ItemStack itemStack = new GrapesItemBuilder(Material.DIRT)
-                .setID(3)
-                .setName("&cItem")
-                .setLore("Lore line 1", "Lore line 2", "Lore line 3")
-                .setNBTValue("grapes.test.xyz", true)
-                .setDurability(1000, 1000)
-                .addEnchantment(Enchantment.DAMAGE_ALL, 5)
-                .addEnchantment(Enchantment.DURABILITY, 3)
-                .build();
-        e.getPlayer().getInventory().addItem(itemStack);
     }
 
     /**
