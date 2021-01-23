@@ -61,7 +61,7 @@ public class GrapesPlayerJoinEvent extends GrapesPlayerEvent implements Cancella
 
     /**
      * Returns if the event is cancelled.
-     * true -> cancelled; false -> not cancelled.
+     * {@literal true -> cancelled; false -> not cancelled.}
      * If the event is cancelled, the player will be kicked and on his kick screen the kick-message will be displayed.
      *
      * @return true if the event is cancelled.
@@ -75,7 +75,7 @@ public class GrapesPlayerJoinEvent extends GrapesPlayerEvent implements Cancella
      * Can set if the event is cancelled.
      * If set to true, the player will be kicked and he gets the kick-message displayed.
      *
-     * @param cancel true -> cancel; false -> not cancel.
+     * @param cancel {@literal true -> cancel; false -> not cancel.}
      */
     @Override
     public void setCancelled(boolean cancel) {

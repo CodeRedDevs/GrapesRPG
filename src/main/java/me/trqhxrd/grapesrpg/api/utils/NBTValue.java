@@ -34,18 +34,8 @@ public abstract class NBTValue<V> {
         return value;
     }
 
-    public static class Boolean extends NBTValue<java.lang.Boolean> {
-        /**
-         * A basic constructor for setting the value, which is stored in this wrapper-object.
-         *
-         * @param value The value, which you want to store.
-         */
-        public Boolean(java.lang.Boolean value) {
-            super(value);
-        }
-    }
-
     public static class Integer extends NBTValue<java.lang.Integer> {
+
         /**
          * A basic constructor for setting the value, which is stored in this wrapper-object.
          *
@@ -57,6 +47,7 @@ public abstract class NBTValue<V> {
     }
 
     public static class Double extends NBTValue<java.lang.Double> {
+
         /**
          * A basic constructor for setting the value, which is stored in this wrapper-object.
          *
@@ -68,6 +59,7 @@ public abstract class NBTValue<V> {
     }
 
     public static class String extends NBTValue<java.lang.String> {
+
         /**
          * A basic constructor for setting the value, which is stored in this wrapper-object.
          *
@@ -79,6 +71,7 @@ public abstract class NBTValue<V> {
     }
 
     public static class IntegerArray extends NBTValue<Collection<java.lang.Integer>> {
+
         /**
          * A basic constructor for setting the value, which is stored in this wrapper-object.
          *

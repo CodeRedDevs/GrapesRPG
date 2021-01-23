@@ -30,6 +30,7 @@ public class GrapesPlayerInitEvent extends GrapesPlayerEvent implements Cancella
 
     /**
      * Required by the Spigot API.
+     * @return A HandlerList
      */
     public static HandlerList getHandlerList() {
         return handlers;
@@ -46,7 +47,7 @@ public class GrapesPlayerInitEvent extends GrapesPlayerEvent implements Cancella
     /**
      * Returns true if the event is cancelled.
      *
-     * @return true -> cancelled; false -> event not cancelled.
+     * @return {@literal true -> cancelled; false -> event not cancelled.}
      */
     @Override
     public boolean isCancelled() {
@@ -57,7 +58,7 @@ public class GrapesPlayerInitEvent extends GrapesPlayerEvent implements Cancella
      * This method is able to cancel the event.
      * If set to true, the player won't be detected by GrapesRPG.
      *
-     * @param cancelled true -> cancelled; false -> not cancelled.
+     * @param cancelled {@literal true -> cancelled; false -> not cancelled.}
      */
     @Override
     public void setCancelled(boolean cancelled) {

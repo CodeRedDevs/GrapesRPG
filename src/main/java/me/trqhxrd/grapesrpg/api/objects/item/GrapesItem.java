@@ -3,6 +3,7 @@ package me.trqhxrd.grapesrpg.api.objects.item;
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.attribute.Serializable;
 import me.trqhxrd.grapesrpg.api.utils.Builder;
+import me.trqhxrd.grapesrpg.api.utils.NBTReader;
 import me.trqhxrd.grapesrpg.api.utils.NBTValue;
 import me.trqhxrd.grapesrpg.api.utils.group.Group2;
 import net.minecraft.server.v1_16_R3.NBTTagCompound;
@@ -12,10 +13,7 @@ import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This Class represents a serializable item from the GrapesAPI
@@ -51,6 +49,25 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
     private String name;
 
     /**
+     * The amount of the item.
+     */
+    private int amount;
+
+    /**
+     * A basic constructor to create a new GrapesItem.
+     *
+     * @param id       The id of the new item.
+     * @param material The material of the new item.
+     */
+    public GrapesItem(int id, Material material) {
+        this.id = id;
+        this.material = material;
+        this.name = null;
+        this.amount = 1;
+        this.nbt = new HashMap<>();
+    }
+
+    /**
      * A basic constructor to create a new GrapesItem.
      *
      * @param id       The id of the new item.
@@ -61,6 +78,7 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
         this.id = id;
         this.material = material;
         this.name = name;
+        this.amount = 1;
         this.nbt = new HashMap<>();
     }
 
@@ -77,9 +95,52 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
         this.id = id;
         this.material = material;
         this.name = name;
+        this.amount = 1;
         this.nbt = new HashMap<>();
 
         for (Group2<String, NBTValue<?>> entry : nbtEntries) this.nbt.put(entry.getX(), entry.getY());
+    }
+
+    /**
+     * A constructor, which supports the items amount to be given.
+     *
+     * @param nbt      The Custom NBT-Tags, which you want to set.
+     * @param id       The items id.
+     * @param material The Material of the item.
+     * @param name     The name of the item. If black, will be set to the materials name.
+     * @param amount   The amount of the item. (e.g. 64 = a stack).
+     */
+    public GrapesItem(int id, Material material, String name, int amount, Map<String, NBTValue<?>> nbt) {
+        this.nbt = nbt;
+        this.id = id;
+        this.material = material;
+        this.name = name;
+        this.amount = amount;
+    }
+
+    /**
+     * Creates a new GrapesItem from the values stored in an ItemStack.
+     *
+     * @param is The native item.
+     * @return A GrapesItem, that has the same data as the ItemStack, which you gave as a parameter.
+     */
+    public static GrapesItem fromItemStack(ItemStack is) {
+        Integer id = NBTReader.getNBTValueInt(is, "grapes.id");
+        if (id != null) {
+            GrapesItem item = new GrapesItem(id, is.getType());
+            item.setAmount(is.getAmount());
+            item.setName(is.getItemMeta().getDisplayName());
+            item.getNbt().clear();
+            item.getNbt().putAll(NBTReader.getAllNBTValues(is));
+
+            // Removing all NBT-Values, which are stored in variables in an object of this class.
+            Set<String> remove = new HashSet<>();
+            for (String s:item.getNbt().keySet()) if (s.startsWith("grapes."))remove.add(s);
+            for (String s:remove) item.getNbt().remove(s);
+
+            return item;
+        }
+        return null;
     }
 
     /**
@@ -134,17 +195,6 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      * @param value The value, that will be stored at the path.
      * @return The GrapesItem, for which this method got called. Used for creating command chains.
      */
-    public GrapesItem addNBT(String path, boolean value) {
-        return this.addNBT(path, new NBTValue.Boolean(value));
-    }
-
-    /**
-     * This method adds a custom NBT-Value to the map of values, that will be set as soon as the {@link GrapesItem#build()}-method gets called.
-     *
-     * @param path  The path of the NBT-Value, which you want to set.
-     * @param value The value, that will be stored at the path.
-     * @return The GrapesItem, for which this method got called. Used for creating command chains.
-     */
     public GrapesItem addNBT(String path, Integer... value) {
         return this.addNBT(path, new NBTValue.IntegerArray(Arrays.asList(value)));
     }
@@ -158,6 +208,24 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      */
     public GrapesItem addNBT(String path, Collection<Integer> value) {
         return this.addNBT(path, new NBTValue.IntegerArray(value));
+    }
+
+    /**
+     * Basic getter for the items amount.
+     *
+     * @return The items amount.
+     */
+    public int getAmount() {
+        return amount;
+    }
+
+    /**
+     * Basic setter for the items amount.
+     *
+     * @param amount The items new amount.
+     */
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
     /**
@@ -264,6 +332,9 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
     @Override
     public ItemStack build() {
         ItemStack is = new ItemStack(this.material);
+
+        is.setAmount(this.amount);
+
         ItemMeta meta = is.getItemMeta();
         if (meta != null) {
             if (this.name != null && !this.name.isBlank() && !this.name.isEmpty())
@@ -306,9 +377,11 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
                         if (value instanceof NBTValue.String) nbts[i - 1].setString(part, (((NBTValue.String) value).getValue() == null) ? "" : (String) value.getValue());
                         else if (value instanceof NBTValue.Integer) nbts[i - 1].setInt(part, (int) value.getValue());
                         else if (value instanceof NBTValue.Double) nbts[i - 1].setDouble(part, (double) value.getValue());
-                        else if (value instanceof NBTValue.Boolean) nbts[i - 1].setBoolean(part, (boolean) value.getValue());
-                        else if (value instanceof NBTValue.IntegerArray) nbts[i - 1].setIntArray(part, (int[]) value.getValue());
-                        else nbts[i - 1].setString(part, value.getValue().toString());
+                        else if (value instanceof NBTValue.IntegerArray) {
+                            int[] ints = new int[((NBTValue.IntegerArray) value).getValue().size()];
+                            for (int j = 0; j < ints.length; j++) ints[i] = new ArrayList<>(((NBTValue.IntegerArray) value).getValue()).get(i);
+                            nbts[i - 1].setIntArray(part, ints);
+                        } else nbts[i - 1].setString(part, value.getValue().toString());
                     } else nbts[i] = nbts[i - 1].getCompound(pathArray[i]);
                 }
             }
@@ -355,18 +428,6 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
          */
         public static ItemStack setNBTValue(ItemStack is, String path, double value) {
             return setNBTValue(is, path, new NBTValue.Double(value));
-        }
-
-        /**
-         * This method is able to set an NBT-Tag to an ItemStack.
-         *
-         * @param is    The ItemStack, for which you want to set an NBT-Tag.
-         * @param path  The Path to the NBT-Value.
-         * @param value The Value, which you want to set at the path in the items NBT-Tag.
-         * @return The ItemStack, but with the set NBT-Value.
-         */
-        public static ItemStack setNBTValue(ItemStack is, String path, boolean value) {
-            return setNBTValue(is, path, new NBTValue.Boolean(value));
         }
 
         /**

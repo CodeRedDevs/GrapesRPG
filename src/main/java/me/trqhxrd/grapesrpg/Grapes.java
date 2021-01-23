@@ -1,15 +1,22 @@
 package me.trqhxrd.grapesrpg;
 
+import com.github.lalyos.jfiglet.FigletFont;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import me.trqhxrd.grapesrpg.api.common.GrapesPlayer;
+import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
+import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipe;
 import me.trqhxrd.grapesrpg.api.utils.Prefix;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
 import me.trqhxrd.grapesrpg.event.PlayerJoinListener;
 import me.trqhxrd.grapesrpg.event.PlayerQuitListener;
+import me.trqhxrd.grapesrpg.event.PrepareItemCraftListener;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.IOException;
 
 /**
  * The GrapesRPG-Main-Class.
@@ -20,20 +27,18 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Grapes extends JavaPlugin {
 
     /**
-     * This is the instance of the GrapesRPG plugin.
-     * It is used to register Listeners and other things, which need a JavaPlugin.
-     * Also if you want to use Plugin-Specific {@link Utils}, it is usable to get this Plugins Utils.
-     */
-    private static Grapes grapes;
-
-    /**
      * This constant is the serialisation engine used for items, recipes (coming soon), etc.
      */
     public static final Gson GSON = new GsonBuilder()
             .setPrettyPrinting()
             .serializeNulls()
             .create();
-
+    /**
+     * This is the instance of the GrapesRPG plugin.
+     * It is used to register Listeners and other things, which need a JavaPlugin.
+     * Also if you want to use Plugin-Specific {@link Utils}, it is usable to get this Plugins Utils.
+     */
+    private static Grapes grapes;
     /**
      * This object is used for sending Messages to the Player.
      *
@@ -53,7 +58,7 @@ public class Grapes extends JavaPlugin {
 
     /**
      * The default onEnable method for Bukkit/Spigot-Plugins.
-     * Overwritten from the {@link JavaPlugin}
+     * Overwritten from the {@link JavaPlugin}.
      *
      * @see JavaPlugin#onEnable()
      */
@@ -66,15 +71,26 @@ public class Grapes extends JavaPlugin {
         //Registering Listeners:
         new PlayerJoinListener();
         new PlayerQuitListener();
+        new PrepareItemCraftListener();
+
+        this.addRecipe(new GrapesRecipe(new GrapesItem(0, Material.DANDELION).addNBT("test", 3)).setShape("aaa", "aaa", "aaa").setIngredient('a', Material.DIRT));
     }
 
     /**
-     * The default onDisable method for Bukkit/Spigot-Plugins.
+     * The default onLoad method for Bukkit/Spigot-Plugins.
+     * Overwritten from the {@link JavaPlugin}.
+     * The only thing, which this method currently does is drawing the figlet-header during the loading of the plugin.
      *
-     * @see JavaPlugin#onDisable()
+     * @see JavaPlugin#onLoad()
      */
     @Override
-    public void onDisable() { }
+    public void onLoad() {
+        try {
+            Bukkit.getConsoleSender().sendMessage("\n" + FigletFont.convertOneLine("GrapesRPG"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Getter for the {@link Utils}
@@ -83,5 +99,9 @@ public class Grapes extends JavaPlugin {
      */
     public Utils getUtils() {
         return utils;
+    }
+
+    public void addRecipe(GrapesRecipe r) {
+        GrapesRecipe.getRecipes().add(r);
     }
 }
