@@ -5,8 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>me.trqhxrd</groupId>
-    <artifactId>grapesrpg</artifactId>
+    <artifactId>grapes-rpg</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <name>GrapesRPG</name>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -18,13 +19,19 @@
 
     <distributionManagement>
         <repository>
-            <id>github</id>
-            <name>GitHub Trqhxrd Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/CodeRedDevs/GrapesRPG</url>
-        </repository>
+            <id>deployment</id>
+            <name>Nexus Repository</name>
+            <url>https://repo.trqhxrd.de/repository/general-release/</url>
+        </repository>  
+         <snapshotRepository>
+            <id>deployment</id>
+            <name>Nexus Repository</name>
+            <url>https://repo.trqhxrd.de/repository/general-snapshot/</url>
+        </snapshotRepository>
     </distributionManagement>
 
     <build>
+        <finalName>${project.name}-${project.version}</finalName>
         <resources>
             <resource>
                 <directory>${basedir}/src/main/resources</directory>
@@ -49,32 +56,73 @@
                             <filters>
                                 <filter>
                                     <artifact>*:*</artifact>
-                                    <includes>
-                                        <include>**</include>
-                                    </includes>
+                                    <excludes>
+                                        <exclude>META-INF/MANIFEST.MF</exclude>
+                                    </excludes>
                                 </filter>
                             </filters>
                         </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <outputDirectory>${project.basedir}/TestServer/plugins</outputDirectory>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${project.basedir}/TestServer/plugins</directory>
+                            <includes>
+                                <include>*.jar</include>
+                            </includes>
+                            <followSymlinks>false</followSymlinks>
+                        </fileset>
+                    </filesets>
+                </configuration>
             </plugin>
         </plugins>
     </build>
 
     <repositories>
         <repository>
-            <id>spigot</id>
-            <name>Spigot-Repo</name>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+            <id>papermc</id>
+            <url>https://papermc.io/repo/repository/maven-public/</url>
+        </repository>
+        <repository>
+            <id>central</id>
+            <name>Maven Central</name>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
+        <repository>
+            <id>deployment</id>
+            <url>https://repo.trqhxrd.de/repository/libraries/</url>
         </repository>
     </repositories>
 
     <dependencies>
+        <!-- Paper Dependency -->
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
+            <groupId>com.destroystokyo.paper</groupId>
+            <artifactId>paper-api</artifactId>
             <version>1.16.4-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.bukkit</groupId>
+            <artifactId>craftbukkit</artifactId>
+            <version>1.16.5-R0.3-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>
