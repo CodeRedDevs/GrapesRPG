@@ -190,6 +190,11 @@ public class GrapesRecipe implements Serializable<GrapesRecipe> {
         for (int i = 0; i < matrix.length; i++) {
             ItemStack item = matrix[i];
             GrapesRecipeChoice choice = choices[i];
+            if ((choice == null && item != null) || (choice != null && item == null)) {
+                valid = false;
+                continue;
+            }
+            if (choice == null) continue;
             if (!choice.check(item)) valid = false;
         }
 

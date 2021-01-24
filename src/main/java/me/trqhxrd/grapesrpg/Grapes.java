@@ -8,9 +8,7 @@ import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipe;
 import me.trqhxrd.grapesrpg.api.utils.Prefix;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
-import me.trqhxrd.grapesrpg.event.PlayerJoinListener;
-import me.trqhxrd.grapesrpg.event.PlayerQuitListener;
-import me.trqhxrd.grapesrpg.event.PrepareItemCraftListener;
+import me.trqhxrd.grapesrpg.event.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -69,11 +67,13 @@ public class Grapes extends JavaPlugin {
         for (Player p : Bukkit.getOnlinePlayers()) new GrapesPlayer(p);
 
         //Registering Listeners:
+        new InventoryClickListener();
+        new InventoryCloseListener();
         new PlayerJoinListener();
         new PlayerQuitListener();
-        new PrepareItemCraftListener();
+        new PlayerInteractListener();
 
-        this.addRecipe(new GrapesRecipe(new GrapesItem(0, Material.DANDELION).addNBT("test", 3)).setShape("aaa", "aaa", "aaa").setIngredient('a', Material.DIRT));
+        this.addRecipe(new GrapesRecipe(new GrapesItem(0, Material.DANDELION).addNBT("test", 3)).setShape("aaa", "a a", "aaa").setIngredient('a', Material.DIRT));
     }
 
     /**
