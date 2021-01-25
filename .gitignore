@@ -24,5 +24,3 @@ JavaDoc/
 TestServer/*
 !TestServer/paper-1.16.4-416.jar
 !TestServer/eula.txt
-!TestServer/ops.json
-!TestServer/server.properties

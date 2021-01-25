@@ -3,6 +3,7 @@ package me.trqhxrd.grapesrpg.event;
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.inventories.CraftingInventory;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipe;
+import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesShapedRecipe;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,6 +18,7 @@ import java.util.Set;
 /**
  * This Listener handles inventory-clicks.
  * For example the crafting-gui.
+ *
  * @author Trqhxrd
  */
 public class InventoryClickListener implements Listener {
@@ -41,6 +43,7 @@ public class InventoryClickListener implements Listener {
 
     /**
      * This is the handler-method.
+     *
      * @param e The InventoryClickEvent.
      */
     @EventHandler()
@@ -57,6 +60,12 @@ public class InventoryClickListener implements Listener {
                     int slot = e.getSlot();
 
                     if (!this.allowedSlots.contains(slot)) {
+                        e.setCancelled(true);
+                        return;
+                    }
+
+                    //Cancel placing items in output-slot
+                    if (slot == CraftingInventory.OUTPUT_SLOT && e.getClickedInventory().getItem(slot) == null && e.getCursor() != null) {
                         e.setCancelled(true);
                         return;
                     }
@@ -85,24 +94,19 @@ public class InventoryClickListener implements Listener {
                                 }
                             }
 
-                            boolean status = false;
+                            CraftingInventory.Status status = CraftingInventory.Status.INVALID;
 
-                            for (GrapesRecipe r : GrapesRecipe.getRecipes()) {
+                            for (GrapesRecipe r : GrapesShapedRecipe.getRecipes()) {
                                 if (r.check(matrix)) {
                                     inv.setStatus(CraftingInventory.Status.VALID);
-                                    inv.setResult(r.getResult().build());
-                                    status = true;
+                                    inv.setResult(r.getResult());
+                                    status = CraftingInventory.Status.VALID;
                                     break;
                                 }
                             }
 
-                            if (!status) {
-                                inv.setStatus(CraftingInventory.Status.INVALID);
-                                inv.setResult(null);
-                            } else {
-                                inv.setStatus(CraftingInventory.Status.VALID);
-                            }
-
+                            if (status == CraftingInventory.Status.INVALID) inv.setResult(null);
+                            inv.setStatus(status);
                         }
                     }.runTaskLater(Grapes.getGrapes(), 0);
                 }

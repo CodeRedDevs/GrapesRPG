@@ -6,7 +6,7 @@
 
     <groupId>me.trqhxrd</groupId>
     <artifactId>grapes-rpg</artifactId>
-    <version>1.1-SNAPSHOT-RECIPES-BETA</version>
+    <version>1.1-SNAPSHOT-RECIPES</version>
     <name>GrapesRPG</name>
 
     <properties>
