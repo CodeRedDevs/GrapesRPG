@@ -6,7 +6,7 @@
 
     <groupId>me.trqhxrd</groupId>
     <artifactId>grapes-rpg</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.1-SNAPSHOT-RECIPES</version>
     <name>GrapesRPG</name>
 
     <properties>
@@ -19,10 +19,15 @@
 
     <distributionManagement>
         <repository>
-            <id>github</id>
-            <name>GitHub Trqhxrd Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/CodeRedDevs/GrapesRPG</url>
+            <id>deployment</id>
+            <name>Nexus Repository</name>
+            <url>https://repo.trqhxrd.de/repository/general-release/</url>
         </repository>
+        <snapshotRepository>
+            <id>deployment</id>
+            <name>Nexus Repository</name>
+            <url>https://repo.trqhxrd.de/repository/general-snapshot/</url>
+        </snapshotRepository>
     </distributionManagement>
 
     <build>
@@ -95,14 +100,16 @@
             <id>papermc</id>
             <url>https://papermc.io/repo/repository/maven-public/</url>
         </repository>
+
+        <repository>
+            <id>deployment</id>
+            <url>http://localhost:8081/repository/craftbukkit/</url>
+        </repository>
+
         <repository>
             <id>central</id>
             <name>Maven Central</name>
             <url>https://repo1.maven.org/maven2/</url>
-        </repository>
-        <repository>
-            <id>deployment</id>
-            <url>http://localhost:8081/repository/craftbukkit/</url>
         </repository>
     </repositories>
 
@@ -114,10 +121,20 @@
             <version>1.16.4-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+
+        <!-- CraftBukkit Dependency -->
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>craftbukkit</artifactId>
             <version>1.16.4-R0.3-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- JFiglet dependency -->
+        <dependency>
+            <groupId>com.github.lalyos</groupId>
+            <artifactId>jfiglet</artifactId>
+            <version>0.0.8</version>
         </dependency>
     </dependencies>
 </project>
