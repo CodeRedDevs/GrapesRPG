@@ -1,5 +1,6 @@
 package me.trqhxrd.grapesrpg.api.objects.recipe;
 
+import com.google.common.base.Preconditions;
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.attribute.Serializable;
 import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
@@ -36,8 +37,8 @@ public class GrapesShapedRecipe extends GrapesRecipe implements Serializable<Gra
      *
      * @param result The item for which you want to get a recipe.
      */
-    public GrapesShapedRecipe(ItemStack result) {
-        super(result);
+    public GrapesShapedRecipe(GrapesItem result) {
+        super(Type.SHAPED, result);
         this.ingredients = new HashMap<>();
     }
 
@@ -110,9 +111,19 @@ public class GrapesShapedRecipe extends GrapesRecipe implements Serializable<Gra
      * @return The Object from which it was executed. This makes it possible to chain commands.
      */
     public GrapesShapedRecipe setShape(String... shape) {
-        StringBuilder s = new StringBuilder();
-        for (int i = 0; i < 3; i++) if (shape[0] != null) s.append(shape[i], 0, Math.min(3, shape[i].length() - 1));
-        return this.setShape(s.toString().toCharArray());
+        Preconditions.checkArgument(shape.length >= 3);
+
+        StringBuilder sh = new StringBuilder();
+
+        for (int i = 0; i < 3; i++) {
+            String s = shape[i];
+            Preconditions.checkArgument(s.toCharArray().length >= 3);
+            for (int j = 0; j < 3; j++) sh.append(s.toCharArray()[j]);
+        }
+
+        this.shape = sh.toString().toCharArray();
+
+        return this;
     }
 
     /**

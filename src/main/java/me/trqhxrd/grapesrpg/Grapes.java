@@ -13,7 +13,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.util.Scanner;
 
 /**
  * The GrapesRPG-Main-Class.
@@ -65,6 +68,9 @@ public class Grapes extends JavaPlugin {
         this.utils = new Utils(Prefix.of("&c[&aGra&bpes&c] &7"));
         for (Player p : Bukkit.getOnlinePlayers()) new GrapesPlayer(p);
 
+        //LOAD RECIPES FROM FILES
+        this.reloadRecipes();
+
         //Registering Listeners:
         new InventoryClickListener();
         new InventoryCloseListener();
@@ -105,5 +111,35 @@ public class Grapes extends JavaPlugin {
      */
     public void addRecipe(GrapesRecipe r) {
         GrapesShapedRecipe.getRecipes().add(r);
+    }
+
+    /**
+     * This method clears the Collection of recipes and loads all recipes new from files.
+     * This method can be used to reload the recipes without restarting the server.
+     */
+    public void reloadRecipes() {
+        GrapesRecipe.getRecipes().clear();
+
+        File recipeFolder = new File(this.getDataFolder(), "recipes");
+        boolean b = recipeFolder.mkdirs();
+        if (b) {
+            //DOWNLOAD DEFAULT RECIPES
+        }
+        try {
+            Files.list(recipeFolder.toPath()).forEach(f -> {
+                try {
+                    Scanner scanner = new Scanner(f);
+                    StringBuilder s = new StringBuilder();
+                    while (scanner.hasNextLine()) s.append(scanner.nextLine());
+                    scanner.close();
+                    GrapesRecipe r = GrapesRecipe.fromString(s.toString());
+                    this.addRecipe(r);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
