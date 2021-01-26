@@ -1,5 +1,7 @@
 package me.trqhxrd.grapesrpg.api.objects.recipe;
 
+import com.google.gson.JsonObject;
+import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
 import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.ItemStack;
@@ -20,30 +22,24 @@ public abstract class GrapesRecipe {
      * A Set of all available recipes.
      */
     private static final Set<GrapesRecipe> recipes = new HashSet<>();
+    private final Type type;
 
     /**
      * The result, which will be placed in the output slot as soon as the recipes shape.
      *
      * @see GrapesItem for more info.
      */
-    private final ItemStack result;
-
-    /**
-     * This constructor creates a new GrapesRecipe with the ItemStack as its result.
-     *
-     * @param result The result for the crafting-recipe, that you're creating right now.
-     */
-    public GrapesRecipe(ItemStack result) {
-        this.result = result;
-    }
+    private final GrapesItem result;
 
     /**
      * This constructor creates a new GrapesRecipe with the GrapesItem as its result.
      *
      * @param result The result for the crafting-recipe, that you're creating right now.
+     * @param type   The Type of the Recipe. Can be shaped or shapeless. This needed for serialisation.
      */
-    public GrapesRecipe(GrapesItem result) {
-        this.result = result.build();
+    public GrapesRecipe(Type type, GrapesItem result) {
+        this.type = type;
+        this.result = result;
     }
 
     /**
@@ -53,6 +49,14 @@ public abstract class GrapesRecipe {
      */
     public static Set<GrapesRecipe> getRecipes() {
         return recipes;
+    }
+
+    public static GrapesRecipe fromString(String s) {
+        GrapesRecipe r;
+        if (Grapes.GSON.fromJson(s, JsonObject.class).get("type").getAsString().equalsIgnoreCase("SHAPED"))
+            r = Grapes.GSON.fromJson(s, GrapesShapedRecipe.class);
+        else r = Grapes.GSON.fromJson(s, GrapesShapelessRecipe.class);
+        return r;
     }
 
     /**
@@ -75,11 +79,38 @@ public abstract class GrapesRecipe {
     }
 
     /**
+     * A getter for the type of this recipe.
+     *
+     * @return The type of the recipe.
+     */
+    public Type getType() {
+        return type;
+    }
+
+    /**
      * This method returns the result of the recipe.
      *
      * @return The result of the recipe.
      */
-    public ItemStack getResult() {
+    public GrapesItem getResult() {
         return result;
+    }
+
+    /**
+     * The type of the recipe.
+     * Can be SHAPED or SHAPELESS.
+     * This is only used for deserialization.
+     *
+     * @author Trqhxrd
+     */
+    public enum Type {
+        /**
+         * This Type means, that the recipe will be shaped.
+         */
+        SHAPED,
+        /**
+         * This type means, that the recipe will be shapeless.
+         */
+        SHAPELESS
     }
 }

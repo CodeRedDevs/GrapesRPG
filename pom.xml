@@ -6,7 +6,7 @@
 
     <groupId>me.trqhxrd</groupId>
     <artifactId>grapes-rpg</artifactId>
-    <version>1.1-SNAPSHOT-RECIPES</version>
+    <version>1.1-SNAPSHOT</version>
     <name>GrapesRPG</name>
 
     <properties>
@@ -21,12 +21,12 @@
         <repository>
             <id>deployment</id>
             <name>Nexus Repository</name>
-            <url>https://repo.trqhxrd.de/repository/general-release/</url>
+            <url>https://maven.trqhxrd.de/repository/maven-releases/</url>
         </repository>
         <snapshotRepository>
             <id>deployment</id>
             <name>Nexus Repository</name>
-            <url>https://repo.trqhxrd.de/repository/general-snapshot/</url>
+            <url>https://maven.trqhxrd.de/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 
@@ -103,7 +103,7 @@
 
         <repository>
             <id>deployment</id>
-            <url>http://localhost:8081/repository/craftbukkit/</url>
+            <url>https://maven.trqhxrd.de/repository/libraries/</url>
         </repository>
 
         <repository>

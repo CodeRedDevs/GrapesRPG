@@ -34,8 +34,8 @@ public class GrapesShapelessRecipe extends GrapesRecipe implements Serializable<
      *
      * @param result The result for the recipe.
      */
-    public GrapesShapelessRecipe(ItemStack result) {
-        super(result);
+    public GrapesShapelessRecipe(GrapesItem result) {
+        super(Type.SHAPELESS, result);
         this.ingredients = new ArrayList<>();
     }
 

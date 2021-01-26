@@ -99,7 +99,7 @@ public class InventoryClickListener implements Listener {
                             for (GrapesRecipe r : GrapesShapedRecipe.getRecipes()) {
                                 if (r.check(matrix)) {
                                     inv.setStatus(CraftingInventory.Status.VALID);
-                                    inv.setResult(r.getResult());
+                                    inv.setResult(r.getResult().build());
                                     status = CraftingInventory.Status.VALID;
                                     break;
                                 }
