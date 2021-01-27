@@ -2,3 +2,7 @@ name: GrapesRPG
 main: me.trqhxrd.grapesrpg.Grapes
 version: ${project.version}
 api-version: 1.16
+commands:
+  bounty:
+    description: This command creates a bounty on a players head.
+    usage: /bounty <Player> <Reward>

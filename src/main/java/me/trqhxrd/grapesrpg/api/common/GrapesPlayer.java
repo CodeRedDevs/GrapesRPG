@@ -3,13 +3,16 @@ package me.trqhxrd.grapesrpg.api.common;
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.event.GrapesPlayerInitEvent;
 import me.trqhxrd.grapesrpg.api.utils.Prefix;
+import me.trqhxrd.grapesrpg.api.mechanics.economy.Balance;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.*;
 import java.util.function.Consumer;
 
 /**
@@ -26,11 +29,17 @@ public class GrapesPlayer {
      * Players will be added automatically added as soon as the {@link GrapesPlayer#GrapesPlayer(Player)} Constructor is called.
      */
     private static final Set<GrapesPlayer> players = new HashSet<>();
+
     /**
      * An instance of the legacy Spigot {@link Player}.
      * Will be set in the {@link GrapesPlayer#GrapesPlayer(Player)} Constructor.
      */
-    private final Player spigotPlayer;
+    private transient final Player spigotPlayer;
+
+    /**
+     * This field contains all information about the players money.
+     */
+    private final Balance balance;
 
     /**
      * The Main Constructor for {@link GrapesPlayer}s.
@@ -38,6 +47,25 @@ public class GrapesPlayer {
      * @param spigotPlayer A legacy Player, for which you want to access new
      */
     public GrapesPlayer(Player spigotPlayer) {
+        Balance balance = null;
+        try {
+            File file = new File(Grapes.getGrapes().getDataFolder(), "\\players\\" + spigotPlayer.getUniqueId() + ".json");
+            //noinspection ResultOfMethodCallIgnored
+            file.getParentFile().mkdirs();
+            if (!file.createNewFile()) {
+                Scanner scanner = new Scanner(file);
+                StringBuilder s = new StringBuilder();
+                while (scanner.hasNextLine()) s.append(scanner.nextLine());
+                GrapesPlayer p = Grapes.GSON.fromJson(s.toString(), GrapesPlayer.class);
+                if (p != null) balance = p.getBalance();
+                if (balance == null) balance = new Balance(this);
+            } else balance = new Balance(this);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println(Objects.requireNonNull(balance).getMoney());
+        this.balance = new Balance(this, balance.getMoney());
         this.spigotPlayer = spigotPlayer;
 
         //Call GrapesPlayerInitEvent
@@ -121,6 +149,22 @@ public class GrapesPlayer {
         return false;
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    public void remove() {
+        try {
+            File file = new File(Grapes.getGrapes().getDataFolder(), "\\players\\" + spigotPlayer.getUniqueId() + ".json");
+            file.getParentFile().mkdirs();
+            file.createNewFile();
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+            writer.write(Grapes.GSON.toJson(this));
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        GrapesPlayer.getPlayers().remove(this);
+    }
+
     /**
      * Returns the legacy-spigot-{@link Player}.
      *
@@ -128,6 +172,16 @@ public class GrapesPlayer {
      */
     public Player getSpigotPlayer() {
         return spigotPlayer;
+    }
+
+    /**
+     * This method returns the players current Balance.
+     *
+     * @return The Players balance.
+     * @see Balance
+     */
+    public Balance getBalance() {
+        return balance;
     }
 
     /**

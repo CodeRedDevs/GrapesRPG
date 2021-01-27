@@ -36,8 +36,7 @@ public class PlayerQuitListener implements Listener {
             Bukkit.getPluginManager().callEvent(event);
             e.setQuitMessage(event.getQuitMessage());
 
-            //PLAYER DESTROY:
-            GrapesPlayer.getPlayers().remove(p);
+            p.remove();
         }
     }
 }

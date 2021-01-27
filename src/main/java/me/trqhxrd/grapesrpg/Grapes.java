@@ -8,7 +8,9 @@ import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipe;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesShapedRecipe;
 import me.trqhxrd.grapesrpg.api.utils.Prefix;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
+import me.trqhxrd.grapesrpg.commands.BountyCommand;
 import me.trqhxrd.grapesrpg.event.*;
+import me.trqhxrd.grapesrpg.api.mechanics.bounty.Bounty;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -68,16 +70,23 @@ public class Grapes extends JavaPlugin {
         this.utils = new Utils(Prefix.of("&c[&aGra&bpes&c] &7"));
         for (Player p : Bukkit.getOnlinePlayers()) new GrapesPlayer(p);
 
-        //LOAD RECIPES FROM FILES
+        //LOAD RECIPES FROM FILES:
         this.reloadRecipes();
+
+        //LOAD BOUNTIES FROM FILES:
+        Bounty.loadBounties();
 
         //Registering Listeners:
         new AsyncPlayerChatListener();
         new InventoryClickListener();
         new InventoryCloseListener();
+        new PlayerDeathListener();
         new PlayerJoinListener();
         new PlayerQuitListener();
         new PlayerInteractListener();
+
+        //registering Commands:
+        new BountyCommand();
     }
 
     /**
