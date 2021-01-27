@@ -4,14 +4,17 @@ import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.inventories.CraftingInventory;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipe;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesShapedRecipe;
+import me.trqhxrd.grapesrpg.api.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -109,6 +112,20 @@ public class InventoryClickListener implements Listener {
                             inv.setStatus(status);
                         }
                     }.runTaskLater(Grapes.getGrapes(), 0);
+                }
+            }
+        } else {
+            ItemStack is = e.getCurrentItem();
+            if (is != null) {
+                ItemMeta meta = is.getItemMeta();
+                if (meta != null) {
+                    if (meta.hasDisplayName()) meta.setDisplayName(Utils.translateColorCodes(meta.getDisplayName()));
+                    if (meta.hasLore()){
+                        List<String> lore = meta.getLore();
+                        if (lore != null) for (int i = 0; i < lore.size(); i++) lore.set(i, Utils.translateColorCodes(lore.get(i)));
+                        meta.setLore(lore);
+                    }
+                    is.setItemMeta(meta);
                 }
             }
         }
