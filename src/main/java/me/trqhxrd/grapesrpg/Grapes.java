@@ -4,19 +4,25 @@ import com.github.lalyos.jfiglet.FigletFont;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import me.trqhxrd.grapesrpg.api.common.GrapesPlayer;
+import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipe;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesShapedRecipe;
+import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesShapelessRecipe;
 import me.trqhxrd.grapesrpg.api.utils.Prefix;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
+import me.trqhxrd.grapesrpg.commands.GrapesCommand;
 import me.trqhxrd.grapesrpg.event.*;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.net.URL;
 import java.nio.file.Files;
 import java.util.Scanner;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 /**
  * The GrapesRPG-Main-Class.
@@ -69,7 +75,7 @@ public class Grapes extends JavaPlugin {
         for (Player p : Bukkit.getOnlinePlayers()) new GrapesPlayer(p);
 
         //LOAD RECIPES FROM FILES
-        this.reloadRecipes();
+        this.reloadRecipes(false);
 
         //Registering Listeners:
         new InventoryClickListener();
@@ -77,6 +83,12 @@ public class Grapes extends JavaPlugin {
         new PlayerJoinListener();
         new PlayerQuitListener();
         new PlayerInteractListener();
+
+        //Registering Commands:
+        new GrapesCommand();
+
+        GrapesShapelessRecipe r = new GrapesShapelessRecipe(new GrapesItem(0, Material.DANDELION)).addIngredient(Material.EGG);
+        System.out.println(new GsonBuilder().serializeNulls().create().toJson(r));
     }
 
     /**
@@ -117,16 +129,45 @@ public class Grapes extends JavaPlugin {
      * This method clears the Collection of recipes and loads all recipes new from files.
      * This method can be used to reload the recipes without restarting the server.
      */
-    public void reloadRecipes() {
-        GrapesRecipe.getRecipes().clear();
-
-        File recipeFolder = new File(this.getDataFolder(), "recipes");
-        boolean b = recipeFolder.mkdirs();
-        if (b) {
-            //DOWNLOAD DEFAULT RECIPES
-        }
+    public void reloadRecipes(boolean force) {
         try {
-            Files.list(recipeFolder.toPath()).forEach(f -> {
+            GrapesRecipe.getRecipes().clear();
+
+            File recipeFolder = new File(this.getDataFolder(), "recipes");
+            boolean b = recipeFolder.mkdirs();
+            if (b || force) {
+                File zipFile = new File(this.getDataFolder(), "recipes\\recipes.zip");
+                zipFile.delete();
+                zipFile.createNewFile();
+                URL url = new URL("https://github.com/CodeRedDevs/GrapesRPG/raw/feature-recipes/assets/recipes/recipes.zip");
+                BufferedInputStream in = new BufferedInputStream(url.openStream());
+                FileOutputStream out = new FileOutputStream(zipFile);
+                byte[] dataBuffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) out.write(dataBuffer, 0, bytesRead);
+                in.close();
+                out.close();
+
+                dataBuffer = new byte[1024];
+
+                ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFile));
+                ZipEntry zipEntry;
+                while ((zipEntry = zis.getNextEntry()) != null) {
+                    if (!zipEntry.isDirectory()) {
+                        File f = new File(recipeFolder, "grapes_" + zipEntry.getName());
+                        if (f.createNewFile()) {
+                            FileOutputStream fos = new FileOutputStream(f);
+                            while ((bytesRead = zis.read(dataBuffer)) > 0) fos.write(dataBuffer, 0, bytesRead);
+                            fos.close();
+                        }
+                    }
+                }
+                zis.close();
+                zipFile.delete();
+            }
+
+
+            Files.list(recipeFolder.toPath()).filter(f -> f.toFile().getName().endsWith(".json")).forEach(f -> {
                 try {
                     Scanner scanner = new Scanner(f);
                     StringBuilder s = new StringBuilder();

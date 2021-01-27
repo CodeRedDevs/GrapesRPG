@@ -2,6 +2,7 @@ package me.trqhxrd.grapesrpg.api.utils;
 
 import me.trqhxrd.grapesrpg.api.common.GrapesPlayer;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 
 /**
  * A utils class used for sending messages.
@@ -34,7 +35,7 @@ public class Utils {
     }
 
     /**
-     * Sends a message to a specific player
+     * Sends a message to a specific player.
      *
      * @param player  The Player, which you want to send the message.
      * @param message The message itself.
@@ -62,6 +63,29 @@ public class Utils {
      */
     public void sendMessage(Prefix p, GrapesPlayer player, String message) {
         player.getSpigotPlayer().sendMessage(ChatColor.translateAlternateColorCodes(p.getColorChar(), p.colorize() + message));
+    }
+
+    /**
+     * Sends a message to a CommandSender with a custom prefix.
+     *
+     * @param p       The custom prefix.
+     * @param cs      The CommandSender, which you want to send a message to.
+     * @param message The message, which you want to send.
+     * @see CommandSender
+     */
+    public void sendMessage(Prefix p, CommandSender cs, String message) {
+        cs.sendMessage(ChatColor.translateAlternateColorCodes(p.getColorChar(), p.colorize() + message));
+    }
+
+    /**
+     * Sends a message to a specific CommandSender.
+     *
+     * @param cs  The CommandSender, which you want to send the message.
+     * @param message The message itself.
+     * @see CommandSender
+     */
+    public void sendMessage(CommandSender cs, String message) {
+        cs.sendMessage(ChatColor.translateAlternateColorCodes(prefix.getColorChar(), prefix.colorize() + message));
     }
 
     /**
