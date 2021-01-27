@@ -72,6 +72,7 @@ public class Grapes extends JavaPlugin {
         this.reloadRecipes();
 
         //Registering Listeners:
+        new AsyncPlayerChatListener();
         new InventoryClickListener();
         new InventoryCloseListener();
         new PlayerJoinListener();
