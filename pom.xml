@@ -6,7 +6,7 @@
 
     <groupId>me.trqhxrd</groupId>
     <artifactId>grapes-rpg</artifactId>
-    <version>1.1-SNAPSHOT-RECIPES</version>
+    <version>1.1-SNAPSHOT</version>
     <name>GrapesRPG</name>
 
     <properties>
@@ -21,12 +21,12 @@
         <repository>
             <id>deployment</id>
             <name>Nexus Repository</name>
-            <url>https://maven.trqhxrd.de/repository/maven-releases/</url>
+            <url>https://repo.trqhxrd.de/repository/maven-releases/</url>
         </repository>
         <snapshotRepository>
             <id>deployment</id>
             <name>Nexus Repository</name>
-            <url>https://maven.trqhxrd.de/repository/maven-snapshots/</url>
+            <url>https://repo.trqhxrd.de/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 
