@@ -91,6 +91,27 @@ public class Utils {
     }
 
     /**
+     * Sends a message to a player with a custom prefix.
+     *
+     * @param p       The custom prefix.
+     * @param player  The player, which you want to send a message to.
+     * @param message The message, which you want to send.
+     */
+    public void sendMessage(Prefix p, CommandSender player, String message) {
+        player.sendMessage(translateColorCodes(p.getRaw() + message));
+    }
+
+    /**
+     * Sends a message to a player with a custom prefix.
+     *
+     * @param player  The player, which you want to send a message to.
+     * @param message The message, which you want to send.
+     */
+    public void sendMessage(CommandSender player, String message) {
+        player.sendMessage(translateColorCodes(this.prefix.getRaw() + message));
+    }
+
+    /**
      * Returns the prefix, which you set in the constructor or using the setter.
      *
      * @return The prefix of this utils-object.
