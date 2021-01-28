@@ -133,7 +133,7 @@ public class GrapesShapelessRecipe extends GrapesRecipe implements Serializable<
      */
     @Override
     public boolean check(ItemStack[] matrix) {
-        this.ingredients.removeIf(test -> this.ingredients.indexOf(test) <= 9);
+        this.ingredients.removeIf(test -> this.ingredients.indexOf(test) >= 9);
 
         int i = ingredients.size();
         for (ItemStack itemStack : matrix) {

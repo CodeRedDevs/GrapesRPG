@@ -4,16 +4,13 @@ import com.github.lalyos.jfiglet.FigletFont;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import me.trqhxrd.grapesrpg.api.common.GrapesPlayer;
-import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipe;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesShapedRecipe;
-import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesShapelessRecipe;
 import me.trqhxrd.grapesrpg.api.utils.Prefix;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
 import me.trqhxrd.grapesrpg.commands.GrapesCommand;
 import me.trqhxrd.grapesrpg.event.*;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -86,9 +83,6 @@ public class Grapes extends JavaPlugin {
 
         //Registering Commands:
         new GrapesCommand();
-
-        GrapesShapelessRecipe r = new GrapesShapelessRecipe(new GrapesItem(0, Material.DANDELION)).addIngredient(Material.EGG);
-        System.out.println(new GsonBuilder().serializeNulls().create().toJson(r));
     }
 
     /**
