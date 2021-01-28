@@ -1,0 +1,40 @@
+{
+  "shape": [
+    "a",
+    "a",
+    "a",
+    " ",
+    "b",
+    " ",
+    " ",
+    "b",
+    " "
+  ],
+  "ingredients": {
+    "a": {
+      "mode": "MATERIAL",
+      "materials": [
+        "COBBLESTONE",
+        "BLACKSTONE"
+      ],
+      "itemStacks": [],
+      "grapesItems": []
+    },
+    "b": {
+      "mode": "MATERIAL",
+      "materials": [
+        "STICK"
+      ],
+      "itemStacks": [],
+      "grapesItems": []
+    }
+  },
+  "type": "SHAPED",
+  "result": {
+    "nbt": {},
+    "id": 1,
+    "material": "STONE_PICKAXE",
+    "name": null,
+    "amount": 1
+  }
+}
