@@ -1,6 +1,7 @@
 package me.trqhxrd.grapesrpg.api.utils;
 
 import me.trqhxrd.grapesrpg.api.common.GrapesPlayer;
+import org.bukkit.command.CommandSender;
 import net.md_5.bungee.api.ChatColor;
 
 /**
