@@ -1,7 +1,7 @@
 package me.trqhxrd.grapesrpg.api.utils;
 
 import me.trqhxrd.grapesrpg.api.common.GrapesPlayer;
-import org.bukkit.ChatColor;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.CommandSender;
 
 /**
@@ -26,6 +26,31 @@ public class Utils {
     }
 
     /**
+     * @param text The string of text to apply color/effects to
+     * @return Returns a string of text with color/effects applied
+     */
+    public static String translateColorCodes(String text) {
+        String[] message = text.replace("&", "统&").split("统");
+
+        StringBuilder result = new StringBuilder();
+        for (int i = 1; i < message.length; i++) {
+            String part = message[i];
+            if (part != null && !part.isBlank()) {
+                if (part.charAt(0) == '&') {
+                    if (part.charAt(1) == '#') {
+                        char[] colorCode = new char[7];
+                        part.getChars(1, 8, colorCode, 0);
+                        String s = String.valueOf(colorCode);
+                        part = part.replace("&" + s, ChatColor.of(s) + "");
+                    } else part = translateColorCodes(part);
+                    result.append(part);
+                }
+            }
+        }
+        return result.toString();
+    }
+
+    /**
      * Sends a message to all players on the server.
      *
      * @param message The message, which you want to send.
@@ -41,7 +66,7 @@ public class Utils {
      * @param message The message itself.
      */
     public void sendMessage(GrapesPlayer player, String message) {
-        player.getSpigotPlayer().sendMessage(ChatColor.translateAlternateColorCodes(prefix.getColorChar(), prefix.colorize() + message));
+        player.getSpigotPlayer().sendMessage(translateColorCodes(prefix.getRaw() + message));
     }
 
     /**
@@ -62,30 +87,30 @@ public class Utils {
      * @param message The message, which you want to send.
      */
     public void sendMessage(Prefix p, GrapesPlayer player, String message) {
-        player.getSpigotPlayer().sendMessage(ChatColor.translateAlternateColorCodes(p.getColorChar(), p.colorize() + message));
-    }
-
-    /**
-     * Sends a message to a CommandSender with a custom prefix.
-     *
-     * @param p       The custom prefix.
-     * @param cs      The CommandSender, which you want to send a message to.
-     * @param message The message, which you want to send.
-     * @see CommandSender
-     */
-    public void sendMessage(Prefix p, CommandSender cs, String message) {
-        cs.sendMessage(ChatColor.translateAlternateColorCodes(p.getColorChar(), p.colorize() + message));
+        player.getSpigotPlayer().sendMessage(translateColorCodes(p.getRaw() + message));
     }
 
     /**
      * Sends a message to a specific CommandSender.
      *
-     * @param cs  The CommandSender, which you want to send the message.
+     * @param sender  The CommandSender, which you want to send the message.
      * @param message The message itself.
      * @see CommandSender
      */
-    public void sendMessage(CommandSender cs, String message) {
-        cs.sendMessage(ChatColor.translateAlternateColorCodes(prefix.getColorChar(), prefix.colorize() + message));
+    public void sendMessage(CommandSender sender, String message) {
+        sender.sendMessage(translateColorCodes(this.prefix + message));
+    }
+
+    /**
+     * Sends a message to a CommandSender with a custom prefix.
+     *
+     * @param prefix  The custom prefix.
+     * @param sender  The CommandSender, which you want to send a message to.
+     * @param message The message, which you want to send.
+     * @see CommandSender
+     */
+    public void sendMessage(Prefix prefix, CommandSender sender, String message) {
+        sender.sendMessage(translateColorCodes(prefix + message));
     }
 
     /**

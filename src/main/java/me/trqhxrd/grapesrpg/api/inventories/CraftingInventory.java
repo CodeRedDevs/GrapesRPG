@@ -148,8 +148,10 @@ public class CraftingInventory {
      * @param bindings The new content for the binding slots.
      */
     public void setBindings(ItemStack[] bindings) {
-        if (bindings.length >= BINDING_SLOTS.length)
+        try {
             for (int i = 0; i < BINDING_SLOTS.length; i++) this.inventory.setItem(BINDING_SLOTS[i], bindings[i]);
+        } catch (Exception ignored) {
+        }
     }
 
     /**
@@ -236,6 +238,7 @@ public class CraftingInventory {
     /**
      * The status of a recipe.
      * Can be valid or invalid.
+     *
      * @author Trqhxrd
      */
     public enum Status {
@@ -257,6 +260,7 @@ public class CraftingInventory {
 
         /**
          * A basic constructor for setting the status-item.
+         *
          * @param statusIcon The icon, which will be displayed in the {@link CraftingInventory#STATUS_SLOTS}, if the current status is correct.
          */
         Status(ItemStack statusIcon) {
@@ -265,6 +269,7 @@ public class CraftingInventory {
 
         /**
          * This method returns the status-icon of the current status.
+         *
          * @return The status-icon for the current recipe-status.
          */
         public ItemStack getStatusIcon() {

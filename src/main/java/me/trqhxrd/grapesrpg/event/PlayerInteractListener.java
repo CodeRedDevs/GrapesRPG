@@ -12,6 +12,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 /**
  * This listener handles PlayerInteractions with Blocks or the air.
+ *
  * @author Trqhxrd
  */
 public class PlayerInteractListener implements Listener {
@@ -25,6 +26,7 @@ public class PlayerInteractListener implements Listener {
 
     /**
      * The handler-method.
+     *
      * @param e The PlayerInteractEvent.
      */
     @EventHandler(ignoreCancelled = true)

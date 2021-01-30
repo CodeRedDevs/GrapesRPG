@@ -3,17 +3,19 @@ package me.trqhxrd.grapesrpg.event;
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.inventories.CraftingInventory;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipe;
+import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipeChoice;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesShapedRecipe;
+import me.trqhxrd.grapesrpg.api.utils.Utils;
+import me.trqhxrd.grapesrpg.api.utils.group.Group2;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * This Listener handles inventory-clicks.
@@ -75,6 +77,7 @@ public class InventoryClickListener implements Listener {
                         public void run() {
                             CraftingInventory inv = CraftingInventory.fromNative(e.getClickedInventory());
                             ItemStack[] matrix = inv.getMatrix();
+                            ItemStack[] bindings = inv.getBindings();
 
                             if (slot == CraftingInventory.OUTPUT_SLOT) {
                                 for (int i = 0; i < matrix.length; i++) {
@@ -83,7 +86,50 @@ public class InventoryClickListener implements Listener {
                                         else matrix[i] = null;
                                     }
                                 }
+
+                                ItemStack[] bindingsClone = new ItemStack[bindings.length];
+                                for (int i = 0; i < bindings.length; i++)
+                                    if (bindings[i] != null) bindingsClone[i] = bindings[i].clone();
+                                    else bindingsClone[i] = null;
+
+                                Set<ItemStack> compressed = new HashSet<>();
+                                for (ItemStack binding : bindingsClone) {
+                                    if (binding != null) {
+                                        if (compressed.size() > 0) {
+                                            for (ItemStack compress : compressed)
+                                                if (compress != null && compress.isSimilar(binding)) compress.setAmount(compress.getAmount() + binding.getAmount());
+                                        } else compressed.add(binding);
+                                    }
+                                }
+
+                                ItemStack[] bindingsNew = new ItemStack[compressed.size()];
+
+                                for (GrapesRecipe r : GrapesRecipe.getRecipes()) {
+                                    if (r instanceof GrapesShapedRecipe) {
+                                        if (r.check(matrix, bindings)) {
+                                            List<Group2<GrapesRecipeChoice, Integer>> bindingsList = new ArrayList<>(((GrapesShapedRecipe) r).getBindings());
+                                            int i = 0;
+                                            boolean[] skip = new boolean[compressed.size()];
+                                            for (Group2<GrapesRecipeChoice, Integer> grapesRecipeChoiceIntegerGroup2 : bindingsList) {
+                                                ArrayList<ItemStack> itemStacks = new ArrayList<>(compressed);
+                                                for (ItemStack is : itemStacks) {
+                                                    if (!skip[i]) {
+                                                        if (grapesRecipeChoiceIntegerGroup2.getX().check(is)) {
+                                                            is.setAmount(Math.max(0, is.getAmount() - grapesRecipeChoiceIntegerGroup2.getY()));
+                                                            bindingsNew[i] = is;
+                                                            skip[i] = true;
+                                                            i++;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            break;
+                                        }
+                                    }
+                                }
+
                                 inv.setMatrix(matrix);
+                                inv.setBindings(bindingsNew);
 
                                 if (cursor != null) {
                                     if (Objects.requireNonNull(cursor).isSimilar(result)) {
@@ -97,7 +143,7 @@ public class InventoryClickListener implements Listener {
                             CraftingInventory.Status status = CraftingInventory.Status.INVALID;
 
                             for (GrapesRecipe r : GrapesShapedRecipe.getRecipes()) {
-                                if (r.check(matrix)) {
+                                if (r.check(matrix, bindings)) {
                                     inv.setStatus(CraftingInventory.Status.VALID);
                                     inv.setResult(r.getResult().build());
                                     status = CraftingInventory.Status.VALID;
@@ -109,6 +155,20 @@ public class InventoryClickListener implements Listener {
                             inv.setStatus(status);
                         }
                     }.runTaskLater(Grapes.getGrapes(), 0);
+                }
+            }
+        } else {
+            ItemStack is = e.getCurrentItem();
+            if (is != null) {
+                ItemMeta meta = is.getItemMeta();
+                if (meta != null) {
+                    if (meta.hasDisplayName()) meta.setDisplayName(Utils.translateColorCodes(meta.getDisplayName()));
+                    if (meta.hasLore()) {
+                        List<String> lore = meta.getLore();
+                        if (lore != null) for (int i = 0; i < lore.size(); i++) lore.set(i, Utils.translateColorCodes(lore.get(i)));
+                        meta.setLore(lore);
+                    }
+                    is.setItemMeta(meta);
                 }
             }
         }
