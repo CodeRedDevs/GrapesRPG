@@ -58,6 +58,7 @@ public class PlayerJoinListener implements Listener {
 
     /**
      * If the PlayerLoginEvent doesn't cancel the join, the join-message will be set.
+     *
      * @param e A PlayerJoinEvent.
      */
     @EventHandler

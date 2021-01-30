@@ -53,6 +53,7 @@ public class ItemBuilder implements Builder<ItemStack> {
 
     /**
      * This method sets the amount of the ItemStack.
+     *
      * @param amount The new amount. Cannot be < 1.
      * @return The ItemBuilder. Used for creating command-chains.
      */

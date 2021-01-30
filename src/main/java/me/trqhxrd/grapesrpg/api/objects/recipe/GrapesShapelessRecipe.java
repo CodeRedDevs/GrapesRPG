@@ -132,15 +132,21 @@ public class GrapesShapelessRecipe extends GrapesRecipe implements Serializable<
      * @return A Boolean. If it's true, the matrix is valid.
      */
     @Override
-    public boolean check(ItemStack[] matrix) {
-        this.ingredients.removeIf(test -> this.ingredients.indexOf(test) >= 9);
+    public boolean check(ItemStack[] matrix, ItemStack[] bindings) {
+        for (ItemStack is : bindings) if (is != null) return false;
 
+        this.ingredients.removeIf(test -> this.ingredients.indexOf(test) >= 9);
         int i = ingredients.size();
+        boolean[] skip = new boolean[i];
         for (ItemStack itemStack : matrix) {
             for (GrapesRecipeChoice ingredient : ingredients) {
-                if (itemStack != null && ingredient.check(itemStack)) {
-                    i--;
-                    break;
+                int index = ingredients.indexOf(ingredient);
+                if (!skip[index]) {
+                    if (itemStack != null && ingredient.check(itemStack)) {
+                        skip[index] = true;
+                        i--;
+                        break;
+                    }
                 }
             }
         }

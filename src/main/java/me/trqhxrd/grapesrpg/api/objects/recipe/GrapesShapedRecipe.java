@@ -4,12 +4,12 @@ import com.google.common.base.Preconditions;
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.attribute.Serializable;
 import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
+import me.trqhxrd.grapesrpg.api.utils.group.Group2;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This class represents a shaped Recipe.
@@ -20,17 +20,18 @@ import java.util.Map;
 public class GrapesShapedRecipe extends GrapesRecipe implements Serializable<GrapesShapedRecipe> {
 
     /**
+     * A map of all ingredients and their character in the {@link GrapesShapedRecipe#shape}.
+     */
+    private final Map<Character, GrapesRecipeChoice> ingredients;
+    private final List<Group2<GrapesRecipeChoice, Integer>> bindings;
+
+    /**
      * This array stores the shape of the recipe.
      * Characters can be used twice.
      * The array should have a length of 9.
      * The actual ingredient for every character is noted in {@link GrapesShapedRecipe#ingredients}.
      */
     private char[] shape;
-
-    /**
-     * A map of all ingredients and their character in the {@link GrapesShapedRecipe#shape}.
-     */
-    private Map<Character, GrapesRecipeChoice> ingredients;
 
     /**
      * Creates a new Recipe for the item result.
@@ -40,6 +41,7 @@ public class GrapesShapedRecipe extends GrapesRecipe implements Serializable<Gra
     public GrapesShapedRecipe(GrapesItem result) {
         super(Type.SHAPED, result);
         this.ingredients = new HashMap<>();
+        this.bindings = new ArrayList<>();
     }
 
     /**
@@ -76,6 +78,27 @@ public class GrapesShapedRecipe extends GrapesRecipe implements Serializable<Gra
     public GrapesShapedRecipe setIngredient(char key, ItemStack... ingredients) {
         this.ingredients.put(key, new GrapesRecipeChoice(ingredients));
         return this;
+    }
+
+    public GrapesShapedRecipe addBinding(GrapesRecipeChoice choice, int amount) {
+        this.bindings.add(new Group2<>(choice, amount));
+        return this;
+    }
+
+    public GrapesShapedRecipe addBinding(GrapesRecipeChoice choice) {
+        return this.addBinding(choice, 1);
+    }
+
+    public GrapesShapedRecipe addBinding(int amount, Material... materials) {
+        return this.addBinding(new GrapesRecipeChoice(materials), amount);
+    }
+
+    public GrapesShapedRecipe addBinding(int amount, ItemStack... items) {
+        return this.addBinding(new GrapesRecipeChoice(items), amount);
+    }
+
+    public GrapesShapedRecipe addBinding(int amount, GrapesItem... items) {
+        return this.addBinding(new GrapesRecipeChoice(items), amount);
     }
 
     /**
@@ -137,17 +160,6 @@ public class GrapesShapedRecipe extends GrapesRecipe implements Serializable<Gra
     }
 
     /**
-     * This method completely overwrites the Map of ingredients.
-     *
-     * @param ingredients The new map of ingredients, which you want to set.
-     * @return The Object from which it was executed. This makes it possible to chain commands.
-     */
-    public GrapesShapedRecipe setIngredients(Map<Character, GrapesRecipeChoice> ingredients) {
-        this.ingredients = ingredients;
-        return this;
-    }
-
-    /**
      * This method checks, if the matrix, which is given in the parameters, is valid for the recipe.
      * Most commonly you get the matrix from <code>((CraftingInventory) inv).getMatrix()</code>
      *
@@ -155,7 +167,7 @@ public class GrapesShapedRecipe extends GrapesRecipe implements Serializable<Gra
      * @return A Boolean. If it's true, the matrix is valid.
      */
     @Override
-    public boolean check(ItemStack[] matrix) {
+    public boolean check(ItemStack[] matrix, ItemStack[] bindings) {
         boolean valid = true;
         GrapesRecipeChoice[] choices = this.getChoices();
 
@@ -166,15 +178,53 @@ public class GrapesShapedRecipe extends GrapesRecipe implements Serializable<Gra
             }
         }
 
-        for (int i = 0; i < matrix.length; i++) {
-            ItemStack item = matrix[i];
-            GrapesRecipeChoice choice = choices[i];
-            if ((choice == null && item != null) || (choice != null && item == null)) {
-                valid = false;
-                continue;
+        ItemStack[] bindingClone = new ItemStack[bindings.length];
+        for (int i = 0; i < bindings.length; i++)
+            if (bindings[i] != null) bindingClone[i] = bindings[i].clone();
+            else bindingClone[i] = null;
+
+        Set<ItemStack> compressed = new HashSet<>();
+        for (ItemStack binding : bindingClone) {
+            if (binding != null) {
+                if (compressed.size() > 0) {
+                    for (ItemStack compress : compressed)
+                        if (compress != null && compress.isSimilar(binding)) compress.setAmount(compress.getAmount() + binding.getAmount());
+                } else compressed.add(binding);
             }
-            if (choice == null) continue;
-            if (!choice.check(item)) valid = false;
+        }
+
+        List<Group2<GrapesRecipeChoice, Integer>> clone = new ArrayList<>(this.bindings);
+        boolean[] validBindings = new boolean[clone.size()];
+        for (ItemStack compress : compressed) {
+            for (int i = 0; i < clone.size(); i++) {
+                GrapesRecipeChoice choice = clone.get(i).getX();
+                int amount = clone.get(i).getY();
+                if (choice.check(compress) && compress.getAmount() >= amount) {
+                    validBindings[i] = true;
+                    clone.remove(i);
+                    i--;
+                } else validBindings[i] = false;
+            }
+        }
+
+        for (boolean b : validBindings) {
+            if (!b) {
+                valid = false;
+                break;
+            }
+        }
+
+        if (valid) {
+            for (int i = 0; i < matrix.length; i++) {
+                ItemStack item = matrix[i];
+                GrapesRecipeChoice choice = choices[i];
+                if ((choice == null && item != null) || (choice != null && item == null)) {
+                    valid = false;
+                    continue;
+                }
+                if (choice == null) continue;
+                if (!choice.check(item)) valid = false;
+            }
         }
 
         return valid;
@@ -196,6 +246,10 @@ public class GrapesShapedRecipe extends GrapesRecipe implements Serializable<Gra
                 out[i] = null;
             }
         return out;
+    }
+
+    public List<Group2<GrapesRecipeChoice, Integer>> getBindings() {
+        return bindings;
     }
 
     /**

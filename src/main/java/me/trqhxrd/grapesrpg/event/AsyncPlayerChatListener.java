@@ -9,6 +9,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 /**
  * This Listener formats the player chat messages.
+ *
  * @author Trqhxrd
  */
 public class AsyncPlayerChatListener implements Listener {
@@ -22,6 +23,7 @@ public class AsyncPlayerChatListener implements Listener {
 
     /**
      * The Handler-Method.
+     *
      * @param e An AsyncPlayerChatEvent.
      */
     @EventHandler(ignoreCancelled = true)

@@ -25,6 +25,7 @@ public class InventoryCloseListener implements Listener {
 
     /**
      * The handler-method.
+     *
      * @param e The InventoryCloseEvent.
      */
     @EventHandler

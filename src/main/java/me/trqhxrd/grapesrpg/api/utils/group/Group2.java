@@ -8,7 +8,7 @@ package me.trqhxrd.grapesrpg.api.utils.group;
  * @param <Y> The second type, which you want to store.
  * @author Trqhxrd
  */
-public class Group2<X, Y> extends Group<X> {
+public class Group2<X, Y> extends Group<X> implements Cloneable {
 
     /**
      * The parameter for the second value, which you want to store.

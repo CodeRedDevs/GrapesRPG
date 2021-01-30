@@ -1,8 +1,8 @@
 package me.trqhxrd.grapesrpg.api.utils;
 
 import me.trqhxrd.grapesrpg.api.common.GrapesPlayer;
-import org.bukkit.command.CommandSender;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.command.CommandSender;
 
 /**
  * A utils class used for sending messages.
@@ -11,7 +11,6 @@ import net.md_5.bungee.api.ChatColor;
  */
 public class Utils {
 
-    static public final String WITH_DELIMITER = "((?<=%1$s)|(?=%1$s))";
     /**
      * The {@link Prefix} you want to use for the messages, which will be send with this object.
      */
@@ -43,7 +42,7 @@ public class Utils {
                         part.getChars(1, 8, colorCode, 0);
                         String s = String.valueOf(colorCode);
                         part = part.replace("&" + s, ChatColor.of(s) + "");
-                    } else part = ChatColor.translateAlternateColorCodes('&', part);
+                    } else part = translateColorCodes(part);
                     result.append(part);
                 }
             }
@@ -92,6 +91,7 @@ public class Utils {
     }
 
     /**
+     <<<<<<< HEAD
      * Sends a message to a player with a custom prefix.
      *
      * @param p       The custom prefix.

@@ -135,8 +135,8 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
 
             // Removing all NBT-Values, which are stored in variables in an object of this class.
             Set<String> remove = new HashSet<>();
-            for (String s:item.getNbt().keySet()) if (s.startsWith("grapes."))remove.add(s);
-            for (String s:remove) item.getNbt().remove(s);
+            for (String s : item.getNbt().keySet()) if (s.startsWith("grapes.")) remove.add(s);
+            for (String s : remove) item.getNbt().remove(s);
 
             return item;
         }

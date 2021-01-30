@@ -30,6 +30,7 @@ public class GrapesPlayerInitEvent extends GrapesPlayerEvent implements Cancella
 
     /**
      * Required by the Spigot API.
+     *
      * @return A HandlerList
      */
     public static HandlerList getHandlerList() {

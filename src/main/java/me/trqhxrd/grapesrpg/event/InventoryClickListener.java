@@ -3,8 +3,10 @@ package me.trqhxrd.grapesrpg.event;
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.inventories.CraftingInventory;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipe;
+import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipeChoice;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesShapedRecipe;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
+import me.trqhxrd.grapesrpg.api.utils.group.Group2;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,10 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * This Listener handles inventory-clicks.
@@ -78,6 +77,7 @@ public class InventoryClickListener implements Listener {
                         public void run() {
                             CraftingInventory inv = CraftingInventory.fromNative(e.getClickedInventory());
                             ItemStack[] matrix = inv.getMatrix();
+                            ItemStack[] bindings = inv.getBindings();
 
                             if (slot == CraftingInventory.OUTPUT_SLOT) {
                                 for (int i = 0; i < matrix.length; i++) {
@@ -86,7 +86,40 @@ public class InventoryClickListener implements Listener {
                                         else matrix[i] = null;
                                     }
                                 }
+
+                                ItemStack[] bindingsNew = new ItemStack[bindings.length];
+
+                                for (GrapesRecipe r : GrapesRecipe.getRecipes()) {
+                                    if (r instanceof GrapesShapedRecipe) {
+                                        if (r.check(matrix, bindings)) {
+                                            List<Group2<GrapesRecipeChoice, Integer>> bindingsList = new ArrayList<>();
+                                            for (Group2<GrapesRecipeChoice, Integer> cloning : ((GrapesShapedRecipe) r).getBindings())
+                                                bindingsList.add(new Group2<>(cloning));
+
+                                            for (Group2<GrapesRecipeChoice, Integer> group : bindingsList) {
+                                                for (int j = 0; j < bindings.length; j++) {
+                                                    if (bindings[j] != null) {
+                                                        if (group.getY() > 0 && group.getX().check(bindings[j])) {
+                                                            int amount = bindings[j].getAmount();
+                                                            if (group.getY() < amount) {
+                                                                ItemStack clone = new ItemStack(bindings[j]);
+                                                                clone.setAmount(clone.getAmount() - group.getY());
+                                                                bindingsNew[j] = clone;
+                                                            } else bindingsNew[j] = null;
+                                                            group.setY(group.getY() - amount);
+                                                        } else bindingsNew[j] = bindings[j];
+                                                    }
+                                                }
+                                            }
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                System.arraycopy(bindingsNew, 0, bindings, 0, bindingsNew.length);
+
                                 inv.setMatrix(matrix);
+                                inv.setBindings(bindings);
 
                                 if (cursor != null) {
                                     if (Objects.requireNonNull(cursor).isSimilar(result)) {
@@ -100,7 +133,7 @@ public class InventoryClickListener implements Listener {
                             CraftingInventory.Status status = CraftingInventory.Status.INVALID;
 
                             for (GrapesRecipe r : GrapesShapedRecipe.getRecipes()) {
-                                if (r.check(matrix)) {
+                                if (r.check(matrix, bindings)) {
                                     inv.setStatus(CraftingInventory.Status.VALID);
                                     inv.setResult(r.getResult().build());
                                     status = CraftingInventory.Status.VALID;
@@ -120,9 +153,10 @@ public class InventoryClickListener implements Listener {
                 ItemMeta meta = is.getItemMeta();
                 if (meta != null) {
                     if (meta.hasDisplayName()) meta.setDisplayName(Utils.translateColorCodes(meta.getDisplayName()));
-                    if (meta.hasLore()){
+                    if (meta.hasLore()) {
                         List<String> lore = meta.getLore();
-                        if (lore != null) for (int i = 0; i < lore.size(); i++) lore.set(i, Utils.translateColorCodes(lore.get(i)));
+                        if (lore != null)
+                            for (int i = 0; i < lore.size(); i++) lore.set(i, Utils.translateColorCodes(lore.get(i)));
                         meta.setLore(lore);
                     }
                     is.setItemMeta(meta);

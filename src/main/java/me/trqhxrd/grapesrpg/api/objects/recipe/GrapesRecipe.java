@@ -2,8 +2,8 @@ package me.trqhxrd.grapesrpg.api.objects.recipe;
 
 import com.google.gson.JsonObject;
 import me.trqhxrd.grapesrpg.Grapes;
+import me.trqhxrd.grapesrpg.api.inventories.CraftingInventory;
 import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
-import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashSet;
@@ -66,7 +66,7 @@ public abstract class GrapesRecipe {
      * @param matrix An array of items with the length of 9. Index 0 is the top left corner. Index 1 is the middle of the top row and so on.
      * @return A Boolean. If it's true, the matrix is valid.
      */
-    public abstract boolean check(ItemStack[] matrix);
+    public abstract boolean check(ItemStack[] matrix, ItemStack[] bindings);
 
     /**
      * The inventory is the inventory, which contains the crafting ingredients.
@@ -75,7 +75,7 @@ public abstract class GrapesRecipe {
      * @return A Boolean. If it's true, the matrix is valid.
      */
     public boolean check(CraftingInventory inv) {
-        return this.check(inv.getMatrix());
+        return this.check(inv.getMatrix(), inv.getBindings());
     }
 
     /**

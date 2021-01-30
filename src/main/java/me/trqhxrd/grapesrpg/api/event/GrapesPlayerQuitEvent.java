@@ -24,6 +24,7 @@ public class GrapesPlayerQuitEvent extends GrapesPlayerEvent {
 
     /**
      * Required by the Spigot API.
+     *
      * @return A The {@link HandlerList} of this Event.
      */
     public static HandlerList getHandlerList() {
