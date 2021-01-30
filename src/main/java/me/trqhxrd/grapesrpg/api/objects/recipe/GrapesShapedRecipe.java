@@ -187,13 +187,22 @@ public class GrapesShapedRecipe extends GrapesRecipe implements Serializable<Gra
         for (ItemStack binding : bindingClone) {
             if (binding != null) {
                 if (compressed.size() > 0) {
-                    for (ItemStack compress : compressed)
-                        if (compress != null && compress.isSimilar(binding)) compress.setAmount(compress.getAmount() + binding.getAmount());
+                    boolean done = false;
+                    for (ItemStack compress : compressed) {
+                        if (compress != null && compress.isSimilar(binding)) {
+                            compress.setAmount(compress.getAmount() + binding.getAmount());
+                            done = true;
+                            break;
+                        }
+                    }
+                    if (!done) compressed.add(binding);
                 } else compressed.add(binding);
             }
         }
 
-        List<Group2<GrapesRecipeChoice, Integer>> clone = new ArrayList<>(this.bindings);
+        List<Group2<GrapesRecipeChoice, Integer>> clone = new ArrayList<>();
+        for (Group2<GrapesRecipeChoice, Integer> g : this.bindings) clone.add(new Group2<>(g));
+
         boolean[] validBindings = new boolean[clone.size()];
         for (ItemStack compress : compressed) {
             for (int i = 0; i < clone.size(); i++) {
@@ -201,9 +210,8 @@ public class GrapesShapedRecipe extends GrapesRecipe implements Serializable<Gra
                 int amount = clone.get(i).getY();
                 if (choice.check(compress) && compress.getAmount() >= amount) {
                     validBindings[i] = true;
-                    clone.remove(i);
-                    i--;
-                } else validBindings[i] = false;
+                    break;
+                }
             }
         }
 
@@ -282,5 +290,14 @@ public class GrapesShapedRecipe extends GrapesRecipe implements Serializable<Gra
     @Override
     public GrapesShapedRecipe deserialize(String s) {
         return Grapes.GSON.fromJson(s, GrapesShapedRecipe.class);
+    }
+
+    @Override
+    public String toString() {
+        return "GrapesShapedRecipe{" +
+                "ingredients=" + ingredients +
+                ", bindings=" + bindings +
+                ", shape=" + Arrays.toString(shape) +
+                '}';
     }
 }

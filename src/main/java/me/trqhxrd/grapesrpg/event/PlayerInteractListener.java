@@ -1,7 +1,7 @@
 package me.trqhxrd.grapesrpg.event;
 
 import me.trqhxrd.grapesrpg.Grapes;
-import me.trqhxrd.grapesrpg.api.inventories.CraftingInventory;
+import me.trqhxrd.grapesrpg.api.inventories.CraftingMenu;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -35,7 +35,8 @@ public class PlayerInteractListener implements Listener {
             if (e.getClickedBlock() != null) {
                 Block b = e.getClickedBlock();
                 if (b.getType().equals(Material.CRAFTING_TABLE)) {
-                    e.getPlayer().openInventory(new CraftingInventory().getInventory());
+                    CraftingMenu menu = new CraftingMenu();
+                    menu.openInventory(e.getPlayer());
                     e.setCancelled(true);
                 }
             }

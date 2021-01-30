@@ -2,7 +2,7 @@ package me.trqhxrd.grapesrpg.api.objects.recipe;
 
 import com.google.gson.JsonObject;
 import me.trqhxrd.grapesrpg.Grapes;
-import me.trqhxrd.grapesrpg.api.inventories.CraftingInventory;
+import me.trqhxrd.grapesrpg.api.inventories.CraftingMenu;
 import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
 import org.bukkit.inventory.ItemStack;
 
@@ -74,7 +74,7 @@ public abstract class GrapesRecipe {
      * @param inv The inventory, in which you want to check for the recipe.
      * @return A Boolean. If it's true, the matrix is valid.
      */
-    public boolean check(CraftingInventory inv) {
+    public boolean check(CraftingMenu inv) {
         return this.check(inv.getMatrix(), inv.getBindings());
     }
 
@@ -94,6 +94,14 @@ public abstract class GrapesRecipe {
      */
     public GrapesItem getResult() {
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "GrapesRecipe{" +
+                "type=" + type +
+                ", result=" + result +
+                '}';
     }
 
     /**

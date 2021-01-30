@@ -5,9 +5,9 @@ import me.trqhxrd.grapesrpg.api.attribute.Serializable;
 import me.trqhxrd.grapesrpg.api.utils.Builder;
 import me.trqhxrd.grapesrpg.api.utils.NBTReader;
 import me.trqhxrd.grapesrpg.api.utils.NBTValue;
+import me.trqhxrd.grapesrpg.api.utils.Utils;
 import me.trqhxrd.grapesrpg.api.utils.group.Group2;
 import net.minecraft.server.v1_16_R3.NBTTagCompound;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
@@ -286,9 +286,11 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      * Setter for the items name.
      *
      * @param name The items new name.
+     * @return The GrapesItem. Used for creating command chains.
      */
-    public void setName(String name) {
+    public GrapesItem setName(String name) {
         this.name = name;
+        return this;
     }
 
     /**
@@ -338,7 +340,7 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
         ItemMeta meta = is.getItemMeta();
         if (meta != null) {
             if (this.name != null && !this.name.isBlank() && !this.name.isEmpty())
-                meta.setDisplayName("§7" + ChatColor.translateAlternateColorCodes('&', this.name));
+                meta.setDisplayName("§7" + Utils.translateColorCodes(this.name));
 
             is.setItemMeta(meta);
         }

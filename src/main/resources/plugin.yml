@@ -6,3 +6,6 @@ commands:
   grapes:
     description: GrapesRPG Main-Command.
     usage: Do /grapes help for more info.
+  color:
+    description: Gives you a random color.
+    usage: /color

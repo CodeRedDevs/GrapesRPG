@@ -4,17 +4,18 @@ import com.github.lalyos.jfiglet.FigletFont;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import me.trqhxrd.grapesrpg.api.common.GrapesPlayer;
-import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipe;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesShapedRecipe;
 import me.trqhxrd.grapesrpg.api.utils.Prefix;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
+import me.trqhxrd.grapesrpg.commands.ColorCommand;
 import me.trqhxrd.grapesrpg.commands.GrapesCommand;
 import me.trqhxrd.grapesrpg.event.*;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.java.JavaPluginLoader;
 
 import java.io.*;
 import java.net.URL;
@@ -35,7 +36,7 @@ public class Grapes extends JavaPlugin {
      * This constant is the serialisation engine used for items, recipes (coming soon), etc.
      */
     public static final Gson GSON = new GsonBuilder()
-            .setPrettyPrinting()
+            /*.setPrettyPrinting()*/
             .serializeNulls()
             .create();
     /**
@@ -50,6 +51,28 @@ public class Grapes extends JavaPlugin {
      * @see Utils
      */
     private Utils utils;
+
+    /**
+     * Never use this constructor.
+     * This is only used for testing.
+     */
+    public Grapes() {
+        super();
+    }
+
+    /**
+     * Never use this constructor.
+     * This is only used for testing.
+     *
+     * @param loader      The loader used to load this plugin.
+     * @param dataFolder  The Folder, which contains all the plugins configurations.
+     * @param description The DescriptionFile of the Plugin.
+     * @param file        The Jar-File, which contains all the plugins code.
+     */
+
+    public Grapes(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
+        super(loader, description, dataFolder, file);
+    }
 
     /**
      * You need this method, if you want to do something with the Plugin instance.
@@ -86,13 +109,7 @@ public class Grapes extends JavaPlugin {
 
         //Registering Commands:
         new GrapesCommand();
-        this.addRecipe(
-                new GrapesShapedRecipe(new GrapesItem(1, Material.STONE_AXE))
-                        .setShape("aa ", "ab ", " b ")
-                        .setIngredient('a', Material.COBBLESTONE)
-                        .setIngredient('b', Material.STICK)
-                        .addBinding(16, Material.STRING)
-        );
+        new ColorCommand();
     }
 
     /**
@@ -144,7 +161,7 @@ public class Grapes extends JavaPlugin {
                 File zipFile = new File(this.getDataFolder(), "recipes\\recipes.zip");
                 zipFile.delete();
                 zipFile.createNewFile();
-                URL url = new URL("https://github.com/CodeRedDevs/GrapesRPG/raw/feature-recipes/assets/recipes/recipes.zip");
+                URL url = new URL("https://github.com/CodeRedDevs/GrapesRPG/raw/dev/assets/recipes/recipes.zip");
                 BufferedInputStream in = new BufferedInputStream(url.openStream());
                 FileOutputStream out = new FileOutputStream(zipFile);
                 byte[] dataBuffer = new byte[1024];
@@ -184,6 +201,8 @@ public class Grapes extends JavaPlugin {
                     e.printStackTrace();
                 }
             });
-        } catch (IOException ignored) { }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

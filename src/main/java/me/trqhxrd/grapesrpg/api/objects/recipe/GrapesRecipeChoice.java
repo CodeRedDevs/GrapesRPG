@@ -243,6 +243,16 @@ public class GrapesRecipeChoice implements Serializable<GrapesRecipeChoice> {
         return Grapes.GSON.fromJson(s, GrapesRecipeChoice.class);
     }
 
+    @Override
+    public String toString() {
+        return "GrapesRecipeChoice{" +
+                "mode=" + mode +
+                ", materials=" + materials +
+                ", itemStacks=" + itemStacks +
+                ", grapesItems=" + grapesItems +
+                '}';
+    }
+
     /**
      * This enum represents the different modes, a Ingredient can have.
      *

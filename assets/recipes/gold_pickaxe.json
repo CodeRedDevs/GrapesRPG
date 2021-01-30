@@ -3,8 +3,7 @@
     "a": {
       "mode": "MATERIAL",
       "materials": [
-        "COBBLESTONE",
-        "BLACKSTONE"
+        "GOLD_INGOT"
       ],
       "itemStacks": [],
       "grapesItems": []
@@ -45,8 +44,8 @@
   "type": "SHAPED",
   "result": {
     "nbt": {},
-    "id": 1,
-    "material": "STONE_PICKAXE",
+    "id": 0,
+    "material": "GOLD_PICKAXE",
     "name": null,
     "amount": 1
   }
