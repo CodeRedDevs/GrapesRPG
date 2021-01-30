@@ -135,7 +135,7 @@ public class NBTReader {
                 if (root.get(s) instanceof NBTTagCompound) root = root.getCompound(s);
                 else return null;
             } catch (Exception e) {
-                System.out.println(name + " at part " + s + " is null");
+                System.err.println(name + " at part " + s + " is null");
             }
         return root;
     }

@@ -194,7 +194,7 @@ public class GrapesShapedRecipe extends GrapesRecipe implements Serializable<Gra
         }
 
         List<Group2<GrapesRecipeChoice, Integer>> clone = new ArrayList<>(this.bindings);
-        boolean[] validBindings = new boolean[this.bindings.size()];
+        boolean[] validBindings = new boolean[clone.size()];
         for (ItemStack compress : compressed) {
             for (int i = 0; i < clone.size(); i++) {
                 GrapesRecipeChoice choice = clone.get(i).getX();

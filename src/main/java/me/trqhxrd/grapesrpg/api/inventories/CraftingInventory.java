@@ -183,7 +183,10 @@ public class CraftingInventory {
      */
     private ItemStack[] getItems(int... slots) {
         ItemStack[] items = new ItemStack[slots.length];
-        for (int i = 0; i < items.length; i++) items[i] = this.inventory.getItem(slots[i]);
+        for (int i = 0; i < items.length; i++) {
+            if (this.inventory.getItem(slots[i]) != null) items[i] = this.inventory.getItem(slots[i]).clone();
+            else items[i] = null;
+        }
         return items;
     }
 

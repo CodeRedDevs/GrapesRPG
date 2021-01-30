@@ -87,38 +87,26 @@ public class InventoryClickListener implements Listener {
                                     }
                                 }
 
-                                ItemStack[] bindingsClone = new ItemStack[bindings.length];
-                                for (int i = 0; i < bindings.length; i++)
-                                    if (bindings[i] != null) bindingsClone[i] = bindings[i].clone();
-                                    else bindingsClone[i] = null;
-
-                                Set<ItemStack> compressed = new HashSet<>();
-                                for (ItemStack binding : bindingsClone) {
-                                    if (binding != null) {
-                                        if (compressed.size() > 0) {
-                                            for (ItemStack compress : compressed)
-                                                if (compress != null && compress.isSimilar(binding)) compress.setAmount(compress.getAmount() + binding.getAmount());
-                                        } else compressed.add(binding);
-                                    }
-                                }
-
-                                ItemStack[] bindingsNew = new ItemStack[compressed.size()];
+                                ItemStack[] bindingsNew = new ItemStack[bindings.length];
 
                                 for (GrapesRecipe r : GrapesRecipe.getRecipes()) {
                                     if (r instanceof GrapesShapedRecipe) {
                                         if (r.check(matrix, bindings)) {
-                                            List<Group2<GrapesRecipeChoice, Integer>> bindingsList = new ArrayList<>(((GrapesShapedRecipe) r).getBindings());
-                                            int i = 0;
-                                            boolean[] skip = new boolean[compressed.size()];
-                                            for (Group2<GrapesRecipeChoice, Integer> grapesRecipeChoiceIntegerGroup2 : bindingsList) {
-                                                ArrayList<ItemStack> itemStacks = new ArrayList<>(compressed);
-                                                for (ItemStack is : itemStacks) {
-                                                    if (!skip[i]) {
-                                                        if (grapesRecipeChoiceIntegerGroup2.getX().check(is)) {
-                                                            is.setAmount(Math.max(0, is.getAmount() - grapesRecipeChoiceIntegerGroup2.getY()));
-                                                            bindingsNew[i] = is;
-                                                            skip[i] = true;
-                                                            i++;
+                                            List<Group2<GrapesRecipeChoice, Integer>> bindingsList = new ArrayList<>();
+                                            for (Group2<GrapesRecipeChoice, Integer> cloning : ((GrapesShapedRecipe) r).getBindings()) bindingsList.add(new Group2<>(cloning));
+
+                                            for (Group2<GrapesRecipeChoice, Integer> group : bindingsList) {
+                                                for (int j = 0; j < bindings.length; j++) {
+                                                    if (bindings[j] != null) {
+                                                        if (group.getY() > 0 && group.getX().check(bindings[j])) {
+                                                            int amount = bindings[j].getAmount();
+                                                            System.out.println("SLOT: " + j + ", AMOUNT: " + amount + ", NEEDED: " + group.getY());
+                                                            if (group.getY() < amount) {
+                                                                ItemStack clone = new ItemStack(bindings[j]);
+                                                                clone.setAmount(clone.getAmount() - group.getY());
+                                                                bindingsNew[j] = clone;
+                                                            } else bindingsNew[j] = null;
+                                                            group.setY(group.getY() - amount);
                                                         }
                                                     }
                                                 }
@@ -128,8 +116,10 @@ public class InventoryClickListener implements Listener {
                                     }
                                 }
 
+                                System.arraycopy(bindingsNew, 0, bindings, 0, bindingsNew.length);
+
                                 inv.setMatrix(matrix);
-                                inv.setBindings(bindingsNew);
+                                inv.setBindings(bindings);
 
                                 if (cursor != null) {
                                     if (Objects.requireNonNull(cursor).isSimilar(result)) {

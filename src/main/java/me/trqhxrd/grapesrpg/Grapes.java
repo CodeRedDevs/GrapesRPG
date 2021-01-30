@@ -132,6 +132,7 @@ public class Grapes extends JavaPlugin {
      * This method clears the Collection of recipes and loads all recipes new from files.
      * This method can be used to reload the recipes without restarting the server.
      */
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public void reloadRecipes(boolean force) {
         try {
             GrapesRecipe.getRecipes().clear();
@@ -182,8 +183,6 @@ public class Grapes extends JavaPlugin {
                     e.printStackTrace();
                 }
             });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (IOException ignored) { }
     }
 }
