@@ -93,21 +93,21 @@ public class InventoryClickListener implements Listener {
                                     if (r instanceof GrapesShapedRecipe) {
                                         if (r.check(matrix, bindings)) {
                                             List<Group2<GrapesRecipeChoice, Integer>> bindingsList = new ArrayList<>();
-                                            for (Group2<GrapesRecipeChoice, Integer> cloning : ((GrapesShapedRecipe) r).getBindings()) bindingsList.add(new Group2<>(cloning));
+                                            for (Group2<GrapesRecipeChoice, Integer> cloning : ((GrapesShapedRecipe) r).getBindings())
+                                                bindingsList.add(new Group2<>(cloning));
 
                                             for (Group2<GrapesRecipeChoice, Integer> group : bindingsList) {
                                                 for (int j = 0; j < bindings.length; j++) {
                                                     if (bindings[j] != null) {
                                                         if (group.getY() > 0 && group.getX().check(bindings[j])) {
                                                             int amount = bindings[j].getAmount();
-                                                            System.out.println("SLOT: " + j + ", AMOUNT: " + amount + ", NEEDED: " + group.getY());
                                                             if (group.getY() < amount) {
                                                                 ItemStack clone = new ItemStack(bindings[j]);
                                                                 clone.setAmount(clone.getAmount() - group.getY());
                                                                 bindingsNew[j] = clone;
                                                             } else bindingsNew[j] = null;
                                                             group.setY(group.getY() - amount);
-                                                        }
+                                                        } else bindingsNew[j] = bindings[j];
                                                     }
                                                 }
                                             }
