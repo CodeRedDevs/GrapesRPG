@@ -14,7 +14,9 @@ import me.trqhxrd.grapesrpg.event.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.java.JavaPluginLoader;
 
 import java.io.*;
 import java.net.URL;
@@ -50,6 +52,28 @@ public class Grapes extends JavaPlugin {
      * @see Utils
      */
     private Utils utils;
+
+    /**
+     * Never use this constructor.
+     * This is only used for testing.
+     */
+    public Grapes() {
+        super();
+    }
+
+    /**
+     * Never use this constructor.
+     * This is only used for testing.
+     *
+     * @param loader      The loader used to load this plugin.
+     * @param dataFolder  The Folder, which contains all the plugins configurations.
+     * @param description The DescriptionFile of the Plugin.
+     * @param file        The Jar-File, which contains all the plugins code.
+     */
+
+    public Grapes(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
+        super(loader, description, dataFolder, file);
+    }
 
     /**
      * You need this method, if you want to do something with the Plugin instance.
