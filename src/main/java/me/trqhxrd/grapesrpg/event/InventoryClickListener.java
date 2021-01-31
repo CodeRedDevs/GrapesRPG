@@ -2,6 +2,7 @@ package me.trqhxrd.grapesrpg.event;
 
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.inventories.CraftingInventory;
+import me.trqhxrd.grapesrpg.api.inventories.Menu;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipe;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipeChoice;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesShapedRecipe;
@@ -11,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -161,6 +163,11 @@ public class InventoryClickListener implements Listener {
                     }
                     is.setItemMeta(meta);
                 }
+            }
+
+            if (e.getClickedInventory() != null) {
+                InventoryHolder holder = e.getClickedInventory().getHolder();
+                if (holder instanceof Menu) ((Menu) holder).handleMenu(e);
             }
         }
     }

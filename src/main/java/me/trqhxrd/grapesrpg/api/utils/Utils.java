@@ -42,7 +42,7 @@ public class Utils {
                         part.getChars(1, 8, colorCode, 0);
                         String s = String.valueOf(colorCode);
                         part = part.replace("&" + s, ChatColor.of(s) + "");
-                    } else part = translateColorCodes(part);
+                    } else part = ChatColor.translateAlternateColorCodes('&', part);
                     result.append(part);
                 }
             }
@@ -91,7 +91,7 @@ public class Utils {
     }
 
     /**
-     <<<<<<< HEAD
+     * <<<<<<< HEAD
      * Sends a message to a player with a custom prefix.
      *
      * @param p       The custom prefix.
