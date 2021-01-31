@@ -1,7 +1,7 @@
 package me.trqhxrd.grapesrpg.event;
 
 import me.trqhxrd.grapesrpg.Grapes;
-import me.trqhxrd.grapesrpg.api.inventories.CraftingInventory;
+import me.trqhxrd.grapesrpg.api.inventories.CraftingMenu;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -30,10 +30,10 @@ public class InventoryCloseListener implements Listener {
      */
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent e) {
-        if (e.getView().getTitle().equals(CraftingInventory.TITLE)) {
-            this.dropItems((Player) e.getPlayer(), e.getInventory(), CraftingInventory.CRAFTING_SLOTS);
-            this.dropItems((Player) e.getPlayer(), e.getInventory(), CraftingInventory.BINDING_SLOTS);
-            this.dropItems((Player) e.getPlayer(), e.getInventory(), CraftingInventory.UPGRADE_SLOTS);
+        if (e.getView().getTitle().equals(CraftingMenu.TITLE)) {
+            this.dropItems((Player) e.getPlayer(), e.getInventory(), CraftingMenu.CRAFTING_SLOTS);
+            this.dropItems((Player) e.getPlayer(), e.getInventory(), CraftingMenu.BINDING_SLOTS);
+            this.dropItems((Player) e.getPlayer(), e.getInventory(), CraftingMenu.UPGRADE_SLOTS);
         }
     }
 
