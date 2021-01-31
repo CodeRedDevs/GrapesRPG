@@ -9,6 +9,20 @@
     <version>1.1-SNAPSHOT-TESTS</version>
     <name>GrapesRPG</name>
 
+    <developers>
+        <developer>
+            <id>trqhxrd</id>
+            <name>Trqhxrd</name>
+            <url>https://github.trqhxrd.de</url>
+            <organizationUrl>https://github.com/GrapesDevs/</organizationUrl>
+        </developer>
+        <developer>
+            <id>tabbyplayz</id>
+            <name>Tabbyplayz</name>
+            <organizationUrl>https://github.com/GrapesDevs/</organizationUrl>
+        </developer>
+    </developers>
+
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
@@ -42,6 +56,7 @@
             </resource>
         </resources>
         <plugins>
+            <!-- Maven Shade Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -68,6 +83,7 @@
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                 </configuration>
             </plugin>
+            <!-- Maven Jar Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -76,6 +92,7 @@
                     <outputDirectory>${project.basedir}/TestServer/plugins</outputDirectory>
                 </configuration>
             </plugin>
+            <!-- Maven Clean Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
@@ -92,11 +109,13 @@
                     </filesets>
                 </configuration>
             </plugin>
+            <!-- Maven Surefire Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M5</version>
             </plugin>
+            <!-- Maven Failsafe Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
@@ -106,16 +125,19 @@
     </build>
 
     <repositories>
+        <!-- PaperMC Repository -->
         <repository>
             <id>papermc</id>
+            <name>PaperMC's Repository</name>
             <url>https://papermc.io/repo/repository/maven-public/</url>
         </repository>
-
+        <!-- GrapesDevs Repository -->
         <repository>
             <id>deployment</id>
+            <name>GrapesDev's Repository</name>
             <url>https://maven.trqhxrd.de/repository/libraries/</url>
         </repository>
-
+        <!-- Maven Central -->
         <repository>
             <id>central</id>
             <name>Maven Central</name>
@@ -131,7 +153,6 @@
             <version>1.16.4-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-
         <!-- CraftBukkit Dependency -->
         <dependency>
             <groupId>org.bukkit</groupId>
@@ -139,7 +160,6 @@
             <version>1.16.4-R0.3-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-
         <!-- JFiglet Dependency -->
         <dependency>
             <groupId>com.github.lalyos</groupId>
@@ -147,23 +167,20 @@
             <version>0.0.8</version>
             <scope>compile</scope>
         </dependency>
-
-        <!-- JUnit Dependency -->
+        <!-- JUnit Jupiter API Dependency -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>5.7.0</version>
             <scope>test</scope>
         </dependency>
-
-        <!-- JUnit Jupiter Dependency -->
+        <!-- JUnit Jupiter Engine Dependency -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <version>5.7.0</version>
             <scope>test</scope>
         </dependency>
-
         <!-- MockBukkit Dependency -->
         <dependency>
             <groupId>com.github.seeseemelk</groupId>
@@ -171,7 +188,6 @@
             <version>0.5.0</version>
             <scope>test</scope>
         </dependency>
-
         <!-- FastUtil Dependency -->
         <dependency>
             <groupId>it.unimi.dsi</groupId>
