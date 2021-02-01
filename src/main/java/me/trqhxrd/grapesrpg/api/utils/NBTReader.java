@@ -134,7 +134,8 @@ public class NBTReader {
             try {
                 if (root.get(s) instanceof NBTTagCompound) root = root.getCompound(s);
                 else return null;
-            } catch (Exception ignored) { }
+            } catch (Exception ignored) {
+            }
         return root;
     }
 }

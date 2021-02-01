@@ -157,13 +157,11 @@ public class CraftingMenu extends Menu {
                                         if (r instanceof GrapesShapedRecipe) {
                                             if (r.check(matrix, bindings)) {
                                                 List<Group2<GrapesRecipeChoice, Integer>> bindingsList = new ArrayList<>();
-                                                for (Group2<GrapesRecipeChoice, Integer> group2 : ((GrapesShapedRecipe) r).getBindings()) bindingsList.add(new Group2<>(group2));
-
-                                                //boolean[] skip = new boolean[bindings.length];
+                                                for (Group2<GrapesRecipeChoice, Integer> group2 : ((GrapesShapedRecipe) r).getBindings())
+                                                    bindingsList.add(new Group2<>(group2));
 
                                                 for (Group2<GrapesRecipeChoice, Integer> group : bindingsList) {
                                                     for (int i = 0; i < bindings.length; i++) {
-                                                        // if (!skip[i]) {
                                                         ItemStack current = bindings[i];
                                                         if (group.getY() > 0) {
                                                             if (current != null) {
@@ -172,15 +170,13 @@ public class CraftingMenu extends Menu {
                                                                         int amount = current.getAmount();
                                                                         bindings[i] = null;
                                                                         group.setY(group.getY() - amount);
-                                                                        // skip[i] = true;
                                                                     } else {
                                                                         bindings[i].setAmount(bindings[i].getAmount() - group.getY());
                                                                         group.setY(0);
                                                                     }
                                                                 }
-                                                            } //else skip[i] = true;
+                                                            }
                                                         } else break;
-                                                        // }
                                                     }
                                                 }
                                                 break;

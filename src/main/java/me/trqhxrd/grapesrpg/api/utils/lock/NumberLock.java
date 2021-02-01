@@ -19,6 +19,7 @@ public class NumberLock implements Lock<Long> {
 
     /**
      * This constructor creates a new lock.
+     *
      * @param key The key, that is required to open the lock.
      */
     public NumberLock(long key) {
