@@ -1,0 +1,20 @@
+{
+  "ingredients": [
+    {
+      "mode": "MATERIAL",
+      "materials": [
+        "EGG"
+      ],
+      "itemStacks": [],
+      "grapesItems": []
+    }
+  ],
+  "type": "SHAPELESS",
+  "result": {
+    "nbt": {},
+    "id": 1,
+    "material": "DANDELION",
+    "name": null,
+    "amount": 1
+  }
+}

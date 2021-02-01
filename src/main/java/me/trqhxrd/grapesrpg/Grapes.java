@@ -4,7 +4,6 @@ import com.github.lalyos.jfiglet.FigletFont;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import me.trqhxrd.grapesrpg.api.common.GrapesPlayer;
-import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipe;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesShapedRecipe;
 import me.trqhxrd.grapesrpg.api.utils.Prefix;
@@ -13,7 +12,6 @@ import me.trqhxrd.grapesrpg.commands.ColorCommand;
 import me.trqhxrd.grapesrpg.commands.GrapesCommand;
 import me.trqhxrd.grapesrpg.event.*;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -38,7 +36,7 @@ public class Grapes extends JavaPlugin {
      * This constant is the serialisation engine used for items, recipes (coming soon), etc.
      */
     public static final Gson GSON = new GsonBuilder()
-            .setPrettyPrinting()
+            /*.setPrettyPrinting()*/
             .serializeNulls()
             .create();
     /**
@@ -112,13 +110,6 @@ public class Grapes extends JavaPlugin {
         //Registering Commands:
         new GrapesCommand();
         new ColorCommand();
-
-       this.addRecipe(new GrapesShapedRecipe(new GrapesItem(0, Material.STONE_PICKAXE))
-                .setShape("aaa", " b ", " b ")
-                .setIngredient('a', Material.COBBLESTONE)
-                .setIngredient('b', Material.STICK)
-                .addBinding(8, Material.STRING)
-                .addBinding(1, Material.SLIME_BALL));
     }
 
     /**

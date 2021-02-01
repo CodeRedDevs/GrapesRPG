@@ -3,8 +3,14 @@
     "a": {
       "mode": "MATERIAL",
       "materials": [
-        "COBBLESTONE",
-        "BLACKSTONE"
+        "ACACIA_PLANKS",
+        "BIRCH_PLANKS",
+        "CRIMSON_PLANKS",
+        "DARK_OAK_PLANKS",
+        "JUNGLE_PLANKS",
+        "OAK_PLANKS",
+        "SPRUCE_PLANKS",
+        "WARPED_PLANKS"
       ],
       "itemStacks": [],
       "grapesItems": []
@@ -45,8 +51,8 @@
   "type": "SHAPED",
   "result": {
     "nbt": {},
-    "id": 1,
-    "material": "STONE_PICKAXE",
+    "id": 0,
+    "material": "WOODEN_PICKAXE",
     "name": null,
     "amount": 1
   }
