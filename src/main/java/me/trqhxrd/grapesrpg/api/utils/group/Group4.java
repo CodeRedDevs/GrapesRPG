@@ -65,4 +65,14 @@ public class Group4<X, Y, Z, T> extends Group3<X, Y, Z> {
     public void setT(T t) {
         this.t = t;
     }
+
+    @Override
+    public String toString() {
+        return "Group4{" +
+                "x=" + x +
+                ", y=" + y +
+                ", z=" + z +
+                ", t=" + t +
+                '}';
+    }
 }

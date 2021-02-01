@@ -96,6 +96,14 @@ public abstract class GrapesRecipe {
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "GrapesRecipe{" +
+                "type=" + type +
+                ", result=" + result +
+                '}';
+    }
+
     /**
      * The type of the recipe.
      * Can be SHAPED or SHAPELESS.

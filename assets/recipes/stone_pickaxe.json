@@ -1,15 +1,4 @@
 {
-  "shape": [
-    "a",
-    "a",
-    "a",
-    " ",
-    "b",
-    " ",
-    " ",
-    "b",
-    " "
-  ],
   "ingredients": {
     "a": {
       "mode": "MATERIAL",
@@ -29,11 +18,35 @@
       "grapesItems": []
     }
   },
+  "bindings": [
+    {
+      "y": 8,
+      "x": {
+        "mode": "MATERIAL",
+        "materials": [
+          "STRING"
+        ],
+        "itemStacks": [],
+        "grapesItems": []
+      }
+    }
+  ],
+  "shape": [
+    "a",
+    "a",
+    "a",
+    " ",
+    "b",
+    " ",
+    " ",
+    "b",
+    " "
+  ],
   "type": "SHAPED",
   "result": {
     "nbt": {},
-    "id": 1,
-    "material": "STONE_PICKAXE",
+    "id": 0,
+    "material": "DIRT",
     "name": null,
     "amount": 1
   }

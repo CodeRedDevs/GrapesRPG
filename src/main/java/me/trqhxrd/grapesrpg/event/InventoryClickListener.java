@@ -1,7 +1,6 @@
 package me.trqhxrd.grapesrpg.event;
 
 import me.trqhxrd.grapesrpg.Grapes;
-import me.trqhxrd.grapesrpg.api.inventories.CraftingMenu;
 import me.trqhxrd.grapesrpg.api.inventories.Menu;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
 import org.bukkit.Bukkit;
@@ -12,9 +11,7 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * This Listener handles inventory-clicks.
@@ -25,21 +22,10 @@ import java.util.Set;
 public class InventoryClickListener implements Listener {
 
     /**
-     * A utility-field, which stores a set of all slots, the player is allowed to interact with.
-     */
-    private final Set<Integer> allowedSlots;
-
-    /**
-     * This constructor registers the listener and sets the value of the field {@link InventoryClickListener#allowedSlots}.
+     * This constructor registers the listener.
      */
     public InventoryClickListener() {
         Bukkit.getPluginManager().registerEvents(this, Grapes.getGrapes());
-
-        this.allowedSlots = new HashSet<>();
-        for (int i : CraftingMenu.CRAFTING_SLOTS) this.allowedSlots.add(i);
-        for (int i : CraftingMenu.BINDING_SLOTS) this.allowedSlots.add(i);
-        for (int i : CraftingMenu.UPGRADE_SLOTS) this.allowedSlots.add(i);
-        this.allowedSlots.add(CraftingMenu.OUTPUT_SLOT);
     }
 
     /**
@@ -66,7 +52,7 @@ public class InventoryClickListener implements Listener {
 
         if (e.getClickedInventory() != null) {
             InventoryHolder holder = e.getClickedInventory().getHolder();
-            if (holder instanceof Menu) ((Menu) holder).handleMenu(e);
+            if (holder instanceof Menu) ((Menu) holder).handleMenuClick(e);
         }
 
     }

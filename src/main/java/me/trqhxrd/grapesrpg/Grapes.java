@@ -4,13 +4,16 @@ import com.github.lalyos.jfiglet.FigletFont;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import me.trqhxrd.grapesrpg.api.common.GrapesPlayer;
+import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipe;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesShapedRecipe;
 import me.trqhxrd.grapesrpg.api.utils.Prefix;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
+import me.trqhxrd.grapesrpg.commands.ColorCommand;
 import me.trqhxrd.grapesrpg.commands.GrapesCommand;
 import me.trqhxrd.grapesrpg.event.*;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -108,6 +111,14 @@ public class Grapes extends JavaPlugin {
 
         //Registering Commands:
         new GrapesCommand();
+        new ColorCommand();
+
+       this.addRecipe(new GrapesShapedRecipe(new GrapesItem(0, Material.STONE_PICKAXE))
+                .setShape("aaa", " b ", " b ")
+                .setIngredient('a', Material.COBBLESTONE)
+                .setIngredient('b', Material.STICK)
+                .addBinding(8, Material.STRING)
+                .addBinding(1, Material.SLIME_BALL));
     }
 
     /**
@@ -159,7 +170,7 @@ public class Grapes extends JavaPlugin {
                 File zipFile = new File(this.getDataFolder(), "recipes\\recipes.zip");
                 zipFile.delete();
                 zipFile.createNewFile();
-                URL url = new URL("https://github.com/CodeRedDevs/GrapesRPG/raw/feature-recipes/assets/recipes/recipes.zip");
+                URL url = new URL("https://github.com/CodeRedDevs/GrapesRPG/raw/dev/assets/recipes/recipes.zip");
                 BufferedInputStream in = new BufferedInputStream(url.openStream());
                 FileOutputStream out = new FileOutputStream(zipFile);
                 byte[] dataBuffer = new byte[1024];

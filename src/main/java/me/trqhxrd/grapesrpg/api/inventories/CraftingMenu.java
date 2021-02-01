@@ -8,7 +8,10 @@ import me.trqhxrd.grapesrpg.api.utils.ItemBuilder;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
 import me.trqhxrd.grapesrpg.api.utils.group.Group2;
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -96,7 +99,7 @@ public class CraftingMenu extends Menu {
      * @param e The Event, which you want to handle.
      */
     @Override
-    public void handleMenu(InventoryClickEvent e) {
+    public void handleMenuClick(InventoryClickEvent e) {
         if (e.getView().getTitle().equals(Utils.translateColorCodes(TITLE))) {
             if (e.getClickedInventory() != null) {
                 ItemStack cursor = e.getCursor() != null ? e.getCursor().clone() : null;
@@ -144,26 +147,33 @@ public class CraftingMenu extends Menu {
 
                                     ItemStack[] bindingsNew = new ItemStack[bindings.length];
 
+                                    int message = 0;
+
                                     for (GrapesRecipe r : GrapesRecipe.getRecipes()) {
                                         if (r instanceof GrapesShapedRecipe) {
                                             if (r.check(matrix, bindings)) {
                                                 List<Group2<GrapesRecipeChoice, Integer>> bindingsList = new ArrayList<>();
-                                                for (Group2<GrapesRecipeChoice, Integer> cloning : ((GrapesShapedRecipe) r).getBindings())
-                                                    bindingsList.add(new Group2<>(cloning));
+                                                for (Group2<GrapesRecipeChoice, Integer> clone : ((GrapesShapedRecipe) r).getBindings())
+                                                    bindingsList.add(new Group2<>(clone));
 
-                                                for (Group2<GrapesRecipeChoice, Integer> group : bindingsList) {
+                                                for (Group2<GrapesRecipeChoice, Integer> group2 : bindingsList) {
+                                                    Group2<GrapesRecipeChoice, Integer> group = new Group2<>(group2.getX(), group2.getY());
+                                                    boolean done = false;
                                                     for (int j = 0; j < bindings.length; j++) {
-                                                        if (bindings[j] != null) {
-                                                            if (group.getY() > 0 && group.getX().check(bindings[j])) {
-                                                                int amount = bindings[j].getAmount();
-                                                                if (group.getY() < amount) {
-                                                                    ItemStack clone = new ItemStack(bindings[j]);
-                                                                    clone.setAmount(clone.getAmount() - group.getY());
-                                                                    bindingsNew[j] = clone;
-                                                                } else bindingsNew[j] = null;
-                                                                group.setY(group.getY() - amount);
-                                                            } else bindingsNew[j] = bindings[j];
-                                                        }
+                                                        if (!done) {
+                                                            if (bindings[j] != null) {
+                                                                if (group.getY() > 0 && group.getX().check(bindings[j])) {
+                                                                    int amount = bindings[j].getAmount();
+                                                                    if (group.getY() < amount) {
+                                                                        ItemStack clone = bindings[j].clone();
+                                                                        clone.setAmount(clone.getAmount() - group.getY());
+                                                                        bindingsNew[j] = clone;
+                                                                    } else bindingsNew[j] = null;
+                                                                    group.setY(group.getY() - amount);
+                                                                    done = true;
+                                                                } else bindingsNew[j] = bindings[j];
+                                                            }
+                                                        } else break;
                                                     }
                                                 }
                                                 break;
@@ -184,21 +194,21 @@ public class CraftingMenu extends Menu {
                                         }
                                     }
                                 }
-                            }
 
-                            Status status = Status.INVALID;
+                                Status status = Status.INVALID;
 
-                            for (GrapesRecipe r : GrapesShapedRecipe.getRecipes()) {
-                                if (r.check(matrix, bindings)) {
-                                    inv.setStatus(Status.VALID);
-                                    inv.setResult(r.getResult().build());
-                                    status = Status.VALID;
-                                    break;
+                                for (GrapesRecipe r : GrapesShapedRecipe.getRecipes()) {
+                                    if (r.check(matrix, bindings)) {
+                                        inv.setStatus(Status.VALID);
+                                        inv.setResult(r.getResult().build());
+                                        status = Status.VALID;
+                                        break;
+                                    }
                                 }
-                            }
 
-                            if (status == Status.INVALID) inv.setResult(null);
-                            inv.setStatus(status);
+                                if (status == Status.INVALID) inv.setResult(null);
+                                inv.setStatus(status);
+                            }
                         }
                     }.runTaskLater(Grapes.getGrapes(), 0);
                 }
@@ -216,6 +226,20 @@ public class CraftingMenu extends Menu {
         for (int i : UPGRADE_SLOTS) super.getInventory().setItem(i, null);
         for (int i : STATUS_SLOTS) super.getInventory().setItem(i, ITEM_RECIPE_INVALID);
         super.getInventory().setItem(OUTPUT_SLOT, null);
+    }
+
+    /**
+     * This method gets called everytime the inventory gets closed.
+     *
+     * @param e The Event with all information about the closing.
+     */
+    @Override
+    public void handleMenuClose(InventoryCloseEvent e) {
+        if (e.getView().getTitle().equals(CraftingMenu.TITLE)) {
+            this.dropItems((Player) e.getPlayer(), e.getInventory(), CraftingMenu.CRAFTING_SLOTS);
+            this.dropItems((Player) e.getPlayer(), e.getInventory(), CraftingMenu.BINDING_SLOTS);
+            this.dropItems((Player) e.getPlayer(), e.getInventory(), CraftingMenu.UPGRADE_SLOTS);
+        }
     }
 
     /**
@@ -335,6 +359,25 @@ public class CraftingMenu extends Menu {
     public void setStatus(Status status) {
         this.status = status;
         for (int i : STATUS_SLOTS) super.getInventory().setItem(i, status.getStatusIcon());
+    }
+
+    /**
+     * This method drops the items in all named slots at the players location.
+     *
+     * @param player The player, who is supposed to receive the items.
+     * @param inv    The Inventory, which contains the items.
+     * @param slots  The slots, which contain the items.
+     */
+    private void dropItems(Player player, Inventory inv, int... slots) {
+        for (int i : slots) {
+            ItemStack is = inv.getItem(i);
+            if (is != null) {
+                Item item = player.getWorld().dropItem(player.getLocation(), is);
+                item.setPickupDelay(0);
+                item.setOwner(player.getUniqueId());
+                item.setThrower(player.getUniqueId());
+            }
+        }
     }
 
     /**

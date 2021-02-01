@@ -54,4 +54,11 @@ public class Group<X> {
     public void setX(X x) {
         this.x = x;
     }
+
+    @Override
+    public String toString() {
+        return "Group{" +
+                "x=" + x +
+                '}';
+    }
 }

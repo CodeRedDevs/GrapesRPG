@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -66,11 +67,18 @@ public abstract class Menu implements InventoryHolder {
     }
 
     /**
+     * This method gets called everytime the inventory gets closed.
+     *
+     * @param event The Event with all information about the closing.
+     */
+    public abstract void handleMenuClose(InventoryCloseEvent event);
+
+    /**
      * This method handles all Player interaction with the inventory.
      *
      * @param event The Event, which you want to handle.
      */
-    public abstract void handleMenu(InventoryClickEvent event);
+    public abstract void handleMenuClick(InventoryClickEvent event);
 
     /**
      * This method sets all the default-items in the inventory.
