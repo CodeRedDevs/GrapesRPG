@@ -31,6 +31,11 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
     private final Map<String, NBTValue<?>> nbt;
 
     /**
+     * The Rarity of the item.
+     */
+    private Rarity rarity;
+
+    /**
      * The Item-Id.
      * Used for binding abilities to the item.
      */
@@ -60,11 +65,7 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      * @param material The material of the new item.
      */
     public GrapesItem(int id, Material material) {
-        this.id = id;
-        this.material = material;
-        this.name = null;
-        this.amount = 1;
-        this.nbt = new HashMap<>();
+        this(id, material, null, 1, Rarity.COMMON, new HashMap<>());
     }
 
     /**
@@ -75,11 +76,7 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      * @param name     The name of the new item. Can be left empty in which case the name of the item will be set to it's material name in the players language.
      */
     public GrapesItem(int id, Material material, String name) {
-        this.id = id;
-        this.material = material;
-        this.name = name;
-        this.amount = 1;
-        this.nbt = new HashMap<>();
+        this(id, material, name, 1, Rarity.COMMON, new HashMap<>());
     }
 
     /**
@@ -91,31 +88,41 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      * @param nbtEntries The NBT-Values, that will be set to the item.
      */
     @SafeVarargs
-    public GrapesItem(int id, Material material, String name, Group2<String, NBTValue<?>>... nbtEntries) {
-        this.id = id;
-        this.material = material;
-        this.name = name;
-        this.amount = 1;
-        this.nbt = new HashMap<>();
-
+    public GrapesItem(int id, Material material, String name, Rarity rarity, Group2<String, NBTValue<?>>... nbtEntries) {
+        this(id, material, name, 1, rarity);
         for (Group2<String, NBTValue<?>> entry : nbtEntries) this.nbt.put(entry.getX(), entry.getY());
     }
 
     /**
      * A constructor, which supports the items amount to be given.
      *
-     * @param nbt      The Custom NBT-Tags, which you want to set.
      * @param id       The items id.
      * @param material The Material of the item.
      * @param name     The name of the item. If black, will be set to the materials name.
      * @param amount   The amount of the item. (e.g. 64 = a stack).
+     * @param rarity   The rarity of the item.
      */
-    public GrapesItem(int id, Material material, String name, int amount, Map<String, NBTValue<?>> nbt) {
+    public GrapesItem(int id, Material material, String name, int amount, Rarity rarity) {
+        this(id, material, name, amount, rarity, new HashMap<>());
+    }
+
+    /**
+     * A constructor, which supports the items amount to be given.
+     *
+     * @param id       The items id.
+     * @param material The Material of the item.
+     * @param name     The name of the item. If black, will be set to the materials name.
+     * @param amount   The amount of the item. (e.g. 64 = a stack).
+     * @param rarity   The rarity of the item.
+     * @param nbt      The custom nbt-tags, you want to set.
+     */
+    public GrapesItem(int id, Material material, String name, int amount, Rarity rarity, Map<String, NBTValue<?>> nbt) {
         this.nbt = nbt;
         this.id = id;
         this.material = material;
         this.name = name;
         this.amount = amount;
+        this.rarity = rarity;
     }
 
     /**
@@ -129,9 +136,11 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
         if (id != null) {
             GrapesItem item = new GrapesItem(id, is.getType());
             item.setAmount(is.getAmount());
-            item.setName(is.getItemMeta().getDisplayName());
             item.getNbt().clear();
             item.getNbt().putAll(NBTReader.getAllNBTValues(is));
+
+            item.setName((String) item.getNbt().get("grapes.name").getValue());
+            item.setRarity(Rarity.getById(((int) item.getNbt().get("grapes.rarity").getValue())));
 
             // Removing all NBT-Values, which are stored in variables in an object of this class.
             Set<String> remove = new HashSet<>();
@@ -141,6 +150,26 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
             return item;
         }
         return null;
+    }
+
+    /**
+     * Getter for the items rarity.
+     *
+     * @return The current rarity of the item.
+     */
+    public Rarity getRarity() {
+        return rarity;
+    }
+
+    /**
+     * This method overrides an items rarity.
+     *
+     * @param rarity The new rarity for the item.
+     * @return The Item itself. Used for creating command chains.
+     */
+    private GrapesItem setRarity(Rarity rarity) {
+        this.rarity = rarity;
+        return this;
     }
 
     /**
@@ -342,7 +371,19 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
         ItemMeta meta = is.getItemMeta();
         if (meta != null) {
             if (this.name != null && !this.name.isBlank() && !this.name.isEmpty())
-                meta.setDisplayName("§7" + Utils.translateColorCodes(this.name));
+                meta.setDisplayName(Utils.translateColorCodes("&" + this.rarity.getColor() + this.name));
+
+            List<String> lore = new ArrayList<>();
+
+            //Add Rarity to item lore
+            lore.add("");
+            lore.add(this.rarity.getFormattedName());
+
+            String[] strings = new String[lore.size()];
+            for (int i = 0; i < strings.length; i++) strings[i] = Utils.translateColorCodes(lore.get(i));
+            lore = Arrays.asList(strings);
+
+            meta.setLore(lore);
 
             is.setItemMeta(meta);
         }
@@ -350,6 +391,7 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
         for (String path : nbt.keySet()) is = NBTEditor.setNBTValue(is, path, this.nbt.get(path));
         is = NBTEditor.setNBTValue(is, "grapes.name", this.name);
         is = NBTEditor.setNBTValue(is, "grapes.id", this.id);
+        is = NBTEditor.setNBTValue(is, "grapes.rarity", this.rarity.getId());
 
         return is;
     }
