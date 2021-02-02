@@ -178,13 +178,8 @@ public class GrapesShapedRecipe extends GrapesRecipe implements Serializable<Gra
             }
         }
 
-        ItemStack[] bindingClone = new ItemStack[bindings.length];
-        for (int i = 0; i < bindings.length; i++)
-            if (bindings[i] != null) bindingClone[i] = bindings[i].clone();
-            else bindingClone[i] = null;
-
         Set<ItemStack> compressed = new HashSet<>();
-        for (ItemStack binding : bindingClone) {
+        for (ItemStack binding : bindings) {
             if (binding != null) {
                 if (compressed.size() > 0) {
                     boolean done = false;

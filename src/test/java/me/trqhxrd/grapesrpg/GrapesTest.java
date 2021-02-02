@@ -1,7 +1,6 @@
 package me.trqhxrd.grapesrpg;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
-import be.seeseemelk.mockbukkit.ServerMock;
 import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipe;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesShapelessRecipe;
@@ -16,12 +15,11 @@ import java.util.Set;
 
 class GrapesTest {
 
-    private static ServerMock server;
     private static Grapes plugin;
 
     @BeforeAll
     public static void setup() {
-        server = MockBukkit.mock();
+        MockBukkit.mock();
         plugin = MockBukkit.load(Grapes.class);
     }
 

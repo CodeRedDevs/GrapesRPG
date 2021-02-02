@@ -9,3 +9,6 @@ commands:
   color:
     description: Gives you a random color.
     usage: /color
+  material:
+    description: gives you the material of the item in your hand.
+    usage: /material

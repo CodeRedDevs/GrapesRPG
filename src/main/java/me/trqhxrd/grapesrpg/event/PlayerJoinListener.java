@@ -3,6 +3,7 @@ package me.trqhxrd.grapesrpg.event;
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.common.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.event.GrapesPlayerJoinEvent;
+import me.trqhxrd.grapesrpg.game.objects.item.PlantFiber;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -68,6 +69,7 @@ public class PlayerJoinListener implements Listener {
             String message = joins.get(player.getUniqueId());
             e.setJoinMessage(message);
             joins.remove(e.getPlayer().getUniqueId());
+            e.getPlayer().getInventory().addItem(new PlantFiber().build());
         } catch (Exception ignored) {
         }
     }

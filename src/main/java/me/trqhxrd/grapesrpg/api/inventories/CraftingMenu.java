@@ -184,8 +184,6 @@ public class CraftingMenu extends Menu {
                                         }
                                     }
 
-                                    // System.arraycopy(bindingsNew, 0, bindings, 0, bindingsNew.length);
-
                                     inv.setMatrix(matrix);
                                     inv.setBindings(bindings);
 

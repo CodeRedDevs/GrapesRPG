@@ -139,8 +139,7 @@ public class GrapesRecipeChoice implements Serializable<GrapesRecipeChoice> {
             for (GrapesItem grapesItem : this.grapesItems)
                 if (grapesItem.getId() == item.getId())
                     if (grapesItem.getNbt().equals(item.getNbt()))
-                        if (grapesItem.getAmount() <= item.getAmount())
-                            return true;
+                        return true;
         }
         return false;
     }
@@ -159,13 +158,13 @@ public class GrapesRecipeChoice implements Serializable<GrapesRecipeChoice> {
         boolean valid = true;
         switch (mode) {
             case ITEM:
-                if (!checkInternal(GrapesItem.fromItemStack(item))) valid = false;
+                if (!checkInternal(GrapesItem.fromItemStack(item.clone()))) valid = false;
                 break;
             case NATIVE:
-                if (!checkInternal(item)) valid = false;
+                if (!checkInternal(item.clone())) valid = false;
                 break;
             case MATERIAL:
-                if (!checkInternal(item.getType())) valid = false;
+                if (!checkInternal(item.clone().getType())) valid = false;
                 break;
         }
         return valid;
@@ -243,6 +242,11 @@ public class GrapesRecipeChoice implements Serializable<GrapesRecipeChoice> {
         return Grapes.GSON.fromJson(s, GrapesRecipeChoice.class);
     }
 
+    /**
+     * Basic toString method.
+     *
+     * @return The Object serialized in a String.
+     */
     @Override
     public String toString() {
         return "GrapesRecipeChoice{" +

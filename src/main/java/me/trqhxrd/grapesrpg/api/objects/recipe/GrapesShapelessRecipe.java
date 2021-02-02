@@ -136,21 +136,16 @@ public class GrapesShapelessRecipe extends GrapesRecipe implements Serializable<
         for (ItemStack is : bindings) if (is != null) return false;
 
         this.ingredients.removeIf(test -> this.ingredients.indexOf(test) >= 9);
-        int i = ingredients.size();
-        boolean[] skip = new boolean[i];
+        List<GrapesRecipeChoice> clone = new ArrayList<>(ingredients);
         for (ItemStack itemStack : matrix) {
             for (GrapesRecipeChoice ingredient : ingredients) {
-                int index = ingredients.indexOf(ingredient);
-                if (!skip[index]) {
-                    if (itemStack != null && ingredient.check(itemStack)) {
-                        skip[index] = true;
-                        i--;
-                        break;
-                    }
+                if (itemStack != null && ingredient.check(itemStack)) {
+                    clone.remove(ingredient);
+                    break;
                 }
             }
         }
-        return i == 0;
+        return clone.isEmpty();
     }
 
     /**

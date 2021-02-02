@@ -4,14 +4,19 @@ import com.github.lalyos.jfiglet.FigletFont;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import me.trqhxrd.grapesrpg.api.common.GrapesPlayer;
+import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipe;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesShapedRecipe;
+import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesShapelessRecipe;
 import me.trqhxrd.grapesrpg.api.utils.Prefix;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
 import me.trqhxrd.grapesrpg.commands.ColorCommand;
 import me.trqhxrd.grapesrpg.commands.GrapesCommand;
+import me.trqhxrd.grapesrpg.commands.MaterialCommand;
 import me.trqhxrd.grapesrpg.event.*;
+import me.trqhxrd.grapesrpg.game.objects.item.PlantFiber;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -110,6 +115,10 @@ public class Grapes extends JavaPlugin {
         //Registering Commands:
         new GrapesCommand();
         new ColorCommand();
+        new MaterialCommand();
+
+        this.addRecipe(new GrapesShapelessRecipe(new PlantFiber().setAmount(4)).addIngredient(4, Material.GRASS));
+        this.addRecipe(new GrapesShapedRecipe(new GrapesItem(11, Material.STONE_AXE)).setShape("aa ", "ab ", " b ").setIngredient('a', Material.COBBLESTONE).setIngredient('b', Material.STICK).addBinding(4, new PlantFiber()));
     }
 
     /**

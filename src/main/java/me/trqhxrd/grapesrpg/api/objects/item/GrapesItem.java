@@ -223,9 +223,11 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      * Basic setter for the items amount.
      *
      * @param amount The items new amount.
+     * @return The Item itself. Used for creating command chains.
      */
-    public void setAmount(int amount) {
+    public GrapesItem setAmount(int amount) {
         this.amount = amount;
+        return this;
     }
 
     /**
