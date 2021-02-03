@@ -2,7 +2,7 @@ package me.trqhxrd.grapesrpg.api.objects.recipe;
 
 import com.google.gson.JsonObject;
 import me.trqhxrd.grapesrpg.Grapes;
-import me.trqhxrd.grapesrpg.api.inventories.CraftingMenu;
+import me.trqhxrd.grapesrpg.game.inventories.CraftingMenu;
 import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
 import org.bukkit.inventory.ItemStack;
 

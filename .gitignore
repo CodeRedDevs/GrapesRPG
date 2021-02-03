@@ -22,5 +22,5 @@ JavaDoc/
 
 #Project-specific stuff
 TestServer/*
-!TestServer/paper-1.16.4-416.jar
+!TestServer/paper-1.16.5-457.jar
 !TestServer/eula.txt

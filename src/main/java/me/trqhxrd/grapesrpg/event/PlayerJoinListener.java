@@ -69,7 +69,6 @@ public class PlayerJoinListener implements Listener {
             String message = joins.get(player.getUniqueId());
             e.setJoinMessage(message);
             joins.remove(e.getPlayer().getUniqueId());
-            e.getPlayer().getInventory().addItem(new PlantFiber().build());
         } catch (Exception ignored) {
         }
     }
