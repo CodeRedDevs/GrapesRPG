@@ -1,7 +1,6 @@
 package me.trqhxrd.grapesrpg.api.utils;
 
 import com.google.common.base.Preconditions;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -45,7 +44,7 @@ public class ItemBuilder implements Builder<ItemStack> {
     public ItemBuilder setName(String name) {
         if (name.isBlank()) name = "&c&d&l&a";
         ItemMeta meta = is.getItemMeta();
-        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+        meta.setDisplayName(Utils.translateColorCodes(name));
         is.setItemMeta(meta);
 
         return this;

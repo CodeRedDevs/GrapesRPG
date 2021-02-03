@@ -170,7 +170,7 @@ public class Grapes extends JavaPlugin {
                 File zipFile = new File(this.getDataFolder(), "recipes\\recipes.zip");
                 zipFile.delete();
                 zipFile.createNewFile();
-                URL url = new URL("https://github.com/CodeRedDevs/GrapesRPG/raw/dev/assets/recipes/recipes.zip");
+                URL url = new URL("https://github.com/GrapesDevs/GrapesAssets/blob/master/recipes/recipes.zip");
                 BufferedInputStream in = new BufferedInputStream(url.openStream());
                 FileOutputStream out = new FileOutputStream(zipFile);
                 byte[] dataBuffer = new byte[1024];

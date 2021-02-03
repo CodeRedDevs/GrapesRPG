@@ -1,7 +1,7 @@
 package me.trqhxrd.grapesrpg.event;
 
 import me.trqhxrd.grapesrpg.Grapes;
-import me.trqhxrd.grapesrpg.api.inventories.CraftingMenu;
+import me.trqhxrd.grapesrpg.game.inventories.CraftingMenu;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;

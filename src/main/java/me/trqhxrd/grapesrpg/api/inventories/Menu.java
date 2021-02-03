@@ -45,14 +45,26 @@ public abstract class Menu implements InventoryHolder {
      *
      * @param title               The title of the inventory. ColorCodes can be used.
      * @param size                The size of the inventory. Must be one of these numbers: {9, 18, 27, 36, 45, 54}.
+     * @param setup               If true, the constructor will run the setup method.
      * @param fillWithFillerGlass If set to true, the whole inventory will be filled with filler glass and you can overwrite the slot, which you want to use.
      */
-    public Menu(String title, Size size, boolean fillWithFillerGlass) {
+    public Menu(String title, Size size, boolean setup, boolean fillWithFillerGlass) {
         this.title = title;
         this.size = size.getSlots();
         this.inventory = Bukkit.createInventory(this, this.size, Utils.translateColorCodes(title));
         if (fillWithFillerGlass) for (int i = 0; i < this.size; i++) inventory.setItem(i, FILLER_GLASS);
-        this.setupMenu();
+        if (setup) this.setupMenu();
+    }
+
+    /**
+     * This constructor creates a new menu, with self-defined title, size and if you wish even with filler glass.
+     *
+     * @param title               The title of the inventory. ColorCodes can be used.
+     * @param size                The size of the inventory. Must be one of these numbers: {9, 18, 27, 36, 45, 54}.
+     * @param fillWithFillerGlass If set to true, the whole inventory will be filled with filler glass and you can overwrite the slot, which you want to use.
+     */
+    public Menu(String title, Size size, boolean fillWithFillerGlass) {
+        this(title, size, false, true);
     }
 
     /**
@@ -63,7 +75,7 @@ public abstract class Menu implements InventoryHolder {
      * @param size  The size of the inventory. Must be one of these numbers: {9, 18, 27, 36, 45, 54}.
      */
     public Menu(String title, Size size) {
-        this(title, size, false);
+        this(title, size, true, false);
     }
 
     /**
