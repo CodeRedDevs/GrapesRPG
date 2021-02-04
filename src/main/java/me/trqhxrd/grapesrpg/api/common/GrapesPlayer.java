@@ -2,7 +2,10 @@ package me.trqhxrd.grapesrpg.api.common;
 
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.event.GrapesPlayerInitEvent;
+import me.trqhxrd.grapesrpg.api.utils.PacketReader;
+import me.trqhxrd.grapesrpg.api.utils.PacketTask;
 import me.trqhxrd.grapesrpg.api.utils.Prefix;
+import net.minecraft.server.v1_16_R3.Packet;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -26,11 +29,14 @@ public class GrapesPlayer {
      * Players will be added automatically added as soon as the {@link GrapesPlayer#GrapesPlayer(Player)} Constructor is called.
      */
     private static final Set<GrapesPlayer> players = new HashSet<>();
+
     /**
      * An instance of the legacy Spigot {@link Player}.
      * Will be set in the {@link GrapesPlayer#GrapesPlayer(Player)} Constructor.
      */
     private final Player spigotPlayer;
+
+    private final PacketReader packetReader;
 
     /**
      * The Main Constructor for {@link GrapesPlayer}s.
@@ -43,6 +49,8 @@ public class GrapesPlayer {
         //Call GrapesPlayerInitEvent
         GrapesPlayerInitEvent event = new GrapesPlayerInitEvent(Grapes.getGrapes(), this);
         Bukkit.getPluginManager().callEvent(event);
+
+        this.packetReader = new PacketReader(this);
 
         if (!event.isCancelled()) players.add(this);
     }
@@ -174,5 +182,9 @@ public class GrapesPlayer {
      */
     public UUID getUniqueId() {
         return spigotPlayer.getUniqueId();
+    }
+
+    public PacketReader getPacketReader() {
+        return packetReader;
     }
 }

@@ -13,10 +13,12 @@ import me.trqhxrd.grapesrpg.api.utils.Utils;
 import me.trqhxrd.grapesrpg.commands.ColorCommand;
 import me.trqhxrd.grapesrpg.commands.GrapesCommand;
 import me.trqhxrd.grapesrpg.commands.MaterialCommand;
+import me.trqhxrd.grapesrpg.commands.NPCCommand;
 import me.trqhxrd.grapesrpg.event.*;
 import me.trqhxrd.grapesrpg.game.objects.item.PlantFiber;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.NPC;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -116,6 +118,7 @@ public class Grapes extends JavaPlugin {
         new GrapesCommand();
         new ColorCommand();
         new MaterialCommand();
+        new NPCCommand();
     }
 
     /**

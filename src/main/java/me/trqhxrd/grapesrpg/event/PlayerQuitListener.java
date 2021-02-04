@@ -37,6 +37,7 @@ public class PlayerQuitListener implements Listener {
             e.setQuitMessage(event.getQuitMessage());
 
             //PLAYER DESTROY:
+            p.getPacketReader().uninject();
             GrapesPlayer.getPlayers().remove(p);
         }
     }

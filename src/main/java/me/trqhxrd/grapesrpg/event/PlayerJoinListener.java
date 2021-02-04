@@ -66,6 +66,7 @@ public class PlayerJoinListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent e) {
         try {
             GrapesPlayer player = GrapesPlayer.getByUniqueId(e.getPlayer().getUniqueId());
+            player.getPacketReader().inject();
             String message = joins.get(player.getUniqueId());
             e.setJoinMessage(message);
             joins.remove(e.getPlayer().getUniqueId());

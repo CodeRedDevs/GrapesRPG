@@ -12,3 +12,6 @@ commands:
   material:
     description: gives you the material of the item in your hand.
     usage: /material
+  npc:
+    description: Command for managing NPCs.
+    usage: /npc help for more information.
