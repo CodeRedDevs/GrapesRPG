@@ -79,7 +79,8 @@ public class CraftingMenu extends Menu {
      * This constructor creates a new CraftingInventory.
      */
     public CraftingMenu() {
-        super(TITLE, Size.NINE_SIX, true);
+        super(TITLE, Size.NINE_SIX, false,true);
+        this.setupMenu();
         this.status = Status.INVALID;
     }
 

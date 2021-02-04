@@ -41,7 +41,7 @@ public class Grapes extends JavaPlugin {
      * This constant is the serialisation engine used for items, recipes (coming soon), etc.
      */
     public static final Gson GSON = new GsonBuilder()
-            /*.setPrettyPrinting()*/
+            .setPrettyPrinting()
             .serializeNulls()
             .create();
     /**
@@ -50,6 +50,7 @@ public class Grapes extends JavaPlugin {
      * Also if you want to use Plugin-Specific {@link Utils}, it is usable to get this Plugins Utils.
      */
     private static Grapes grapes;
+
     /**
      * This object is used for sending Messages to the Player.
      *
@@ -74,7 +75,6 @@ public class Grapes extends JavaPlugin {
      * @param description The DescriptionFile of the Plugin.
      * @param file        The Jar-File, which contains all the plugins code.
      */
-
     public Grapes(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
         super(loader, description, dataFolder, file);
     }
@@ -116,9 +116,6 @@ public class Grapes extends JavaPlugin {
         new GrapesCommand();
         new ColorCommand();
         new MaterialCommand();
-
-        this.addRecipe(new GrapesShapelessRecipe(new PlantFiber().setAmount(4)).addIngredient(4, Material.GRASS));
-        this.addRecipe(new GrapesShapedRecipe(new GrapesItem(11, Material.STONE_AXE)).setShape("aa ", "ab ", " b ").setIngredient('a', Material.COBBLESTONE).setIngredient('b', Material.STICK).addBinding(4, new PlantFiber()));
     }
 
     /**
@@ -170,7 +167,7 @@ public class Grapes extends JavaPlugin {
                 File zipFile = new File(this.getDataFolder(), "recipes\\recipes.zip");
                 zipFile.delete();
                 zipFile.createNewFile();
-                URL url = new URL("https://github.com/GrapesDevs/GrapesAssets/blob/master/recipes/recipes.zip");
+                URL url = new URL("https://github.com/GrapesDevs/GrapesAssets/raw/master/recipes/recipes.zip");
                 BufferedInputStream in = new BufferedInputStream(url.openStream());
                 FileOutputStream out = new FileOutputStream(zipFile);
                 byte[] dataBuffer = new byte[1024];

@@ -64,7 +64,7 @@ public abstract class Menu implements InventoryHolder {
      * @param fillWithFillerGlass If set to true, the whole inventory will be filled with filler glass and you can overwrite the slot, which you want to use.
      */
     public Menu(String title, Size size, boolean fillWithFillerGlass) {
-        this(title, size, false, true);
+        this(title, size, true, fillWithFillerGlass);
     }
 
     /**

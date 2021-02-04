@@ -5,7 +5,8 @@ package me.trqhxrd.grapesrpg.api.objects.item;
  *
  * @author Trqhxrd
  */
-public enum Rarity {
+public enum
+Rarity {
     /**
      * ID: 0
      * COLOR: WHITE
@@ -56,6 +57,11 @@ public enum Rarity {
      * COLOR: RED
      */
     RELIC(9, 'c', "&lRELIC");
+
+    /**
+     * This rarity will be added to an item if the item has no rarity stored in it's NBT-Data.
+     */
+    public static final Rarity DEFAULT_RARITY = Rarity.COMMON;
 
     /**
      * The id of the rarity.

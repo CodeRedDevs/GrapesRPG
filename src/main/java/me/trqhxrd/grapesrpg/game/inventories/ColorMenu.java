@@ -116,7 +116,7 @@ public class ColorMenu extends Menu {
                                 getInventory().setItem(armorSlot, item);
                             }
                         }
-                        getInventory().setItem(TEXT_SLOT, new ItemBuilder(Material.STONE).setName("&#" + toHex(rgb) + "Example").build());
+                        getInventory().setItem(TEXT_SLOT, new ItemBuilder(Material.STONE).setName("&#" + toHex(rgb) + toHex(rgb)).build());
                     }
                 }.runTaskLater(Grapes.getGrapes(), 0);
             }
