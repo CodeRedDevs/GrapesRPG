@@ -2,9 +2,11 @@ package me.trqhxrd.grapesrpg.api.utils;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
+import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.common.GrapesPlayer;
 import net.minecraft.server.v1_16_R3.Packet;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashSet;
 import java.util.List;
@@ -35,9 +37,14 @@ public class PacketReader {
             @Override
             protected void decode(ChannelHandlerContext channelHandlerContext, Packet<?> packet, List<Object> list) throws Exception {
                 list.add(packet);
-                synchronized (tasks) {
-                    tasks.forEach(t -> t.execute(packet));
-                }
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        synchronized (tasks) {
+                            tasks.forEach(t -> t.execute(packet));
+                        }
+                    }
+                }.runTaskLater(Grapes.getGrapes(),0);
             }
         });
     }
