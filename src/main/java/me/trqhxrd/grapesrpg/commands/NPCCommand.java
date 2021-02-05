@@ -36,11 +36,11 @@ public class NPCCommand implements CommandExecutor {
 
             } else if (args.length == 1) {
                 if (args[0].equalsIgnoreCase("spawn")) {
-                    new NPC(sender.getName(), ((Player) sender).getLocation()).display();
+                    new NPC(sender.getName(), ((Player) sender).getLocation(), false).display();
                 }
             } else if (args.length == 2) {
                 if (args[0].equalsIgnoreCase("spawn")) {
-                    new NPC(args[1], ((Player) sender).getLocation()).display();
+                    new NPC(args[1], ((Player) sender).getLocation(), false).display();
                 }
             }
         }
