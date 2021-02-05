@@ -5,7 +5,7 @@ import me.trqhxrd.grapesrpg.api.inventories.Menu;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipe;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipeChoice;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesShapedRecipe;
-import me.trqhxrd.grapesrpg.api.utils.ItemBuilder;
+import me.trqhxrd.grapesrpg.api.utils.items.ItemBuilder;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
 import me.trqhxrd.grapesrpg.api.utils.group.Group2;
 import org.bukkit.Material;

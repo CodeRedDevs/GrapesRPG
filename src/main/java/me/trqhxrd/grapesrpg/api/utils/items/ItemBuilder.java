@@ -1,6 +1,8 @@
-package me.trqhxrd.grapesrpg.api.utils;
+package me.trqhxrd.grapesrpg.api.utils.items;
 
 import com.google.common.base.Preconditions;
+import me.trqhxrd.grapesrpg.api.utils.Builder;
+import me.trqhxrd.grapesrpg.api.utils.Utils;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;

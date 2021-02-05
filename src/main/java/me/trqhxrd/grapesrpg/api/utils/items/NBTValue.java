@@ -1,4 +1,4 @@
-package me.trqhxrd.grapesrpg.api.utils;
+package me.trqhxrd.grapesrpg.api.utils.items;
 
 import java.util.Arrays;
 import java.util.Collection;

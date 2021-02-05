@@ -2,7 +2,7 @@ package me.trqhxrd.grapesrpg.game.inventories;
 
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.inventories.Menu;
-import me.trqhxrd.grapesrpg.api.utils.ItemBuilder;
+import me.trqhxrd.grapesrpg.api.utils.items.ItemBuilder;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;

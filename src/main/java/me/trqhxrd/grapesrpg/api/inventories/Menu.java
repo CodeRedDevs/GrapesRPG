@@ -1,6 +1,6 @@
 package me.trqhxrd.grapesrpg.api.inventories;
 
-import me.trqhxrd.grapesrpg.api.utils.ItemBuilder;
+import me.trqhxrd.grapesrpg.api.utils.items.ItemBuilder;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

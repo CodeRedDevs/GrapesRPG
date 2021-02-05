@@ -1,6 +1,6 @@
 package me.trqhxrd.grapesrpg.api.objects.item;
 
-import me.trqhxrd.grapesrpg.api.utils.NBTValue;
+import me.trqhxrd.grapesrpg.api.utils.items.NBTValue;
 import net.minecraft.server.v1_16_R3.NBTTagCompound;
 import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;

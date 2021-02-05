@@ -2,6 +2,8 @@ package me.trqhxrd.grapesrpg.api.objects.entity.npc;
 
 import com.mojang.authlib.GameProfile;
 import me.trqhxrd.grapesrpg.Grapes;
+import me.trqhxrd.grapesrpg.api.common.GrapesPlayer;
+import me.trqhxrd.grapesrpg.api.event.GrapesPlayerClickNPCEvent;
 import net.minecraft.server.v1_16_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -12,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,6 +43,10 @@ public class NPC extends EntityPlayer {
      */
     private final boolean tablist;
 
+    /**
+     * This list contains all tasks, which will be executed as soon as the NPC gets clicked.
+     */
+    private final List<NPCTask> tasks = new ArrayList<>();
 
     /**
      * This constructor creates a new NPC.
@@ -94,6 +101,8 @@ public class NPC extends EntityPlayer {
         this.npcId = id;
         this.tablist = tablist;
         this.setLocation(location);
+
+        this.addTask((operator, type) -> Bukkit.getPluginManager().callEvent(new GrapesPlayerClickNPCEvent(operator, this, type)));
 
         if (skin != null) skin.apply(this);
 
@@ -162,5 +171,29 @@ public class NPC extends EntityPlayer {
      */
     public UUID getNpcId() {
         return npcId;
+    }
+
+    /**
+     * This method runs all tasks assigned to this NPC.
+     *
+     * @param type     The Type of click. Can be left-click or right-click.
+     * @param operator The {@link GrapesPlayer}, who clicked the NPC.
+     */
+    public void callTasks(GrapesPlayer operator, ClickType type) {
+        synchronized (tasks) {
+            tasks.forEach(t -> t.click(operator, type));
+        }
+    }
+
+    /**
+     * This method adds all given tasks to the npc as soon as it is possible.
+     * Sometimes it isn't possible, because the NPC just got clicked and the list cant be edited or a {@link java.util.ConcurrentModificationException} would be thrown.
+     *
+     * @param tasks An array of tasks, which contains all tasks, you want to add.
+     */
+    public void addTask(NPCTask... tasks) {
+        synchronized (this.tasks) {
+            Collections.addAll(this.tasks, tasks);
+        }
     }
 }

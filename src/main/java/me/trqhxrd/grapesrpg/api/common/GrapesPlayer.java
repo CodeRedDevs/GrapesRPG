@@ -3,9 +3,8 @@ package me.trqhxrd.grapesrpg.api.common;
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.event.GrapesPlayerInitEvent;
 import me.trqhxrd.grapesrpg.api.utils.PacketReader;
-import me.trqhxrd.grapesrpg.api.utils.PacketTask;
 import me.trqhxrd.grapesrpg.api.utils.Prefix;
-import net.minecraft.server.v1_16_R3.Packet;
+import me.trqhxrd.grapesrpg.game.tasks.packet.NPCInteractionTask;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -36,6 +35,10 @@ public class GrapesPlayer {
      */
     private final Player spigotPlayer;
 
+    /**
+     * This is the PacketReader of the the Player.
+     * Everytime the Player sends a Packet, it will run all the tasks in this PacketReader.
+     */
     private final PacketReader packetReader;
 
     /**
@@ -51,6 +54,7 @@ public class GrapesPlayer {
         Bukkit.getPluginManager().callEvent(event);
 
         this.packetReader = new PacketReader(this);
+        new NPCInteractionTask(this);
 
         if (!event.isCancelled()) players.add(this);
     }

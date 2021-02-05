@@ -3,13 +3,11 @@ package me.trqhxrd.grapesrpg.api.objects.item;
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.attribute.Serializable;
 import me.trqhxrd.grapesrpg.api.utils.Builder;
-import me.trqhxrd.grapesrpg.api.utils.NBTReader;
-import me.trqhxrd.grapesrpg.api.utils.NBTValue;
+import me.trqhxrd.grapesrpg.api.utils.items.NBTReader;
+import me.trqhxrd.grapesrpg.api.utils.items.NBTValue;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
 import me.trqhxrd.grapesrpg.api.utils.group.Group2;
-import net.minecraft.server.v1_16_R3.NBTTagCompound;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
