@@ -112,6 +112,7 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      * @param id         The id of the new item.
      * @param material   The material of the new item.
      * @param name       The name of the new item. Can be left empty in which case the name of the item will be set to it's material name in the players language.
+     * @param rarity     The rarity of the new item.
      * @param nbtEntries The NBT-Values, that will be set to the item.
      */
     @SafeVarargs

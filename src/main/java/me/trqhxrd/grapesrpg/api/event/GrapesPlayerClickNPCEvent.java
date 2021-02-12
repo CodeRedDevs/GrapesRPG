@@ -37,6 +37,8 @@ public class GrapesPlayerClickNPCEvent extends GrapesPlayerEvent {
 
     /**
      * Required by Bukkit.
+     *
+     * @return A HandlerList.
      */
     public static HandlerList getHandlerList() {
         return handlerList;

@@ -91,7 +91,6 @@ public class Utils {
     }
 
     /**
-     * <<<<<<< HEAD
      * Sends a message to a player with a custom prefix.
      *
      * @param p       The custom prefix.

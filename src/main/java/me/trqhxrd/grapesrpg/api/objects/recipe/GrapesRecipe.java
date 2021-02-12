@@ -63,7 +63,8 @@ public abstract class GrapesRecipe {
      * This method checks, if the matrix, which is given in the parameters, is valid for the recipe.
      * Most commonly you get the matrix from <code>((CraftingInventory) inv).getMatrix()</code>
      *
-     * @param matrix An array of items with the length of 9. Index 0 is the top left corner. Index 1 is the middle of the top row and so on.
+     * @param matrix   An array of items with the length of 9. Index 0 is the top left corner. Index 1 is the middle of the top row and so on.
+     * @param bindings An array of binding items
      * @return A Boolean. If it's true, the matrix is valid.
      */
     public abstract boolean check(ItemStack[] matrix, ItemStack[] bindings);

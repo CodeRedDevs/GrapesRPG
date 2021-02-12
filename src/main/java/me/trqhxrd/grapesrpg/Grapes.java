@@ -161,6 +161,8 @@ public class Grapes extends JavaPlugin {
     /**
      * This method clears the Collection of recipes and loads all recipes new from files.
      * This method can be used to reload the recipes without restarting the server.
+     *
+     * @param force If set to true, it will override old recipes.
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void reloadRecipes(boolean force) {
