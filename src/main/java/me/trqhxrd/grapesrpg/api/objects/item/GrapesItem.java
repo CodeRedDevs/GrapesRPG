@@ -3,10 +3,11 @@ package me.trqhxrd.grapesrpg.api.objects.item;
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.attribute.Serializable;
 import me.trqhxrd.grapesrpg.api.utils.Builder;
-import me.trqhxrd.grapesrpg.api.utils.items.NBTReader;
-import me.trqhxrd.grapesrpg.api.utils.items.NBTValue;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
 import me.trqhxrd.grapesrpg.api.utils.group.Group2;
+import me.trqhxrd.grapesrpg.api.utils.group.Group3;
+import me.trqhxrd.grapesrpg.api.utils.items.NBTReader;
+import me.trqhxrd.grapesrpg.api.utils.items.NBTValue;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -20,6 +21,8 @@ import java.util.*;
  */
 public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> {
 
+    public static final Group3<Integer, Integer, Integer> DEFAULT_STATS = new Group3<>(1, 0, 0);
+
     /**
      * Any custom NBT-Tags.
      * The Key is the path for the value.
@@ -27,30 +30,39 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      * ("test.helloWorld", "value" -> {test: {helloWorld:value}})
      */
     private final Map<String, NBTValue<?>> nbt;
-
+    /**
+     * This field contains all information about the items protection or damage.
+     * This field is a {@link Group3}.
+     * The physical damage / protection is stored in a field called {@code x}.
+     * The magical damage / protection is stored in a field called {@code y}.
+     * The void damage / protection is stored in a field called {@code z}.
+     */
+    private Group3<Integer, Integer, Integer> stats;
+    /**
+     * This field contains the type of the item.
+     * It can either be "ARMOR", "MELEE" or "RANGED".
+     * @see ItemType
+     */
+    private ItemType type;
     /**
      * The Rarity of the item.
      */
     private Rarity rarity;
-
     /**
      * The Item-Id.
      * Used for binding abilities to the item.
      */
     private int id;
-
     /**
      * The Material of the Item (e.g. Diamond Sword)
      * Used for generating the item correctly.
      */
     private Material material;
-
     /**
      * The name of the item.
      * Used for naming the item.
      */
     private String name;
-
     /**
      * The amount of the item.
      */
@@ -63,7 +75,7 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      * @param material The material of the new item.
      */
     public GrapesItem(int id, Material material) {
-        this(id, material, null, 1, Rarity.COMMON, new HashMap<>());
+        this(id, material, null, 1, Rarity.DEFAULT_RARITY, DEFAULT_STATS, ItemType.MELEE, new HashMap<>());
     }
 
     /**
@@ -74,7 +86,22 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      * @param name     The name of the new item. Can be left empty in which case the name of the item will be set to it's material name in the players language.
      */
     public GrapesItem(int id, Material material, String name) {
-        this(id, material, name, 1, Rarity.COMMON, new HashMap<>());
+        this(id, material, name, 1, Rarity.DEFAULT_RARITY, DEFAULT_STATS, ItemType.MELEE, new HashMap<>());
+    }
+
+    /**
+     * A basic constructor to create a new GrapesItem.
+     *
+     * @param id             The id of the new item.
+     * @param material       The material of the new item.
+     * @param name           The name of the new item. Can be left empty in which case the name of the item will be set to it's material name in the players language.
+     * @param rarity         The rarity of the item.
+     * @param physicalDamage The physical damage, the item is supposed to deal.
+     * @param magicalDamage  The magical damage, the item is supposed to deal.
+     * @param voidDamage     The void damage, the item is supposed to deal.
+     */
+    public GrapesItem(int id, Material material, String name, Rarity rarity, int physicalDamage, int magicalDamage, int voidDamage) {
+        this(id, material, name, 1, rarity, physicalDamage, magicalDamage, voidDamage, ItemType.MELEE, new HashMap<>());
     }
 
     /**
@@ -87,7 +114,7 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      */
     @SafeVarargs
     public GrapesItem(int id, Material material, String name, Rarity rarity, Group2<String, NBTValue<?>>... nbtEntries) {
-        this(id, material, name, 1, rarity);
+        this(id, material, name, 1, rarity, DEFAULT_STATS, ItemType.MELEE, new HashMap<>());
         for (Group2<String, NBTValue<?>> entry : nbtEntries) this.nbt.put(entry.getX(), entry.getY());
     }
 
@@ -101,7 +128,25 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      * @param rarity   The rarity of the item.
      */
     public GrapesItem(int id, Material material, String name, int amount, Rarity rarity) {
-        this(id, material, name, amount, rarity, new HashMap<>());
+        this(id, material, name, amount, rarity, DEFAULT_STATS, ItemType.MELEE, new HashMap<>());
+    }
+
+    /**
+     * A constructor, which supports the items amount to be given.
+     *
+     * @param id            The items id.
+     * @param material      The Material of the item.
+     * @param name          The name of the item. If black, will be set to the materials name.
+     * @param amount        The amount of the item. (e.g. 64 = a stack).
+     * @param rarity        The rarity of the item.
+     * @param nbt           The custom nbt-tags, you want to set.
+     * @param statsPhysical The physical damage / protection, that the item deals on hit / protects against on impact.
+     * @param statsMagical  The magical damage / protection, that the item deals on hit / protects against on impact.
+     * @param statsVoid     The void damage / protection, that the item deals on hit / protects against on impact.
+     * @param type          This defines the type of the item.
+     */
+    public GrapesItem(int id, Material material, String name, int amount, Rarity rarity, int statsPhysical, int statsMagical, int statsVoid, ItemType type, Map<String, NBTValue<?>> nbt) {
+        this(id, material, name, amount, rarity, new Group3<>(statsPhysical, statsMagical, statsVoid), type, nbt);
     }
 
     /**
@@ -113,14 +158,18 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      * @param amount   The amount of the item. (e.g. 64 = a stack).
      * @param rarity   The rarity of the item.
      * @param nbt      The custom nbt-tags, you want to set.
+     * @param stats    The  damage / protection, that the item deals on hit / protects against on impact.
+     * @param type     This defines the type of the item.
      */
-    public GrapesItem(int id, Material material, String name, int amount, Rarity rarity, Map<String, NBTValue<?>> nbt) {
+    public GrapesItem(int id, Material material, String name, int amount, Rarity rarity, Group3<Integer, Integer, Integer> stats, ItemType type, Map<String, NBTValue<?>> nbt) {
         this.nbt = nbt;
         this.id = id;
         this.material = material;
         this.name = name;
         this.amount = amount;
         this.rarity = rarity;
+        this.stats = stats;
+        this.type = type;
     }
 
     /**
@@ -140,6 +189,18 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
             item.setName((String) item.getNbt().get("grapes.name").getValue());
             item.setRarity(Rarity.getById(((int) item.getNbt().get("grapes.rarity").getValue())));
 
+            for (String s : item.getNbt().keySet()) System.out.println(s + " ---> " + item.getNbt().get(s).getValue());
+
+            Group3<Integer, Integer, Integer> statsNew = new Group3<>(DEFAULT_STATS);
+            if (item.getNbt().containsKey("grapes.stats.physical")) statsNew.setX((Integer) item.getNbt().get("grapes.stats.physical").getValue());
+            if (item.getNbt().containsKey("grapes.stats.magical")) statsNew.setY((Integer) item.getNbt().get("grapes.stats.magical").getValue());
+            if (item.getNbt().containsKey("grapes.stats.void")) statsNew.setZ((Integer) item.getNbt().get("grapes.stats.void").getValue());
+            item.setStats(statsNew);
+
+            ItemType typeNew = ItemType.DEFAULT_TYPE;
+            if (item.getNbt().containsKey("grapes.stats.type")) typeNew = ItemType.valueOf(((String) item.getNbt().get("grapes.stats.type").getValue()));
+            item.setType(typeNew);
+
             if (item.getRarity() == null) item.setRarity(Rarity.DEFAULT_RARITY);
 
             // Removing all NBT-Values, which are stored in variables in an object of this class.
@@ -150,6 +211,117 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
             return item;
         }
         return null;
+    }
+
+    /**
+     * This method is required by the interface {@link Serializable} but can't be forced, because it has to be static.
+     * It is used for deserializing an Object from a String.
+     *
+     * @param serializedObject The Serialized Object, which you want to deserialize.
+     * @return An Object of the Class, this method was written in. The serialized values got also copied into this object.
+     */
+    public static GrapesItem deserialize(String serializedObject) {
+        return Grapes.GSON.fromJson(serializedObject, GrapesItem.class);
+    }
+
+    /**
+     * Getter for the items damage and defence stats.
+     *
+     * @return The items damage and defence stats.
+     */
+    public Group3<Integer, Integer, Integer> getStats() {
+        return stats;
+    }
+
+    /**
+     * Setter for all of the items stats.
+     *
+     * @param stats The new damage / protections values for physical, magical and void damage / protection.
+     * @return The instance of the item. Can be used similar to a pipeline.
+     */
+    public GrapesItem setStats(Group3<Integer, Integer, Integer> stats) {
+        this.stats = stats;
+        return this;
+    }
+
+    /**
+     * Getter for the items type.
+     *
+     * @return The items type.
+     */
+    public ItemType getType() {
+        return type;
+    }
+
+    /**
+     * Setter for the items type.
+     *
+     * @param type The new type of the item.
+     * @return The instance of the item. Can be used similar to a pipeline.
+     */
+    public GrapesItem setType(ItemType type) {
+        this.type = type;
+        return this;
+    }
+
+    /**
+     * Getter for the physical damage / protection.
+     *
+     * @return The items physical damage / protection.
+     */
+    public int getPhysicalStats() {
+        return this.stats.getX();
+    }
+
+    /**
+     * Setter for the items physical damage / protection
+     *
+     * @param newStats The new physical damage / protection-value.
+     * @return The instance of the item. Can be used similar to a pipeline.
+     */
+    public GrapesItem setPhysicalStats(int newStats) {
+        this.stats.setX(newStats);
+        return this;
+    }
+
+    /**
+     * Getter for the magical damage / protection.
+     *
+     * @return The items magical damage / protection.
+     */
+    public int getMagicalStats() {
+        return this.stats.getY();
+    }
+
+    /**
+     * Setter for the items magical damage / protection
+     *
+     * @param newStats The new magical damage / protection-value.
+     * @return The instance of the item. Can be used similar to a pipeline.
+     */
+    public GrapesItem setMagicalStats(int newStats) {
+        this.stats.setY(newStats);
+        return this;
+    }
+
+    /**
+     * Getter for the void damage / protection.
+     *
+     * @return The items void damage / protection.
+     */
+    public int getVoidStats() {
+        return this.stats.getZ();
+    }
+
+    /**
+     * Setter for the items void damage / protection
+     *
+     * @param newStats The new void damage / protection-value.
+     * @return The instance of the item. Can be used similar to a pipeline.
+     */
+    public GrapesItem setVoidStats(int newStats) {
+        this.stats.setZ(newStats);
+        return this;
     }
 
     /**
@@ -346,17 +518,6 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
     }
 
     /**
-     * This method is able to create an object from a serialized String.
-     *
-     * @param s The String you want to deserialize.
-     * @return The Object.
-     */
-    @Override
-    public GrapesItem deserialize(String s) {
-        return Grapes.GSON.fromJson(s, this.getClass());
-    }
-
-    /**
      * This method can build an object of the type T.
      * You have to create your own Class, which implements the Builder.
      *
@@ -374,6 +535,20 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
                 meta.setDisplayName(Utils.translateColorCodes("&" + this.rarity.getColor() + this.name));
 
             List<String> lore = new ArrayList<>();
+
+            //Add item damage / protection
+            if (!this.stats.equals(DEFAULT_STATS)) {
+                String typeString = this.type.getLoreEntry();
+                String[] lines = new String[]{
+                        "    &#9d9fa3" + this.stats.getX() + " physical",
+                        "    &#ae55d4" + this.stats.getY() + " magical",
+                        "    &#441957" + this.stats.getZ() + " void",
+                };
+                lore.add("&7Type: " + typeString);
+                lore.add("&c&l&a&b");
+                lore.add("&cStats:");
+                lore.addAll(Arrays.asList(lines));
+            }
 
             //Add Rarity to item lore
             if (rarity != null) {
@@ -394,6 +569,10 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
         is = NBTEditor.setNBTValue(is, "grapes.name", this.name);
         is = NBTEditor.setNBTValue(is, "grapes.id", this.id);
         is = NBTEditor.setNBTValue(is, "grapes.rarity", this.rarity != null ? this.rarity.getId() : Rarity.DEFAULT_RARITY.getId());
+        is = NBTEditor.setNBTValue(is, "grapes.stats.type", this.type.name());
+        is = NBTEditor.setNBTValue(is, "grapes.stats.physical", this.stats.getX());
+        is = NBTEditor.setNBTValue(is, "grapes.stats.magical", this.stats.getY());
+        is = NBTEditor.setNBTValue(is, "grapes.stats.void", this.stats.getZ());
 
         return is;
     }

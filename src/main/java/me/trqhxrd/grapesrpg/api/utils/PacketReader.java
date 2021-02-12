@@ -27,26 +27,26 @@ public class PacketReader {
     }
 
     public void inject() {
-        ((CraftPlayer) player.getSpigotPlayer())
+        ((CraftPlayer) player.getWrappedObject())
                 .getHandle()
                 .playerConnection
                 .networkManager
                 .channel
                 .pipeline()
                 .addAfter("decoder", "grapes", new MessageToMessageDecoder<Packet<?>>() {
-            @Override
-            protected void decode(ChannelHandlerContext channelHandlerContext, Packet<?> packet, List<Object> list) throws Exception {
-                list.add(packet);
-                new BukkitRunnable() {
                     @Override
-                    public void run() {
-                        synchronized (tasks) {
-                            tasks.forEach(t -> t.execute(packet));
-                        }
+                    protected void decode(ChannelHandlerContext channelHandlerContext, Packet<?> packet, List<Object> list) throws Exception {
+                        list.add(packet);
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                synchronized (tasks) {
+                                    tasks.forEach(t -> t.execute(packet));
+                                }
+                            }
+                        }.runTaskLater(Grapes.getGrapes(), 0);
                     }
-                }.runTaskLater(Grapes.getGrapes(),0);
-            }
-        });
+                });
     }
 
     public void uninject() {

@@ -4,6 +4,7 @@ import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.event.GrapesPlayerInitEvent;
 import me.trqhxrd.grapesrpg.api.utils.PacketReader;
 import me.trqhxrd.grapesrpg.api.utils.Prefix;
+import me.trqhxrd.grapesrpg.api.utils.Wrapper;
 import me.trqhxrd.grapesrpg.game.tasks.packet.NPCInteractionTask;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -21,19 +22,13 @@ import java.util.function.Consumer;
  * @author Trqhxrd
  * @see Prefix
  */
-public class GrapesPlayer {
+public class GrapesPlayer extends Wrapper<Player> {
 
     /**
      * A list of all {@link GrapesPlayer}s.
      * Players will be added automatically added as soon as the {@link GrapesPlayer#GrapesPlayer(Player)} Constructor is called.
      */
     private static final Set<GrapesPlayer> players = new HashSet<>();
-
-    /**
-     * An instance of the legacy Spigot {@link Player}.
-     * Will be set in the {@link GrapesPlayer#GrapesPlayer(Player)} Constructor.
-     */
-    private final Player spigotPlayer;
 
     /**
      * This is the PacketReader of the the Player.
@@ -44,10 +39,10 @@ public class GrapesPlayer {
     /**
      * The Main Constructor for {@link GrapesPlayer}s.
      *
-     * @param spigotPlayer A legacy Player, for which you want to access new
+     * @param player A Player from the org.bukkit.entity Package.
      */
-    public GrapesPlayer(Player spigotPlayer) {
-        this.spigotPlayer = spigotPlayer;
+    public GrapesPlayer(Player player) {
+        super(player);
 
         //Call GrapesPlayerInitEvent
         GrapesPlayerInitEvent event = new GrapesPlayerInitEvent(Grapes.getGrapes(), this);
@@ -102,6 +97,7 @@ public class GrapesPlayer {
      * @return The GrapesPlayer with the name, which was give in the arguments. In case there is no Player with the given name, this method will return null.
      * @deprecated
      */
+    @Deprecated
     public static GrapesPlayer getByName(String name) {
         for (GrapesPlayer p : GrapesPlayer.getPlayers())
             if (p.getName().equals(name)) return p;
@@ -127,19 +123,11 @@ public class GrapesPlayer {
      * @return {@literal  true -> player exists / false -> player doesn't exists.}
      * @deprecated
      */
+    @Deprecated
     public static boolean exists(String name) {
         for (GrapesPlayer player : players)
             if (player.getName().equals(name)) return true;
         return false;
-    }
-
-    /**
-     * Returns the legacy-spigot-{@link Player}.
-     *
-     * @return The Spigot-Player, for which this is the extension.
-     */
-    public Player getSpigotPlayer() {
-        return spigotPlayer;
     }
 
     /**
@@ -148,7 +136,7 @@ public class GrapesPlayer {
      * @return The players name.
      */
     public String getName() {
-        return spigotPlayer.getName();
+        return wrappedObject.getName();
     }
 
     /**
@@ -157,7 +145,7 @@ public class GrapesPlayer {
      * @return The players {@link Location}.
      */
     public Location getLocation() {
-        return spigotPlayer.getLocation();
+        return wrappedObject.getLocation();
     }
 
     /**
@@ -185,9 +173,14 @@ public class GrapesPlayer {
      * @return The Players UUID.
      */
     public UUID getUniqueId() {
-        return spigotPlayer.getUniqueId();
+        return wrappedObject.getUniqueId();
     }
 
+    /**
+     * Getter for the Players PacketReader.
+     *
+     * @return The GrapesPlayers PacketReader.
+     */
     public PacketReader getPacketReader() {
         return packetReader;
     }

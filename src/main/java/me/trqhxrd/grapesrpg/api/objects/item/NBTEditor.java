@@ -11,7 +11,7 @@ import java.util.Collection;
 /**
  * This class contains all methods for storing nbt data onto an ItemStack.
  */
-public   class NBTEditor {
+public class NBTEditor {
 
     /**
      * This method is able to set an NBT-Tag to an ItemStack.

@@ -40,6 +40,17 @@ public class GrapesShapelessRecipe extends GrapesRecipe implements Serializable<
     }
 
     /**
+     * This method is required by the interface {@link Serializable} but can't be forced, because it has to be static.
+     * It is used for deserializing an Object from a String.
+     *
+     * @param serializedObject The Serialized Object, which you want to deserialize.
+     * @return An Object of the Class, this method was written in. The serialized values got also copied into this object.
+     */
+    public static GrapesShapelessRecipe deserialize(String serializedObject) {
+        return Grapes.GSON.fromJson(serializedObject, GrapesShapelessRecipe.class);
+    }
+
+    /**
      * This method adds an ingredient in a certain amount.
      *
      * @param choice The ingredient, which you want to add.
@@ -167,17 +178,6 @@ public class GrapesShapelessRecipe extends GrapesRecipe implements Serializable<
     @Override
     public String serialize() {
         return this.serialize(this);
-    }
-
-    /**
-     * This method is able to create an object from a serialized String.
-     *
-     * @param s The String you want to deserialize.
-     * @return The Object.
-     */
-    @Override
-    public GrapesShapelessRecipe deserialize(String s) {
-        return Grapes.GSON.fromJson(s, GrapesShapelessRecipe.class);
     }
 
     /**

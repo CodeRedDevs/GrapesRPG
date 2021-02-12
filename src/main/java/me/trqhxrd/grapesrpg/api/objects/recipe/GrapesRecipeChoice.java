@@ -102,6 +102,17 @@ public class GrapesRecipeChoice implements Serializable<GrapesRecipeChoice> {
     }
 
     /**
+     * This method is required by the interface {@link Serializable} but can't be forced, because it has to be static.
+     * It is used for deserializing an Object from a String.
+     *
+     * @param serializedObject The Serialized Object, which you want to deserialize.
+     * @return An Object of the Class, this method was written in. The serialized values got also copied into this object.
+     */
+    public static GrapesRecipeChoice deserialize(String serializedObject) {
+        return Grapes.GSON.fromJson(serializedObject, GrapesRecipeChoice.class);
+    }
+
+    /**
      * This method returns true, if the mode is set to {@link Mode#MATERIAL} and the given Material matches one of the materials in the set.
      *
      * @param m The Material, for which you want to check, if it is valid.
@@ -229,17 +240,6 @@ public class GrapesRecipeChoice implements Serializable<GrapesRecipeChoice> {
     @Override
     public String serialize() {
         return this.serialize(this);
-    }
-
-    /**
-     * This method is able to create an object from a serialized String.
-     *
-     * @param s The String you want to deserialize.
-     * @return The Object.
-     */
-    @Override
-    public GrapesRecipeChoice deserialize(String s) {
-        return Grapes.GSON.fromJson(s, GrapesRecipeChoice.class);
     }
 
     /**

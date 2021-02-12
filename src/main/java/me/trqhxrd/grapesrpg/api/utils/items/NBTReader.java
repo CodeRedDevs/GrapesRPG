@@ -93,14 +93,14 @@ public class NBTReader {
 
         for (int i = 0; i < list.size(); i++) {
             String path = list.get(i);
-            if (path != null && !path.isEmpty() && !path.isBlank()) {
+            if (path != null && !path.isBlank()) {
                 if (getFolder(nbt, path) != null) {
                     nbt = getFolder(nbt, path);
-                    for (String key : Objects.requireNonNull(nbt).getKeys()) {
+                    for (String key : Objects.requireNonNull(nbt).getKeys())
                         list.add(!Objects.requireNonNull(path).isBlank() ? path + "." + key : key);
-                    }
                 }
             }
+            System.out.println(list.get(i));
         }
 
         for (String s : list) {
@@ -130,12 +130,12 @@ public class NBTReader {
      */
     private static NBTTagCompound getFolder(NBTTagCompound root, String name) {
         String[] split = name.split("\\.");
-        for (String s : split)
-            try {
-                if (root.get(s) instanceof NBTTagCompound) root = root.getCompound(s);
-                else return null;
-            } catch (Exception ignored) {
-            }
+        String part = split[split.length - 1];
+        try {
+            if (root.get(part) instanceof NBTTagCompound) root = root.getCompound(part);
+            else return null;
+        } catch (Exception ignored) {
+        }
         return root;
     }
 }

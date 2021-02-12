@@ -5,6 +5,6 @@ import org.bukkit.Material;
 
 public class PlantFiber extends GrapesItem {
     public PlantFiber() {
-        super(10,Material.STRING,"Plant Fiber");
+        super(10, Material.STRING, "Plant Fiber");
     }
 }

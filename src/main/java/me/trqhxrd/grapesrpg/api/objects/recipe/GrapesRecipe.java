@@ -2,8 +2,8 @@ package me.trqhxrd.grapesrpg.api.objects.recipe;
 
 import com.google.gson.JsonObject;
 import me.trqhxrd.grapesrpg.Grapes;
-import me.trqhxrd.grapesrpg.game.inventories.CraftingMenu;
 import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
+import me.trqhxrd.grapesrpg.game.inventories.CraftingMenu;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashSet;

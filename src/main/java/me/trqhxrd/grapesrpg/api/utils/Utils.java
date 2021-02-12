@@ -66,7 +66,7 @@ public class Utils {
      * @param message The message itself.
      */
     public void sendMessage(GrapesPlayer player, String message) {
-        player.getSpigotPlayer().sendMessage(translateColorCodes(prefix.getRaw() + message));
+        player.getWrappedObject().sendMessage(translateColorCodes(prefix.getRaw() + message));
     }
 
     /**
@@ -87,7 +87,7 @@ public class Utils {
      * @param message The message, which you want to send.
      */
     public void sendMessage(Prefix p, GrapesPlayer player, String message) {
-        player.getSpigotPlayer().sendMessage(translateColorCodes(p.getRaw() + message));
+        player.getWrappedObject().sendMessage(translateColorCodes(p.getRaw() + message));
     }
 
     /**

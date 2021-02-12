@@ -3,9 +3,11 @@
 ---
 
 ### Development:
+
 Head of development: Trqhxrd
 
 Developers:
+
 1. Trqhxrd
 1. Tabbyplayz
 
@@ -17,7 +19,8 @@ Head of design: Tabbyplayz
 
 Resources: Tabbyplayz
 
-Structures: 
+Structures:
+
 1. Tabbyplayz
 1. oCxqp
 

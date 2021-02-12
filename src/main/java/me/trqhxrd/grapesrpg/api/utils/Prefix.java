@@ -85,6 +85,7 @@ public class Prefix {
      * @return The colorized version of raw.
      * @deprecated
      */
+    @Deprecated
     public String colorize(char colorChar) {
         this.raw = ChatColor.translateAlternateColorCodes(colorChar, raw);
         return this.raw;
