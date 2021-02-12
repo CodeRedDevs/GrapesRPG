@@ -1,4 +1,4 @@
-package me.trqhxrd.grapesrpg.api.utils;
+package me.trqhxrd.grapesrpg.api.utils.packet;
 
 import net.minecraft.server.v1_16_R3.Packet;
 

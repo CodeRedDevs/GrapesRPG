@@ -13,6 +13,7 @@ import me.trqhxrd.grapesrpg.commands.GrapesCommand;
 import me.trqhxrd.grapesrpg.commands.MaterialCommand;
 import me.trqhxrd.grapesrpg.commands.NPCCommand;
 import me.trqhxrd.grapesrpg.event.*;
+import me.trqhxrd.grapesrpg.game.GameClock;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -55,6 +56,8 @@ public class Grapes extends JavaPlugin {
      */
     private Utils utils;
 
+    private GameClock clock;
+
     /**
      * Never use this constructor.
      * This is only used for testing.
@@ -96,6 +99,9 @@ public class Grapes extends JavaPlugin {
     public void onEnable() {
         grapes = this;
         this.utils = new Utils(Prefix.of("&c[&aGra&bpes&c] &7"));
+        this.clock = new GameClock();
+        this.clock.start();
+
         for (Player p : Bukkit.getOnlinePlayers()) new GrapesPlayer(p);
 
         //LOAD RECIPES FROM FILES
@@ -103,6 +109,8 @@ public class Grapes extends JavaPlugin {
 
         //Registering Listeners:
         new AsyncPlayerChatListener();
+        new EntityDamageByEntityListener();
+        new EntityRegainHeathListener();
         new InventoryClickListener();
         new InventoryCloseListener();
         new PlayerJoinListener();

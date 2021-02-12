@@ -100,7 +100,6 @@ public class NBTReader {
                         list.add(!Objects.requireNonNull(path).isBlank() ? path + "." + key : key);
                 }
             }
-            System.out.println(list.get(i));
         }
 
         for (String s : list) {
@@ -115,7 +114,6 @@ public class NBTReader {
 
                     out.put(s, new NBTValue.IntegerArray(ints));
                 } else if (base instanceof NBTTagDouble) out.put(s, new NBTValue.Double(((NBTTagDouble) base).asDouble()));
-                else if (!(base instanceof NBTTagCompound)) throw new IllegalArgumentException("The path " + s + " does not contain a compatible data type");
             }
         }
         return out;

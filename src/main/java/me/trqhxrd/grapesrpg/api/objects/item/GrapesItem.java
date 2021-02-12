@@ -6,6 +6,7 @@ import me.trqhxrd.grapesrpg.api.utils.Builder;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
 import me.trqhxrd.grapesrpg.api.utils.group.Group2;
 import me.trqhxrd.grapesrpg.api.utils.group.Group3;
+import me.trqhxrd.grapesrpg.api.utils.items.NBTEditor;
 import me.trqhxrd.grapesrpg.api.utils.items.NBTReader;
 import me.trqhxrd.grapesrpg.api.utils.items.NBTValue;
 import org.bukkit.Material;
@@ -41,6 +42,7 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
     /**
      * This field contains the type of the item.
      * It can either be "ARMOR", "MELEE" or "RANGED".
+     *
      * @see ItemType
      */
     private ItemType type;
@@ -186,10 +188,10 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
             item.getNbt().clear();
             item.getNbt().putAll(NBTReader.getAllNBTValues(is));
 
-            item.setName((String) item.getNbt().get("grapes.name").getValue());
-            item.setRarity(Rarity.getById(((int) item.getNbt().get("grapes.rarity").getValue())));
-
-            for (String s : item.getNbt().keySet()) System.out.println(s + " ---> " + item.getNbt().get(s).getValue());
+            if (item.getNbt().containsKey("grapes.name")) item.setName((String) item.getNbt().get("grapes.name").getValue());
+            else item.setName(null);
+            if (item.getNbt().containsKey("grapes.rarity")) item.setRarity(Rarity.getById(((int) item.getNbt().get("grapes.rarity").getValue())));
+            else item.setRarity(Rarity.DEFAULT_RARITY);
 
             Group3<Integer, Integer, Integer> statsNew = new Group3<>(DEFAULT_STATS);
             if (item.getNbt().containsKey("grapes.stats.physical")) statsNew.setX((Integer) item.getNbt().get("grapes.stats.physical").getValue());

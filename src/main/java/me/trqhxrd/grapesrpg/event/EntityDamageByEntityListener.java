@@ -1,0 +1,72 @@
+package me.trqhxrd.grapesrpg.event;
+
+import me.trqhxrd.grapesrpg.Grapes;
+import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
+import me.trqhxrd.grapesrpg.api.objects.item.ItemType;
+import me.trqhxrd.grapesrpg.api.utils.group.Group3;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.inventory.EntityEquipment;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
+
+public class EntityDamageByEntityListener implements Listener {
+
+    public EntityDamageByEntityListener() {
+        Bukkit.getPluginManager().registerEvents(this, Grapes.getGrapes());
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
+        if (e.getDamager() instanceof LivingEntity) {
+            EntityEquipment attackEquipment = ((LivingEntity) e.getDamager()).getEquipment();
+            EntityEquipment armorEquipment = ((LivingEntity) e.getEntity()).getEquipment();
+
+            Group3<Integer, Integer, Integer> defenceValues = new Group3<>(0, 0, 0);
+            Group3<Integer, Integer, Integer> damageValues = new Group3<>(1, 0, 0);
+            Group3<Double, Double, Double> appliedDamage = new Group3<>(0., 0., 0.);
+            if (armorEquipment != null) {
+                ItemStack[] armorContents = armorEquipment.getArmorContents();
+                for (ItemStack is : armorContents) {
+                    if (is != null) {
+                        GrapesItem part = GrapesItem.fromItemStack(is);
+                        if (part != null && part.getType() == ItemType.ARMOR) {
+                            defenceValues.setX(defenceValues.getX() + part.getPhysicalStats());
+                            defenceValues.setY(defenceValues.getY() + part.getMagicalStats());
+                            defenceValues.setZ(defenceValues.getZ() + part.getVoidStats());
+                        }
+                    }
+                }
+                if (defenceValues.getX() > 196) defenceValues.setX(196);
+                if (defenceValues.getY() > 196) defenceValues.setY(196);
+                if (defenceValues.getZ() > 196) defenceValues.setZ(196);
+            }
+
+            if (attackEquipment != null) {
+                GrapesItem weapon = GrapesItem.fromItemStack(attackEquipment.getItem(EquipmentSlot.HAND));
+                if (weapon != null && weapon.getType() == ItemType.MELEE) damageValues = weapon.getStats();
+            }
+
+            appliedDamage.setX(((double) damageValues.getX()) / 200. * (200. - ((double) defenceValues.getX())));
+            appliedDamage.setY(((double) damageValues.getY()) / 200. * (200. - ((double) defenceValues.getY())));
+            appliedDamage.setZ(((double) damageValues.getZ()) / 200. * (200. - ((double) defenceValues.getZ())));
+            double damage = appliedDamage.getX() + appliedDamage.getY() + appliedDamage.getZ();
+
+            // Critical hits
+            if (!e.getDamager().isOnGround()) damage *= 1.5;
+
+            LivingEntity entity = ((LivingEntity) e.getEntity());
+            e.setDamage(0);
+            e.setCancelled(entity.getHealth() - damage <= 0);
+            entity.setHealth(Math.max(0, entity.getHealth() - damage));
+        }
+    }
+    /*
+    Damage Calculation:
+    1 Defence Point = 0.5% Damage Reduction
+    200 = Full damage reduction.
+     */
+}

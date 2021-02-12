@@ -1,4 +1,4 @@
-package me.trqhxrd.grapesrpg.api.utils;
+package me.trqhxrd.grapesrpg.api.utils.packet;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;

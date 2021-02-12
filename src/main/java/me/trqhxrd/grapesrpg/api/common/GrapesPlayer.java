@@ -2,7 +2,7 @@ package me.trqhxrd.grapesrpg.api.common;
 
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.event.GrapesPlayerInitEvent;
-import me.trqhxrd.grapesrpg.api.utils.PacketReader;
+import me.trqhxrd.grapesrpg.api.utils.packet.PacketReader;
 import me.trqhxrd.grapesrpg.api.utils.Prefix;
 import me.trqhxrd.grapesrpg.api.utils.Wrapper;
 import me.trqhxrd.grapesrpg.game.tasks.packet.NPCInteractionTask;
