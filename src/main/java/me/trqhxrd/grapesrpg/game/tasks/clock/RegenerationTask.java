@@ -3,6 +3,7 @@ package me.trqhxrd.grapesrpg.game.tasks.clock;
 import me.trqhxrd.grapesrpg.api.common.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.utils.clock.Clock;
 import me.trqhxrd.grapesrpg.api.utils.clock.ClockTask;
+import me.trqhxrd.grapesrpg.event.EntityDamageByEntityListener;
 import org.bukkit.attribute.Attribute;
 
 import java.util.Objects;
@@ -23,16 +24,18 @@ public class RegenerationTask implements ClockTask {
     public void execute(Clock operator) {
         if (operator.getIteration() % 20 == 0) {
             GrapesPlayer.getPlayers().forEach(p -> {
-                double maxHealth = Objects.requireNonNull(p.getWrappedObject().getAttribute(Attribute.GENERIC_MAX_HEALTH)).getValue();
-                if (p.getWrappedObject().getHealth() < maxHealth) {
-                    int foodLevel = p.getWrappedObject().getFoodLevel();
-                    float saturation = p.getWrappedObject().getSaturation();
-                    if (foodLevel >= 18) {
-                        p.getWrappedObject().setHealth(Math.min(maxHealth, p.getWrappedObject().getHealth() + 1));
-                        if (!(saturation - .5 >= 0)) p.getWrappedObject().setFoodLevel(foodLevel - 1);
-                        p.getWrappedObject().setSaturation((float) Math.max(0, saturation - .5));
+                if (!EntityDamageByEntityListener.getWaitForRegen().contains(p.getUniqueId())) {
+                    double maxHealth = Objects.requireNonNull(p.getWrappedObject().getAttribute(Attribute.GENERIC_MAX_HEALTH)).getValue();
+                    if (p.getWrappedObject().getHealth() < maxHealth) {
+                        int foodLevel = p.getWrappedObject().getFoodLevel();
+                        float saturation = p.getWrappedObject().getSaturation();
+                        if (foodLevel >= 18) {
+                            p.getWrappedObject().setHealth(Math.min(maxHealth, p.getWrappedObject().getHealth() + 1));
+                            if (!(saturation - .5 >= 0)) p.getWrappedObject().setFoodLevel(foodLevel - 1);
+                            p.getWrappedObject().setSaturation((float) Math.max(0, saturation - .5));
+                        }
                     }
-                }
+                } else EntityDamageByEntityListener.getWaitForRegen().remove(p.getUniqueId());
             });
         }
     }

@@ -6,6 +6,7 @@ import me.trqhxrd.grapesrpg.api.objects.item.ItemType;
 import me.trqhxrd.grapesrpg.api.utils.group.Group3;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -13,12 +14,43 @@ import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
+/**
+ * This listener handles the damage-system.
+ *
+ * @author Trqhxrd
+ */
 public class EntityDamageByEntityListener implements Listener {
 
+    /**
+     * This field stores data about players, who just got hit.
+     * This is used to disable healing during PVP.
+     */
+    private static final Set<UUID> waitForRegen = new HashSet<>();
+
+    /**
+     * This constructor registers the listener.
+     */
     public EntityDamageByEntityListener() {
         Bukkit.getPluginManager().registerEvents(this, Grapes.getGrapes());
     }
 
+    /**
+     * Getter for the set of UUIDs, which can't regenerate.
+     * @return The set of UUIDs.
+     */
+    public static Set<UUID> getWaitForRegen() {
+        return waitForRegen;
+    }
+
+    /**
+     * The Listener method.
+     *
+     * @param e This is an EntityDamageByEntityEvent.
+     */
     @EventHandler(ignoreCancelled = true)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
         if (e.getDamager() instanceof LivingEntity) {
@@ -62,11 +94,8 @@ public class EntityDamageByEntityListener implements Listener {
             e.setDamage(0);
             e.setCancelled(entity.getHealth() - damage <= 0);
             entity.setHealth(Math.max(0, entity.getHealth() - damage));
+
+            if (e.getEntity() instanceof Player) waitForRegen.add(e.getEntity().getUniqueId());
         }
     }
-    /*
-    Damage Calculation:
-    1 Defence Point = 0.5% Damage Reduction
-    200 = Full damage reduction.
-     */
 }

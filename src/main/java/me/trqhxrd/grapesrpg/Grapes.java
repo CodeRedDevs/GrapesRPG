@@ -115,6 +115,7 @@ public class Grapes extends JavaPlugin {
         new InventoryCloseListener();
         new PlayerJoinListener();
         new PlayerQuitListener();
+        new PlayerMoveListener();
         new PlayerInteractListener();
 
         //Registering Commands:
