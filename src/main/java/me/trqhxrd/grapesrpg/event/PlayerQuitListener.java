@@ -1,7 +1,7 @@
 package me.trqhxrd.grapesrpg.event;
 
 import me.trqhxrd.grapesrpg.Grapes;
-import me.trqhxrd.grapesrpg.api.common.GrapesPlayer;
+import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.event.GrapesPlayerQuitEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;

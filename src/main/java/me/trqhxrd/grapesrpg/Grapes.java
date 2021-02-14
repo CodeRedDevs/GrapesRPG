@@ -3,7 +3,7 @@ package me.trqhxrd.grapesrpg;
 import com.github.lalyos.jfiglet.FigletFont;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import me.trqhxrd.grapesrpg.api.common.GrapesPlayer;
+import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipe;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesShapedRecipe;
 import me.trqhxrd.grapesrpg.api.utils.Prefix;
@@ -14,6 +14,11 @@ import me.trqhxrd.grapesrpg.commands.MaterialCommand;
 import me.trqhxrd.grapesrpg.commands.NPCCommand;
 import me.trqhxrd.grapesrpg.event.*;
 import me.trqhxrd.grapesrpg.game.GameClock;
+import me.trqhxrd.grapesrpg.game.objects.item.armor.crop.CropArmorAbility;
+import me.trqhxrd.grapesrpg.game.objects.recipe.armor.crop.CropBootsRecipe;
+import me.trqhxrd.grapesrpg.game.objects.recipe.armor.crop.CropChestplateRecipe;
+import me.trqhxrd.grapesrpg.game.objects.recipe.armor.crop.CropHelmetRecipe;
+import me.trqhxrd.grapesrpg.game.objects.recipe.armor.crop.CropLeggingsRecipe;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -118,11 +123,19 @@ public class Grapes extends JavaPlugin {
         new PlayerMoveListener();
         new PlayerInteractListener();
 
+        new CropArmorAbility();
+
         //Registering Commands:
         new GrapesCommand();
         new ColorCommand();
         new MaterialCommand();
         new NPCCommand();
+
+        //Registering Recipes
+        this.addRecipe(new CropHelmetRecipe());
+        this.addRecipe(new CropChestplateRecipe());
+        this.addRecipe(new CropLeggingsRecipe());
+        this.addRecipe(new CropBootsRecipe());
     }
 
     /**

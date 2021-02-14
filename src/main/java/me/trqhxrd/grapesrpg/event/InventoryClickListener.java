@@ -2,6 +2,7 @@ package me.trqhxrd.grapesrpg.event;
 
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.inventories.Menu;
+import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -36,12 +37,23 @@ public class InventoryClickListener implements Listener {
      */
     @EventHandler()
     public void onInventoryClick(InventoryClickEvent e) {
+        ItemStack is = e.getCurrentItem();
+
+        // Update item lore on click
+        if (is != null) {
+            GrapesItem item = GrapesItem.fromItemStack(is);
+            if (item != null) {
+                e.setCurrentItem(item.build());
+            }
+        }
+
+        // Run Menu options
         if (e.getClickedInventory() != null) {
             InventoryHolder holder = e.getClickedInventory().getHolder();
             if (holder instanceof Menu) ((Menu) holder).handleMenuClick(e);
         }
 
-        ItemStack is = e.getCurrentItem();
+        // Update colors in meta etc.
         if (is != null) {
             ItemMeta meta = is.getItemMeta();
             if (meta != null) {

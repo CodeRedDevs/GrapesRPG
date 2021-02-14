@@ -1,10 +1,10 @@
 package me.trqhxrd.grapesrpg.api.utils;
 
-import me.trqhxrd.grapesrpg.api.common.GrapesPlayer;
+import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import org.bukkit.ChatColor;
 
 /**
- * This class represents a Prefix for a Message, which can be send to a Player using {@link me.trqhxrd.grapesrpg.api.common.GrapesPlayer#sendMessage(Prefix, String)} or {@link Utils#sendMessage(Prefix, GrapesPlayer, String)}.
+ * This class represents a Prefix for a Message, which can be send to a Player using {@link GrapesPlayer#sendMessage(Prefix, String)} or {@link Utils#sendMessage(Prefix, GrapesPlayer, String)}.
  *
  * @author Trqhxrd
  */

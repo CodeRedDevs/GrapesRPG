@@ -72,9 +72,9 @@ public class EntityDamageByEntityListener implements Listener {
                         }
                     }
                 }
-                if (defenceValues.getX() > 196) defenceValues.setX(196);
-                if (defenceValues.getY() > 196) defenceValues.setY(196);
-                if (defenceValues.getZ() > 196) defenceValues.setZ(196);
+                if (defenceValues.getX() > 975) defenceValues.setX(975);
+                if (defenceValues.getY() > 975) defenceValues.setY(975);
+                if (defenceValues.getZ() > 975) defenceValues.setZ(975);
             }
 
             if (attackEquipment != null) {
@@ -82,9 +82,9 @@ public class EntityDamageByEntityListener implements Listener {
                 if (weapon != null && weapon.getType() == ItemType.MELEE) damageValues = weapon.getStats();
             }
 
-            appliedDamage.setX(((double) damageValues.getX()) / 200. * (200. - ((double) defenceValues.getX())));
-            appliedDamage.setY(((double) damageValues.getY()) / 200. * (200. - ((double) defenceValues.getY())));
-            appliedDamage.setZ(((double) damageValues.getZ()) / 200. * (200. - ((double) defenceValues.getZ())));
+            appliedDamage.setX(((double) damageValues.getX()) / 1000. * (1000. - ((double) defenceValues.getX())));
+            appliedDamage.setY(((double) damageValues.getY()) / 1000. * (1000. - ((double) defenceValues.getY())));
+            appliedDamage.setZ(((double) damageValues.getZ()) / 1000. * (1000. - ((double) defenceValues.getZ())));
             double damage = appliedDamage.getX() + appliedDamage.getY() + appliedDamage.getZ();
 
             // Critical hits

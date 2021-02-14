@@ -1,6 +1,6 @@
 package me.trqhxrd.grapesrpg.game.tasks.clock;
 
-import me.trqhxrd.grapesrpg.api.common.GrapesPlayer;
+import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.utils.clock.Clock;
 import me.trqhxrd.grapesrpg.api.utils.clock.ClockTask;
 import me.trqhxrd.grapesrpg.event.EntityDamageByEntityListener;

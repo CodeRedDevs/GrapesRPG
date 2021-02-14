@@ -6,13 +6,16 @@ import me.trqhxrd.grapesrpg.api.utils.Builder;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
 import me.trqhxrd.grapesrpg.api.utils.group.Group2;
 import me.trqhxrd.grapesrpg.api.utils.group.Group3;
-import me.trqhxrd.grapesrpg.api.utils.items.NBTEditor;
-import me.trqhxrd.grapesrpg.api.utils.items.NBTReader;
-import me.trqhxrd.grapesrpg.api.utils.items.NBTValue;
+import me.trqhxrd.grapesrpg.api.utils.items.nbt.NBTEditor;
+import me.trqhxrd.grapesrpg.api.utils.items.nbt.NBTReader;
+import me.trqhxrd.grapesrpg.api.utils.items.nbt.NBTValue;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 
+import java.awt.*;
+import java.util.List;
 import java.util.*;
 
 /**
@@ -22,6 +25,9 @@ import java.util.*;
  */
 public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> {
 
+    /**
+     * The default damage-values of an item.
+     */
     public static final Group3<Integer, Integer, Integer> DEFAULT_STATS = new Group3<>(1, 0, 0);
 
     /**
@@ -69,6 +75,8 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      * The amount of the item.
      */
     private int amount;
+
+    private int[] color;
 
     /**
      * A basic constructor to create a new GrapesItem.
@@ -182,36 +190,47 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      * @return A GrapesItem, that has the same data as the ItemStack, which you gave as a parameter.
      */
     public static GrapesItem fromItemStack(ItemStack is) {
-        Integer id = NBTReader.getNBTValueInt(is, "grapes.id");
-        if (id != null) {
-            GrapesItem item = new GrapesItem(id, is.getType());
-            item.setAmount(is.getAmount());
-            item.getNbt().clear();
-            item.getNbt().putAll(NBTReader.getAllNBTValues(is));
+        if (is != null) {
+            Integer id = NBTReader.getNBTValueInt(is, "grapes.id");
+            if (id != null) {
+                GrapesItem item = new GrapesItem(id, is.getType());
+                item.setAmount(is.getAmount());
+                item.getNbt().clear();
+                item.getNbt().putAll(NBTReader.getAllNBTValues(is));
 
-            if (item.getNbt().containsKey("grapes.name")) item.setName((String) item.getNbt().get("grapes.name").getValue());
-            else item.setName(null);
-            if (item.getNbt().containsKey("grapes.rarity")) item.setRarity(Rarity.getById(((int) item.getNbt().get("grapes.rarity").getValue())));
-            else item.setRarity(Rarity.DEFAULT_RARITY);
+                if (is.getItemMeta() instanceof LeatherArmorMeta) {
+                    int[] color = new int[3];
+                    LeatherArmorMeta colorMeta = ((LeatherArmorMeta) is.getItemMeta());
+                    color[0] = colorMeta.getColor().getRed();
+                    color[1] = colorMeta.getColor().getGreen();
+                    color[2] = colorMeta.getColor().getBlue();
+                    item.setColor(color[0], color[1], color[2]);
+                }
 
-            Group3<Integer, Integer, Integer> statsNew = new Group3<>(DEFAULT_STATS);
-            if (item.getNbt().containsKey("grapes.stats.physical")) statsNew.setX((Integer) item.getNbt().get("grapes.stats.physical").getValue());
-            if (item.getNbt().containsKey("grapes.stats.magical")) statsNew.setY((Integer) item.getNbt().get("grapes.stats.magical").getValue());
-            if (item.getNbt().containsKey("grapes.stats.void")) statsNew.setZ((Integer) item.getNbt().get("grapes.stats.void").getValue());
-            item.setStats(statsNew);
+                if (item.getNbt().containsKey("grapes.name")) item.setName((String) item.getNbt().get("grapes.name").getValue());
+                else item.setName(null);
+                if (item.getNbt().containsKey("grapes.rarity")) item.setRarity(Rarity.getById(((int) item.getNbt().get("grapes.rarity").getValue())));
+                else item.setRarity(Rarity.DEFAULT_RARITY);
 
-            ItemType typeNew = ItemType.DEFAULT_TYPE;
-            if (item.getNbt().containsKey("grapes.stats.type")) typeNew = ItemType.valueOf(((String) item.getNbt().get("grapes.stats.type").getValue()));
-            item.setType(typeNew);
+                Group3<Integer, Integer, Integer> statsNew = new Group3<>(DEFAULT_STATS);
+                if (item.getNbt().containsKey("grapes.stats.physical")) statsNew.setX((Integer) item.getNbt().get("grapes.stats.physical").getValue());
+                if (item.getNbt().containsKey("grapes.stats.magical")) statsNew.setY((Integer) item.getNbt().get("grapes.stats.magical").getValue());
+                if (item.getNbt().containsKey("grapes.stats.void")) statsNew.setZ((Integer) item.getNbt().get("grapes.stats.void").getValue());
+                item.setStats(statsNew);
 
-            if (item.getRarity() == null) item.setRarity(Rarity.DEFAULT_RARITY);
+                ItemType typeNew = ItemType.DEFAULT_TYPE;
+                if (item.getNbt().containsKey("grapes.stats.type")) typeNew = ItemType.valueOf(((String) item.getNbt().get("grapes.stats.type").getValue()));
+                item.setType(typeNew);
 
-            // Removing all NBT-Values, which are stored in variables in an object of this class.
-            Set<String> remove = new HashSet<>();
-            for (String s : item.getNbt().keySet()) if (s.startsWith("grapes.")) remove.add(s);
-            for (String s : remove) item.getNbt().remove(s);
+                if (item.getRarity() == null) item.setRarity(Rarity.DEFAULT_RARITY);
 
-            return item;
+                // Removing all NBT-Values, which are stored in variables in an object of this class.
+                Set<String> remove = new HashSet<>();
+                for (String s : item.getNbt().keySet()) if (s.startsWith("grapes.")) remove.add(s);
+                for (String s : remove) item.getNbt().remove(s);
+
+                return item;
+            }
         }
         return null;
     }
@@ -499,6 +518,19 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
         return this;
     }
 
+    public GrapesItem setColor(java.awt.Color color) {
+        return this.setColor(org.bukkit.Color.fromRGB(color.getRed(), color.getGreen(), color.getBlue()));
+    }
+
+    public GrapesItem setColor(org.bukkit.Color color) {
+        this.color = new int[]{color.getRed(), color.getGreen(), color.getBlue()};
+        return this;
+    }
+
+    public GrapesItem setColor(int r, int g, int b) {
+        return this.setColor(new Color(r, g, b));
+    }
+
     /**
      * This method serializes an Object (t) into a String.
      *
@@ -536,6 +568,8 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
         if (meta != null) {
             if (this.name != null && !this.name.isBlank() && !this.name.isEmpty())
                 meta.setDisplayName(Utils.translateColorCodes("&" + this.rarity.getColor() + this.name));
+
+            if (meta instanceof LeatherArmorMeta && color != null) ((LeatherArmorMeta) meta).setColor(org.bukkit.Color.fromRGB(color[0], color[1], color[2]));
 
             List<String> lore = new ArrayList<>();
 

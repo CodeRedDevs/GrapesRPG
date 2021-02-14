@@ -1,4 +1,4 @@
-package me.trqhxrd.grapesrpg.api.utils.items;
+package me.trqhxrd.grapesrpg.api.utils.items.nbt;
 
 import net.minecraft.server.v1_16_R3.*;
 import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack;

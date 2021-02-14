@@ -1,7 +1,7 @@
 package me.trqhxrd.grapesrpg.api.event;
 
 import me.trqhxrd.grapesrpg.Grapes;
-import me.trqhxrd.grapesrpg.api.common.GrapesPlayer;
+import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipe;
 import me.trqhxrd.grapesrpg.game.inventories.CraftingMenu;
 import org.bukkit.event.HandlerList;
