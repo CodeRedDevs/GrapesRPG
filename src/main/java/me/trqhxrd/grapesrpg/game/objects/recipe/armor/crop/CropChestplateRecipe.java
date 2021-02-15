@@ -7,7 +7,7 @@ import org.bukkit.Material;
 public class CropChestplateRecipe extends GrapesShapedRecipe {
     public CropChestplateRecipe() {
         super(new CropChestplate());
-        super.setShape("aba","cde","fgh");
+        super.setShape("aba", "cde", "fgh");
         super.setIngredient('a', Material.WHEAT);
         super.setIngredient('c', Material.SUGAR_CANE);
         super.setIngredient('d', Material.PUMPKIN);

@@ -1,17 +1,12 @@
 package me.trqhxrd.grapesrpg.event;
 
-import me.trqhxrd.grapesrpg.Grapes;
-import org.bukkit.Bukkit;
+import me.trqhxrd.grapesrpg.api.attribute.Register;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 
+@Register
 public class EntityRegainHeathListener implements Listener {
-
-    public EntityRegainHeathListener() {
-        Bukkit.getPluginManager().registerEvents(this, Grapes.getGrapes());
-    }
-
     @EventHandler(ignoreCancelled = true)
     public void onEntityRegainHealth(EntityRegainHealthEvent e) {
         e.setCancelled(true);

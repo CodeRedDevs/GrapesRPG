@@ -1,10 +1,9 @@
 package me.trqhxrd.grapesrpg.event;
 
-import me.trqhxrd.grapesrpg.Grapes;
+import me.trqhxrd.grapesrpg.api.attribute.Register;
 import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
 import me.trqhxrd.grapesrpg.api.objects.item.ItemType;
 import me.trqhxrd.grapesrpg.api.utils.group.Group3;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,6 +22,7 @@ import java.util.UUID;
  *
  * @author Trqhxrd
  */
+@Register
 public class EntityDamageByEntityListener implements Listener {
 
     /**
@@ -32,14 +32,8 @@ public class EntityDamageByEntityListener implements Listener {
     private static final Set<UUID> waitForRegen = new HashSet<>();
 
     /**
-     * This constructor registers the listener.
-     */
-    public EntityDamageByEntityListener() {
-        Bukkit.getPluginManager().registerEvents(this, Grapes.getGrapes());
-    }
-
-    /**
      * Getter for the set of UUIDs, which can't regenerate.
+     *
      * @return The set of UUIDs.
      */
     public static Set<UUID> getWaitForRegen() {

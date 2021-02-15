@@ -1,8 +1,7 @@
 package me.trqhxrd.grapesrpg.game.objects.item.armor.crop;
 
-import me.trqhxrd.grapesrpg.Grapes;
+import me.trqhxrd.grapesrpg.api.attribute.Register;
 import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -21,25 +20,38 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * This is the listener, which handles the crop-armor.
+ * The crop armor is a set of armor, which isn't used for fighting.
+ * Instead, everytime you harvest a plant, the drop of that plant will be multiplied by a random factor.
+ *
+ * @author Trqhxrd
+ */
+@Register
 public class CropArmorAbility implements Listener {
 
-    private static final Set<Material> cropMaterials = new HashSet<>();
+    /**
+     * This set contains all materials, that can be multiplied by using the crop-armor.
+     */
+    private static final Set<Material> cropMaterials = new HashSet<>(
+            Arrays.asList(
+                    Material.WHEAT_SEEDS,
+                    Material.WHEAT,
+                    Material.CARROT,
+                    Material.CARROTS,
+                    Material.POTATO,
+                    Material.POTATOES,
+                    Material.BEETROOT,
+                    Material.BEETROOTS,
+                    Material.BEETROOT_SEEDS,
+                    Material.NETHER_WART)
+    );
 
-    public CropArmorAbility() {
-        Bukkit.getPluginManager().registerEvents(this, Grapes.getGrapes());
-        cropMaterials.addAll(Arrays.asList(
-                Material.WHEAT_SEEDS,
-                Material.WHEAT,
-                Material.CARROT,
-                Material.CARROTS,
-                Material.POTATO,
-                Material.POTATOES,
-                Material.BEETROOT,
-                Material.BEETROOTS,
-                Material.BEETROOT_SEEDS,
-                Material.NETHER_WART));
-    }
-
+    /**
+     * This is the listener method, that handles all the crop-operations.
+     *
+     * @param e A BlockBreakEvent
+     */
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();

@@ -1,7 +1,6 @@
 package me.trqhxrd.grapesrpg.event;
 
-import me.trqhxrd.grapesrpg.Grapes;
-import org.bukkit.Bukkit;
+import me.trqhxrd.grapesrpg.api.attribute.Register;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
@@ -18,14 +17,8 @@ import java.util.concurrent.ThreadLocalRandom;
  *
  * @author Trqhxrd
  */
+@Register
 public class PlayerMoveListener implements Listener {
-
-    /**
-     * This constructor registers the listener
-     */
-    public PlayerMoveListener() {
-        Bukkit.getPluginManager().registerEvents(this, Grapes.getGrapes());
-    }
 
     /**
      * The Handler-Method.

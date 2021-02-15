@@ -1,19 +1,14 @@
 package me.trqhxrd.grapesrpg.commands;
 
-import me.trqhxrd.grapesrpg.Grapes;
+import me.trqhxrd.grapesrpg.api.attribute.Register;
 import me.trqhxrd.grapesrpg.api.objects.entity.npc.NPC;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Objects;
-
+@Register(command = "npc")
 public class NPCCommand implements CommandExecutor {
-
-    public NPCCommand() {
-        Objects.requireNonNull(Grapes.getGrapes().getCommand("npc")).setExecutor(this);
-    }
 
     /**
      * Executes the given command, returning its success.

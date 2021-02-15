@@ -1,25 +1,18 @@
 package me.trqhxrd.grapesrpg.commands;
 
 import me.trqhxrd.grapesrpg.Grapes;
+import me.trqhxrd.grapesrpg.api.attribute.Register;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-
-import java.util.Objects;
 
 /**
  * This class handles the main command for GrapesRPG.
  *
  * @author Trqhxrd
  */
+@Register(command = "grapes")
 public class GrapesCommand implements CommandExecutor {
-
-    /**
-     * The constructor registers the command. Only execute once!
-     */
-    public GrapesCommand() {
-        Objects.requireNonNull(Grapes.getGrapes().getCommand("grapes")).setExecutor(this);
-    }
 
     /**
      * This method handles the command-entries.

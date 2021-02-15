@@ -1,8 +1,7 @@
 package me.trqhxrd.grapesrpg.event;
 
-import me.trqhxrd.grapesrpg.Grapes;
+import me.trqhxrd.grapesrpg.api.attribute.Register;
 import me.trqhxrd.grapesrpg.game.inventories.CraftingMenu;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
@@ -15,14 +14,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
  *
  * @author Trqhxrd
  */
+@Register
 public class PlayerInteractListener implements Listener {
-
-    /**
-     * This constructor registers the listener.
-     */
-    public PlayerInteractListener() {
-        Bukkit.getPluginManager().registerEvents(this, Grapes.getGrapes());
-    }
 
     /**
      * The handler-method.

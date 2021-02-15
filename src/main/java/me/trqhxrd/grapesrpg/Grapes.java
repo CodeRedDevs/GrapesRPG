@@ -4,30 +4,31 @@ import com.github.lalyos.jfiglet.FigletFont;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;
+import me.trqhxrd.grapesrpg.api.attribute.Register;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipe;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesShapedRecipe;
 import me.trqhxrd.grapesrpg.api.utils.Prefix;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
-import me.trqhxrd.grapesrpg.commands.ColorCommand;
-import me.trqhxrd.grapesrpg.commands.GrapesCommand;
-import me.trqhxrd.grapesrpg.commands.MaterialCommand;
-import me.trqhxrd.grapesrpg.commands.NPCCommand;
-import me.trqhxrd.grapesrpg.event.*;
+import me.trqhxrd.grapesrpg.api.utils.reflection.Reflection;
 import me.trqhxrd.grapesrpg.game.GameClock;
-import me.trqhxrd.grapesrpg.game.objects.item.armor.crop.CropArmorAbility;
 import me.trqhxrd.grapesrpg.game.objects.recipe.armor.crop.CropBootsRecipe;
 import me.trqhxrd.grapesrpg.game.objects.recipe.armor.crop.CropChestplateRecipe;
 import me.trqhxrd.grapesrpg.game.objects.recipe.armor.crop.CropHelmetRecipe;
 import me.trqhxrd.grapesrpg.game.objects.recipe.armor.crop.CropLeggingsRecipe;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -112,24 +113,8 @@ public class Grapes extends JavaPlugin {
         //LOAD RECIPES FROM FILES
         this.reloadRecipes(false);
 
-        //Registering Listeners:
-        new AsyncPlayerChatListener();
-        new EntityDamageByEntityListener();
-        new EntityRegainHeathListener();
-        new InventoryClickListener();
-        new InventoryCloseListener();
-        new PlayerJoinListener();
-        new PlayerQuitListener();
-        new PlayerMoveListener();
-        new PlayerInteractListener();
-
-        new CropArmorAbility();
-
-        //Registering Commands:
-        new GrapesCommand();
-        new ColorCommand();
-        new MaterialCommand();
-        new NPCCommand();
+        this.registerListeners("me.trqhxrd.grapesrpg");
+        this.registerCommands("me.trqhxrd.grapesrpg");
 
         //Registering Recipes
         this.addRecipe(new CropHelmetRecipe());
@@ -232,5 +217,34 @@ public class Grapes extends JavaPlugin {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void registerListeners(String aPackage) {
+        Reflection.executeIfClassIsAnnotated(aPackage, Register.class, (c -> {
+            try {
+                if (Listener.class.isAssignableFrom(c)) Bukkit.getPluginManager().registerEvents((Listener) c.getConstructor().newInstance(), this);
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+        }));
+    }
+
+    public void registerCommands(String aPackage) {
+        Reflection.executeIfClassIsAnnotated(aPackage, Register.class, c -> {
+            try {
+                if (CommandExecutor.class.isAssignableFrom(c)) {
+                    CommandExecutor ce = (CommandExecutor) c.getConstructor().newInstance();
+                    Register r = c.getAnnotation(Register.class);
+                    Objects.requireNonNull(this.getCommand(r.command())).setExecutor(ce);
+                }
+                if (TabCompleter.class.isAssignableFrom(c)) {
+                    TabCompleter t = (TabCompleter) c.getConstructor().newInstance();
+                    Register r = c.getAnnotation(Register.class);
+                    Objects.requireNonNull(this.getCommand(r.command())).setTabCompleter(t);
+                }
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

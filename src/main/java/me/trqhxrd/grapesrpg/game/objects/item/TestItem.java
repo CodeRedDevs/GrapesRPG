@@ -3,7 +3,6 @@ package me.trqhxrd.grapesrpg.game.objects.item;
 import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
 import me.trqhxrd.grapesrpg.api.objects.item.ItemType;
 import me.trqhxrd.grapesrpg.api.objects.item.Rarity;
-import me.trqhxrd.grapesrpg.game.objects.item.armor.crop.CropChestplate;
 import org.bukkit.Material;
 
 import java.util.HashMap;

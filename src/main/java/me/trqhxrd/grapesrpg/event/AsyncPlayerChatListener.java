@@ -1,8 +1,7 @@
 package me.trqhxrd.grapesrpg.event;
 
-import me.trqhxrd.grapesrpg.Grapes;
+import me.trqhxrd.grapesrpg.api.attribute.Register;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -12,14 +11,8 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
  *
  * @author Trqhxrd
  */
+@Register
 public class AsyncPlayerChatListener implements Listener {
-
-    /**
-     * The constructor registers the listeners.
-     */
-    public AsyncPlayerChatListener() {
-        Bukkit.getPluginManager().registerEvents(this, Grapes.getGrapes());
-    }
 
     /**
      * The Handler-Method.

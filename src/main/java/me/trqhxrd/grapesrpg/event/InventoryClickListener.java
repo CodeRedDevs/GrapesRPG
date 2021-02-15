@@ -1,10 +1,9 @@
 package me.trqhxrd.grapesrpg.event;
 
-import me.trqhxrd.grapesrpg.Grapes;
+import me.trqhxrd.grapesrpg.api.attribute.Register;
 import me.trqhxrd.grapesrpg.api.inventories.Menu;
 import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,14 +20,8 @@ import java.util.List;
  *
  * @author Trqhxrd
  */
+@Register
 public class InventoryClickListener implements Listener {
-
-    /**
-     * This constructor registers the listener.
-     */
-    public InventoryClickListener() {
-        Bukkit.getPluginManager().registerEvents(this, Grapes.getGrapes());
-    }
 
     /**
      * This is the handler-method.

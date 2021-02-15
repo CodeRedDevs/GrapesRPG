@@ -1,5 +1,8 @@
-package me.trqhxrd.grapesrpg.api.utils;
+package me.trqhxrd.grapesrpg.api.utils.reflection;
 
+import org.reflections.Reflections;
+
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
 /**
@@ -46,5 +49,27 @@ public class Reflection {
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * This method returns all Classes, that are in the package "aPackage" and are annotated with the annotation given.
+     *
+     * @param aPackage   The Package, which you want to scan for annotated classes.
+     * @param annotation The annotation for which you want to scan.
+     * @return An iterable of Classes, which only contains classes from the package aPackage and are annotated with the annotation.
+     */
+    public static Iterable<Class<?>> getTypesAnnotatedWith(String aPackage, Class<? extends Annotation> annotation) {
+        return new Reflections(aPackage).getTypesAnnotatedWith(annotation);
+    }
+
+    /**
+     * This method runs the task given for every class in the package given, if it(the class) is annotated with the annotation given.
+     *
+     * @param aPackage   The package, which you want to scan for annotated classes.
+     * @param annotation The annotation for which you want to scan.
+     * @param task       The task that should be executed if the Class is annotated.
+     */
+    public static void executeIfClassIsAnnotated(String aPackage, Class<? extends Annotation> annotation, ReflectionTask task) {
+        getTypesAnnotatedWith(aPackage, annotation).forEach(task::execute);
     }
 }

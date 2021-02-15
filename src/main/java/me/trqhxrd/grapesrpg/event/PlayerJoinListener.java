@@ -2,6 +2,7 @@ package me.trqhxrd.grapesrpg.event;
 
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;
+import me.trqhxrd.grapesrpg.api.attribute.Register;
 import me.trqhxrd.grapesrpg.api.event.GrapesPlayerJoinEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -19,6 +20,7 @@ import java.util.UUID;
  * @author Trqhxrd
  * @see org.bukkit.event.player.PlayerJoinEvent
  */
+@Register
 public class PlayerJoinListener implements Listener {
 
     /**
@@ -26,14 +28,6 @@ public class PlayerJoinListener implements Listener {
      * Entries will be added in the PlayerLoginEvent and deleted in the PlayerJoinEvent.
      */
     private final Map<UUID, String> joins = new HashMap<>();
-
-    /**
-     * This Constructor registers the Listener to the Plugin.
-     * WARNING: Only execute one time.
-     */
-    public PlayerJoinListener() {
-        Bukkit.getPluginManager().registerEvents(this, Grapes.getGrapes());
-    }
 
     /**
      * This Method handles PlayerJoins using the {@link PlayerJoinEvent}
