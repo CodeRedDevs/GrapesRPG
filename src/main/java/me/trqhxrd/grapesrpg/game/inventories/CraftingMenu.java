@@ -1,6 +1,8 @@
 package me.trqhxrd.grapesrpg.game.inventories;
 
 import me.trqhxrd.grapesrpg.Grapes;
+import me.trqhxrd.grapesrpg.api.GrapesPlayer;
+import me.trqhxrd.grapesrpg.api.event.GrapesPlayerCraftEvent;
 import me.trqhxrd.grapesrpg.api.inventories.Menu;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipe;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipeChoice;
@@ -8,6 +10,7 @@ import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesShapedRecipe;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
 import me.trqhxrd.grapesrpg.api.utils.group.Group2;
 import me.trqhxrd.grapesrpg.api.utils.items.ItemBuilder;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -124,6 +127,7 @@ public class CraftingMenu extends Menu {
                     }
 
                     if (slot == OUTPUT_SLOT) {
+
                         //Cancel placing items in output-slot
                         if (e.getClickedInventory().getItem(slot) == null && e.getCursor() != null) {
                             e.setCancelled(true);
@@ -147,53 +151,65 @@ public class CraftingMenu extends Menu {
                                 ItemStack[] matrix = inv.getMatrix();
                                 ItemStack[] bindings = inv.getBindings();
 
-                                if (slot == CraftingMenu.OUTPUT_SLOT) {
-                                    for (int i = 0; i < matrix.length; i++) {
-                                        if (matrix[i] != null) {
-                                            if (matrix[i].getAmount() > 1) matrix[i].setAmount(matrix[i].getAmount() - 1);
-                                            else matrix[i] = null;
-                                        }
+                                GrapesRecipe recipe = null;
+                                for (GrapesRecipe r : GrapesRecipe.getRecipes()) {
+                                    if (r.check(inv)) {
+                                        recipe = r;
+                                        break;
                                     }
+                                }
 
-                                    for (GrapesRecipe r : GrapesRecipe.getRecipes()) {
-                                        if (r instanceof GrapesShapedRecipe) {
-                                            if (r.check(matrix, bindings)) {
-                                                List<Group2<GrapesRecipeChoice, Integer>> bindingsList = new ArrayList<>();
-                                                for (Group2<GrapesRecipeChoice, Integer> group2 : ((GrapesShapedRecipe) r).getBindings())
-                                                    bindingsList.add(new Group2<>(group2));
-
-                                                for (Group2<GrapesRecipeChoice, Integer> group : bindingsList) {
-                                                    for (int i = 0; i < bindings.length; i++) {
-                                                        ItemStack current = bindings[i];
-                                                        if (group.getY() > 0) {
-                                                            if (current != null) {
-                                                                if (group.getX().check(current)) {
-                                                                    if (group.getY() > current.getAmount()) {
-                                                                        int amount = current.getAmount();
-                                                                        bindings[i] = null;
-                                                                        group.setY(group.getY() - amount);
-                                                                    } else {
-                                                                        bindings[i].setAmount(bindings[i].getAmount() - group.getY());
-                                                                        group.setY(0);
-                                                                    }
-                                                                }
-                                                            }
-                                                        } else break;
-                                                    }
-                                                }
-                                                break;
+                                GrapesPlayerCraftEvent event = new GrapesPlayerCraftEvent(GrapesPlayer.getByUniqueId(e.getWhoClicked().getUniqueId()), recipe, inv);
+                                Bukkit.getPluginManager().callEvent(event);
+                                if (!event.isCancelled()) {
+                                    if (slot == CraftingMenu.OUTPUT_SLOT) {
+                                        for (int i = 0; i < matrix.length; i++) {
+                                            if (matrix[i] != null) {
+                                                if (matrix[i].getAmount() > 1) matrix[i].setAmount(matrix[i].getAmount() - 1);
+                                                else matrix[i] = null;
                                             }
                                         }
-                                    }
 
-                                    inv.setMatrix(matrix);
-                                    inv.setBindings(bindings);
+                                        for (GrapesRecipe r : GrapesRecipe.getRecipes()) {
+                                            if (r instanceof GrapesShapedRecipe) {
+                                                if (r.check(matrix, bindings)) {
+                                                    List<Group2<GrapesRecipeChoice, Integer>> bindingsList = new ArrayList<>();
+                                                    for (Group2<GrapesRecipeChoice, Integer> group2 : ((GrapesShapedRecipe) r).getBindings())
+                                                        bindingsList.add(new Group2<>(group2));
 
-                                    if (cursor != null) {
-                                        if (Objects.requireNonNull(cursor).isSimilar(result)) {
-                                            inv.getResult().setAmount(inv.getResult().getAmount() + e.getCursor().getAmount());
-                                            e.getWhoClicked().setItemOnCursor(inv.getResult());
-                                            inv.setResult(null);
+                                                    for (Group2<GrapesRecipeChoice, Integer> group : bindingsList) {
+                                                        for (int i = 0; i < bindings.length; i++) {
+                                                            ItemStack current = bindings[i];
+                                                            if (group.getY() > 0) {
+                                                                if (current != null) {
+                                                                    if (group.getX().check(current)) {
+                                                                        if (group.getY() > current.getAmount()) {
+                                                                            int amount = current.getAmount();
+                                                                            bindings[i] = null;
+                                                                            group.setY(group.getY() - amount);
+                                                                        } else {
+                                                                            bindings[i].setAmount(bindings[i].getAmount() - group.getY());
+                                                                            group.setY(0);
+                                                                        }
+                                                                    }
+                                                                }
+                                                            } else break;
+                                                        }
+                                                    }
+                                                    break;
+                                                }
+                                            }
+                                        }
+
+                                        inv.setMatrix(matrix);
+                                        inv.setBindings(bindings);
+
+                                        if (cursor != null) {
+                                            if (Objects.requireNonNull(cursor).isSimilar(result)) {
+                                                inv.getResult().setAmount(inv.getResult().getAmount() + e.getCursor().getAmount());
+                                                e.getWhoClicked().setItemOnCursor(inv.getResult());
+                                                inv.setResult(null);
+                                            }
                                         }
                                     }
                                 }

@@ -75,7 +75,10 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      * The amount of the item.
      */
     private int amount;
-
+    /**
+     * If you can dye the item, this int array stores the rgb color values.
+     * Index 0 is red. 1 is green and 2 is blue.
+     */
     private int[] color;
 
     /**
@@ -518,15 +521,37 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
         return this;
     }
 
+    /**
+     * This method sets the color of the item.
+     * The color will only be applied if the item can be colored.
+     *
+     * @param color The new color for the item.
+     * @return The GrapesItem. Used for creating command chains.
+     */
     public GrapesItem setColor(java.awt.Color color) {
         return this.setColor(org.bukkit.Color.fromRGB(color.getRed(), color.getGreen(), color.getBlue()));
     }
 
+    /**
+     * This method sets the color of the item.
+     * The color will only be applied if the item can be colored.
+     *
+     * @param color The new color for the item.
+     * @return The GrapesItem. Used for creating command chains.
+     */
     public GrapesItem setColor(org.bukkit.Color color) {
         this.color = new int[]{color.getRed(), color.getGreen(), color.getBlue()};
         return this;
     }
 
+    /**
+     * This method sets the color of the item.
+     *
+     * @param r The amount of red in the color (0 - 255).
+     * @param g The amount of green in the color (0 - 255).
+     * @param b The amount of blue in the color (0 - 255).
+     * @return The GrapesItem. Used for creating command chains.
+     */
     public GrapesItem setColor(int r, int g, int b) {
         return this.setColor(new Color(r, g, b));
     }

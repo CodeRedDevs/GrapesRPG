@@ -18,7 +18,14 @@ public class GrapesPlayerClickNPCEvent extends GrapesPlayerEvent {
      */
     private static final HandlerList handlerList = new HandlerList();
 
+    /**
+     * The type of the click.
+     * This can either be left- or right-click.
+     */
     private final ClickType clickType;
+    /**
+     * The NPC, that got clicked.
+     */
     private final NPC npc;
 
     /**
