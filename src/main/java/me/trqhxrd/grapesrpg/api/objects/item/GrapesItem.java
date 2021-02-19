@@ -6,15 +6,23 @@ import me.trqhxrd.grapesrpg.api.utils.Builder;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
 import me.trqhxrd.grapesrpg.api.utils.group.Group2;
 import me.trqhxrd.grapesrpg.api.utils.group.Group3;
+import me.trqhxrd.grapesrpg.game.config.MapData;
+import me.trqhxrd.grapesrpg.api.utils.items.map.MapRendererImage;
 import me.trqhxrd.grapesrpg.api.utils.items.nbt.NBTEditor;
 import me.trqhxrd.grapesrpg.api.utils.items.nbt.NBTReader;
 import me.trqhxrd.grapesrpg.api.utils.items.nbt.NBTValue;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.MapMeta;
+import org.bukkit.map.MapView;
 
 import java.awt.*;
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.*;
 
@@ -542,6 +550,57 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
     public GrapesItem setColor(org.bukkit.Color color) {
         this.color = new int[]{color.getRed(), color.getGreen(), color.getBlue()};
         return this;
+    }
+
+    /**
+     * This method returns a filled map with the data of this GrapesItem and the image from the url.
+     *
+     * @param uri The url, at which the image is located.
+     * @return The finished map.
+     */
+    public ItemStack getAsMap(URI uri) {
+        MapRendererImage renderer = MapRendererImage.getRenderer(uri);
+        this.material = Material.FILLED_MAP;
+        ItemStack build = this.build();
+        MapMeta meta = (MapMeta) build.getItemMeta();
+        MapView view = Bukkit.createMap(Bukkit.getWorlds().get(0));
+        if (renderer != null) {
+            view.getRenderers().clear();
+            view.addRenderer(renderer);
+        }
+
+        meta.setMapView(view);
+        build.setItemMeta(meta);
+
+        if (MapData.getInstance() == null) MapData.init();
+        MapData.saveMapData(view.getId(), uri.toString());
+
+        return build;
+    }
+
+    /**
+     * This method returns a filled map with the data of this GrapesItem and the image from the url.
+     *
+     * @param file The file, where the image is located at the disk.
+     * @return The finished map.
+     */
+    public ItemStack getAsMap(File file) {
+        return this.getAsMap(file.toURI());
+    }
+
+    /**
+     * This method returns a filled map with the data of this GrapesItem and the image from the url.
+     *
+     * @param url The url, at which the image is located.
+     * @return The finished map.
+     */
+    public ItemStack getAsMap(String url) {
+        try {
+            return this.getAsMap(new URI(url));
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**

@@ -3,8 +3,9 @@ package me.trqhxrd.grapesrpg.api.utils.clock;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * A clock is a {@link BukkitRunnable}, which will be run in a loop.
@@ -32,7 +33,7 @@ public class Clock extends BukkitRunnable {
      * A list of all the tasks, that the clock will execute each iteration.
      * Tasks can be added using {@link Clock#addTask(ClockTask)}.
      */
-    private final List<ClockTask> tasks;
+    private final Map<UUID, ClockTask> tasks;
     /**
      * This long starts at 0.
      * After each iteration, this long will get bigger by 1.
@@ -56,7 +57,7 @@ public class Clock extends BukkitRunnable {
         this.delay = delay;
         this.period = period;
         this.started = false;
-        this.tasks = new ArrayList<>();
+        this.tasks = new HashMap<>();
     }
 
     /**
@@ -76,10 +77,27 @@ public class Clock extends BukkitRunnable {
      * This method can be used to add tasks to the Clock while its running.
      *
      * @param task The task, which you want to add.
+     * @return This returns the id of the task.
      */
-    public void addTask(ClockTask task) {
+    public UUID addTask(ClockTask task) {
+        UUID uuid = UUID.randomUUID();
         synchronized (tasks) {
-            tasks.add(task);
+            tasks.put(uuid, task);
+            return uuid;
+        }
+    }
+
+    /**
+     * This method removes the task with the task-id given.
+     *
+     * @param uuid The id of the task, that you want to remove.
+     * @return Returns true if the task was removed successfully.
+     */
+    public boolean removeTask(UUID uuid) {
+        synchronized (tasks) {
+            boolean b = tasks.containsKey(uuid);
+            tasks.remove(uuid);
+            return b;
         }
     }
 
@@ -144,9 +162,9 @@ public class Clock extends BukkitRunnable {
      *
      * @return Returns an unmodifiable list of all tasks.
      */
-    public List<ClockTask> getTasks() {
+    public Map<UUID, ClockTask> getTasks() {
         synchronized (tasks) {
-            return List.copyOf(tasks);
+            return Map.copyOf(tasks);
         }
     }
 
@@ -156,7 +174,7 @@ public class Clock extends BukkitRunnable {
     @Override
     public void run() {
         synchronized (tasks) {
-            tasks.forEach(t -> t.execute(this));
+            tasks.forEach((uuid, t) -> t.execute(uuid, this));
         }
         if (iteration < Long.MAX_VALUE) iteration++;
         else iteration = Long.MIN_VALUE;

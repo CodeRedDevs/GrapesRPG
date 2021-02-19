@@ -7,6 +7,7 @@ import me.trqhxrd.grapesrpg.event.EntityDamageByEntityListener;
 import org.bukkit.attribute.Attribute;
 
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * This implementation of a {@link ClockTask} adds custom health regeneration.
@@ -21,7 +22,7 @@ public class RegenerationTask implements ClockTask {
      * @param operator The clock, which executes this method.
      */
     @Override
-    public void execute(Clock operator) {
+    public void execute(UUID uuid, Clock operator) {
         if (operator.getIteration() % 20 == 0) {
             GrapesPlayer.getPlayers().forEach(p -> {
                 if (!EntityDamageByEntityListener.getWaitForRegen().contains(p.getUniqueId())) {

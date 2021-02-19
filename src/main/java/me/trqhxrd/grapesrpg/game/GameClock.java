@@ -16,6 +16,6 @@ public class GameClock extends Clock {
      */
     public GameClock() {
         super(Grapes.getGrapes(), 0, 1);
-        addTask(new RegenerationTask());
+        this.addTask(new RegenerationTask());
     }
 }
