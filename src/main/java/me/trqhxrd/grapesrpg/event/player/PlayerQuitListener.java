@@ -1,4 +1,4 @@
-package me.trqhxrd.grapesrpg.event;
+package me.trqhxrd.grapesrpg.event.player;
 
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;

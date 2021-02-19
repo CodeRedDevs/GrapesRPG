@@ -10,6 +10,7 @@ import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesShapedRecipe;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
 import me.trqhxrd.grapesrpg.api.utils.group.Group2;
 import me.trqhxrd.grapesrpg.api.utils.items.ItemBuilder;
+import me.trqhxrd.grapesrpg.event.inventory.InventoryClickListener;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
@@ -26,7 +27,7 @@ public class CraftingMenu extends Menu {
 
     /**
      * This constant contains the title of the CraftingInventory.
-     * It is used for checking recipes in the {@link me.trqhxrd.grapesrpg.event.InventoryClickListener}.
+     * It is used for checking recipes in the {@link InventoryClickListener}.
      */
     public static final String TITLE = "&#065499Crafting";
 

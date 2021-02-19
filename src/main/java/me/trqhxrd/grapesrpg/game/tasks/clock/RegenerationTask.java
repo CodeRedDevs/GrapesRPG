@@ -3,7 +3,7 @@ package me.trqhxrd.grapesrpg.game.tasks.clock;
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.utils.clock.Clock;
 import me.trqhxrd.grapesrpg.api.utils.clock.ClockTask;
-import me.trqhxrd.grapesrpg.event.EntityDamageByEntityListener;
+import me.trqhxrd.grapesrpg.event.entity.EntityDamageByEntityListener;
 import org.bukkit.attribute.Attribute;
 
 import java.util.Objects;

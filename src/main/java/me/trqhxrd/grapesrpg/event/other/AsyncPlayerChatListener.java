@@ -1,4 +1,4 @@
-package me.trqhxrd.grapesrpg.event;
+package me.trqhxrd.grapesrpg.event.other;
 
 import me.trqhxrd.grapesrpg.api.attribute.Register;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
