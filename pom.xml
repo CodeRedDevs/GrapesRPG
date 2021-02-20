@@ -148,11 +148,10 @@
     </build>
 
     <repositories>
-        <!-- PaperMC Repository -->
+        <!-- Spigot Repository -->
         <repository>
-            <id>PaperMC</id>
-            <name>PaperMC's Repository</name>
-            <url>https://papermc.io/repo/repository/maven-public/</url>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
         <!-- GrapesDevs Repository -->
         <repository>
@@ -169,10 +168,10 @@
     </repositories>
 
     <dependencies>
-        <!-- Paper Dependency -->
+        <!-- Spigot Dependency -->
         <dependency>
-            <groupId>com.destroystokyo.paper</groupId>
-            <artifactId>paper-api</artifactId>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
             <version>1.16.5-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
