@@ -20,7 +20,5 @@ dependency-reduced-pom.xml
 # Javadoc
 JavaDoc/
 
-#Project-specific stuff
-TestServer/*
-!TestServer/paper-*.jar
-!TestServer/eula.txt
+Server
+install

@@ -91,7 +91,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.2.0</version>
                 <configuration>
-                    <outputDirectory>${project.basedir}/TestServer/plugins</outputDirectory>
+                    <outputDirectory>${project.basedir}/Server/plugins</outputDirectory>
                 </configuration>
             </plugin>
             <!-- Maven Clean Plugin -->
@@ -102,7 +102,7 @@
                 <configuration>
                     <filesets>
                         <fileset>
-                            <directory>${project.basedir}/TestServer/plugins</directory>
+                            <directory>${project.basedir}/Server/plugins</directory>
                             <includes>
                                 <include>*.jar</include>
                             </includes>

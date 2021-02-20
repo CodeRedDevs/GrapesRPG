@@ -60,7 +60,7 @@ public class Config extends Wrapper<FileConfiguration> implements ConfigurationO
      */
     @Override
     public boolean contains(String path) {
-        return false;
+        return this.getWrappedObject().contains(path);
     }
 
     /**

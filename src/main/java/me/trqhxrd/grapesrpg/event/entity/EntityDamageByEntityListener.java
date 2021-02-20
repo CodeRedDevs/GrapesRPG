@@ -87,7 +87,9 @@ public class EntityDamageByEntityListener implements Listener {
             LivingEntity entity = ((LivingEntity) e.getEntity());
             e.setDamage(0);
             e.setCancelled(entity.getHealth() - damage <= 0);
-            entity.setHealth(Math.max(0, entity.getHealth() - damage));
+
+            if (entity.getHealth() - damage <= 0) entity.damage(Double.MAX_VALUE);
+            else entity.setHealth(Math.max(0, entity.getHealth() - damage));
 
             if (e.getEntity() instanceof Player) waitForRegen.add(e.getEntity().getUniqueId());
         }

@@ -78,10 +78,13 @@ public class MapData extends Config {
      * @param view The view, which should get the {@link MapRendererImage} applied.
      */
     public static void applyData(MapView view) {
+        if (instance == null) MapData.init();
+
         if (instance.contains("maps." + view.getId())) {
             URI link = getMapData(view.getId());
             view.getRenderers().clear();
             view.addRenderer(Objects.requireNonNull(MapRendererImage.getRenderer(link)));
+            view.setTrackingPosition(false);
         }
     }
 }
