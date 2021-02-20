@@ -47,7 +47,7 @@
     </distributionManagement>
 
     <build>
-        <finalName>${project.name}</finalName>
+        <finalName>${project.name}-${project.version}</finalName>
         <resources>
             <resource>
                 <directory>${basedir}/src/main/resources</directory>
@@ -83,15 +83,6 @@
                 </executions>
                 <configuration>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
-                </configuration>
-            </plugin>
-            <!-- Maven Jar Plugin -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.2.0</version>
-                <configuration>
-                    <outputDirectory>${project.basedir}/Server/plugins</outputDirectory>
                 </configuration>
             </plugin>
             <!-- Maven Clean Plugin -->
@@ -134,13 +125,21 @@
                 <executions>
                     <execution>
                         <id>copy-file</id>
-                        <phase>generate-sources</phase>
+                        <phase>package</phase>
                         <goals>
                             <goal>copy</goal>
                         </goals>
                         <configuration>
-                            <sourceFile>target/GrapesRPG.jar</sourceFile>
-                            <destinationFile>Server/plugins/GrapesRPG.jar</destinationFile>
+                            <fileSets>
+                                <fileSet>
+                                    <sourceFile>target/${project.build.finalName}.jar</sourceFile>
+                                    <destinationFile>Server/plugins/${project.name}.jar</destinationFile>
+                                </fileSet>
+                                <fileSet>
+                                    <sourceFile>target/${project.build.finalName}.jar</sourceFile>
+                                    <destinationFile>target/${project.name}.jar</destinationFile>
+                                </fileSet>
+                            </fileSets>
                         </configuration>
                     </execution>
                 </executions>
