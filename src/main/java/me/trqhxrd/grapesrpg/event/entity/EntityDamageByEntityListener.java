@@ -1,5 +1,6 @@
 package me.trqhxrd.grapesrpg.event.entity;
 
+import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.attribute.Register;
 import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
 import me.trqhxrd.grapesrpg.api.objects.item.ItemType;
@@ -73,7 +74,10 @@ public class EntityDamageByEntityListener implements Listener {
 
             if (attackEquipment != null) {
                 GrapesItem weapon = GrapesItem.fromItemStack(attackEquipment.getItem(EquipmentSlot.HAND));
-                if (weapon != null && weapon.getType() == ItemType.MELEE) damageValues = weapon.getStats();
+                if (weapon != null && weapon.getType() == ItemType.MELEE && (weapon.isUnbreakable() || weapon.getCurrentDurability() > 0)) {
+                    damageValues = weapon.getStats();
+                    weapon.setDurability(weapon.getCurrentDurability() - 1, weapon.getMaxDurability());
+                } else GrapesPlayer.getByUniqueId(e.getEntity().getUniqueId()).sendMessage("&c&lIt seems like your weapon is broken...");
             }
 
             appliedDamage.setX(((double) damageValues.getX()) / 1000. * (1000. - ((double) defenceValues.getX())));
@@ -86,10 +90,11 @@ public class EntityDamageByEntityListener implements Listener {
 
             LivingEntity entity = ((LivingEntity) e.getEntity());
             e.setDamage(0);
-            e.setCancelled(entity.getHealth() - damage <= 0);
 
-            if (entity.getHealth() - damage <= 0) entity.damage(Double.MAX_VALUE);
-            else entity.setHealth(Math.max(0, entity.getHealth() - damage));
+            if (entity.getHealth() - damage <= 0) {
+                entity.damage(1000000.);
+                e.setCancelled(true);
+            } else entity.setHealth(Math.max(0.1, entity.getHealth() - damage));
 
             if (e.getEntity() instanceof Player) waitForRegen.add(e.getEntity().getUniqueId());
         }

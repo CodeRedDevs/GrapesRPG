@@ -19,7 +19,7 @@ public class CropHelmet extends GrapesItem {
      * This constructor can be used, if you need another instance of this item.
      */
     public CropHelmet() {
-        super(103, Material.LEATHER_HELMET, "Crop Helmet", 1, Rarity.COMMON, 10, 0, 0, ItemType.ARMOR, new HashMap<>());
+        super(103, Material.LEATHER_HELMET, "Crop Helmet", 1, Rarity.COMMON, 10, 0, 0, ItemType.ARMOR, 250, new HashMap<>());
         super.setColor(254, 215, 61);
     }
 }

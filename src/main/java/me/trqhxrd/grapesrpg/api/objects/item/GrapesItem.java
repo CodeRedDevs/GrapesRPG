@@ -1,16 +1,17 @@
 package me.trqhxrd.grapesrpg.api.objects.item;
 
+import com.google.common.base.Preconditions;
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.attribute.Serializable;
 import me.trqhxrd.grapesrpg.api.utils.Builder;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
 import me.trqhxrd.grapesrpg.api.utils.group.Group2;
 import me.trqhxrd.grapesrpg.api.utils.group.Group3;
-import me.trqhxrd.grapesrpg.game.config.MapData;
 import me.trqhxrd.grapesrpg.api.utils.items.map.MapRendererImage;
 import me.trqhxrd.grapesrpg.api.utils.items.nbt.NBTEditor;
 import me.trqhxrd.grapesrpg.api.utils.items.nbt.NBTReader;
 import me.trqhxrd.grapesrpg.api.utils.items.nbt.NBTValue;
+import me.trqhxrd.grapesrpg.game.config.MapData;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -23,6 +24,7 @@ import java.awt.*;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.SQLOutput;
 import java.util.List;
 import java.util.*;
 
@@ -53,6 +55,7 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      * The void damage / protection is stored in a field called {@code z}.
      */
     private Group3<Integer, Integer, Integer> stats;
+    private Group2<Integer, Integer> durability;
     /**
      * This field contains the type of the item.
      * It can either be "ARMOR", "MELEE" or "RANGED".
@@ -96,7 +99,19 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      * @param material The material of the new item.
      */
     public GrapesItem(int id, Material material) {
-        this(id, material, null, 1, Rarity.DEFAULT_RARITY, DEFAULT_STATS, ItemType.MELEE, new HashMap<>());
+        this(id, material, null, 1, Rarity.DEFAULT_RARITY, DEFAULT_STATS, ItemType.MELEE, new Group2<>(-1, -1), new HashMap<>());
+    }
+
+    /**
+     * A basic constructor to create a new GrapesItem.
+     *
+     * @param id            The id of the new item.
+     * @param material      The material of the new item.
+     * @param name          The name of the new item. Can be left empty in which case the name of the item will be set to it's material name in the players language.
+     * @param maxDurability The Maximum durability of the item. sIf the value is set to -1 the item is unbreakable.
+     */
+    public GrapesItem(int id, Material material, String name, int maxDurability) {
+        this(id, material, name, 1, Rarity.DEFAULT_RARITY, DEFAULT_STATS, ItemType.MELEE, new Group2<>(maxDurability, maxDurability), new HashMap<>());
     }
 
     /**
@@ -107,7 +122,7 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      * @param name     The name of the new item. Can be left empty in which case the name of the item will be set to it's material name in the players language.
      */
     public GrapesItem(int id, Material material, String name) {
-        this(id, material, name, 1, Rarity.DEFAULT_RARITY, DEFAULT_STATS, ItemType.MELEE, new HashMap<>());
+        this(id, material, name, 1, Rarity.DEFAULT_RARITY, DEFAULT_STATS, ItemType.MELEE, new Group2<>(-1, -1), new HashMap<>());
     }
 
     /**
@@ -120,37 +135,40 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      * @param physicalDamage The physical damage, the item is supposed to deal.
      * @param magicalDamage  The magical damage, the item is supposed to deal.
      * @param voidDamage     The void damage, the item is supposed to deal.
+     * @param maxDurability  The Maximum durability of the item. sIf the value is set to -1 the item is unbreakable.
      */
-    public GrapesItem(int id, Material material, String name, Rarity rarity, int physicalDamage, int magicalDamage, int voidDamage) {
-        this(id, material, name, 1, rarity, physicalDamage, magicalDamage, voidDamage, ItemType.MELEE, new HashMap<>());
+    public GrapesItem(int id, Material material, String name, Rarity rarity, int physicalDamage, int magicalDamage, int voidDamage, int maxDurability) {
+        this(id, material, name, 1, rarity, physicalDamage, magicalDamage, voidDamage, ItemType.MELEE, maxDurability, new HashMap<>());
     }
 
     /**
      * A basic constructor to create a new GrapesItem.
      *
-     * @param id         The id of the new item.
-     * @param material   The material of the new item.
-     * @param name       The name of the new item. Can be left empty in which case the name of the item will be set to it's material name in the players language.
-     * @param rarity     The rarity of the new item.
-     * @param nbtEntries The NBT-Values, that will be set to the item.
+     * @param id            The id of the new item.
+     * @param material      The material of the new item.
+     * @param name          The name of the new item. Can be left empty in which case the name of the item will be set to it's material name in the players language.
+     * @param rarity        The rarity of the new item.
+     * @param nbtEntries    The NBT-Values, that will be set to the item.
+     * @param maxDurability The Maximum durability of the item. sIf the value is set to -1 the item is unbreakable.
      */
     @SafeVarargs
-    public GrapesItem(int id, Material material, String name, Rarity rarity, Group2<String, NBTValue<?>>... nbtEntries) {
-        this(id, material, name, 1, rarity, DEFAULT_STATS, ItemType.MELEE, new HashMap<>());
+    public GrapesItem(int id, Material material, String name, Rarity rarity, int maxDurability, Group2<String, NBTValue<?>>... nbtEntries) {
+        this(id, material, name, 1, rarity, DEFAULT_STATS, ItemType.MELEE, new Group2<>(maxDurability, maxDurability), new HashMap<>());
         for (Group2<String, NBTValue<?>> entry : nbtEntries) this.nbt.put(entry.getX(), entry.getY());
     }
 
     /**
      * A constructor, which supports the items amount to be given.
      *
-     * @param id       The items id.
-     * @param material The Material of the item.
-     * @param name     The name of the item. If black, will be set to the materials name.
-     * @param amount   The amount of the item. (e.g. 64 = a stack).
-     * @param rarity   The rarity of the item.
+     * @param id            The items id.
+     * @param material      The Material of the item.
+     * @param name          The name of the item. If black, will be set to the materials name.
+     * @param amount        The amount of the item. (e.g. 64 = a stack).
+     * @param rarity        The rarity of the item.
+     * @param maxDurability The Maximum durability of the item. sIf the value is set to -1 the item is unbreakable.
      */
-    public GrapesItem(int id, Material material, String name, int amount, Rarity rarity) {
-        this(id, material, name, amount, rarity, DEFAULT_STATS, ItemType.MELEE, new HashMap<>());
+    public GrapesItem(int id, Material material, String name, int amount, Rarity rarity, int maxDurability) {
+        this(id, material, name, amount, rarity, DEFAULT_STATS, ItemType.MELEE, new Group2<>(maxDurability, maxDurability), new HashMap<>());
     }
 
     /**
@@ -166,24 +184,28 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      * @param statsMagical  The magical damage / protection, that the item deals on hit / protects against on impact.
      * @param statsVoid     The void damage / protection, that the item deals on hit / protects against on impact.
      * @param type          This defines the type of the item.
+     * @param maxDurability This is the items maximum durability. If set to -1 the item is unbreakable.
      */
-    public GrapesItem(int id, Material material, String name, int amount, Rarity rarity, int statsPhysical, int statsMagical, int statsVoid, ItemType type, Map<String, NBTValue<?>> nbt) {
-        this(id, material, name, amount, rarity, new Group3<>(statsPhysical, statsMagical, statsVoid), type, nbt);
+    public GrapesItem(int id, Material material, String name, int amount, Rarity rarity, int statsPhysical, int statsMagical, int statsVoid,
+                      ItemType type, int maxDurability, Map<String, NBTValue<?>> nbt) {
+        this(id, material, name, amount, rarity, new Group3<>(statsPhysical, statsMagical, statsVoid), type, new Group2<>(maxDurability, maxDurability), nbt);
     }
 
     /**
      * A constructor, which supports the items amount to be given.
      *
-     * @param id       The items id.
-     * @param material The Material of the item.
-     * @param name     The name of the item. If black, will be set to the materials name.
-     * @param amount   The amount of the item. (e.g. 64 = a stack).
-     * @param rarity   The rarity of the item.
-     * @param nbt      The custom nbt-tags, you want to set.
-     * @param stats    The  damage / protection, that the item deals on hit / protects against on impact.
-     * @param type     This defines the type of the item.
+     * @param id         The items id.
+     * @param material   The Material of the item.
+     * @param name       The name of the item. If black, will be set to the materials name.
+     * @param amount     The amount of the item. (e.g. 64 = a stack).
+     * @param rarity     The rarity of the item.
+     * @param nbt        The custom nbt-tags, you want to set.
+     * @param stats      The  damage / protection, that the item deals on hit / protects against on impact.
+     * @param type       This defines the type of the item.
+     * @param durability The durability of the item. The first value in the group is the items current durability. The second value is the items maximum durability. If the maximum durability is -1 the item is unbreakable.
      */
-    public GrapesItem(int id, Material material, String name, int amount, Rarity rarity, Group3<Integer, Integer, Integer> stats, ItemType type, Map<String, NBTValue<?>> nbt) {
+    public GrapesItem(int id, Material material, String name, int amount, Rarity rarity, Group3<Integer, Integer, Integer> stats,
+                      ItemType type, Group2<Integer, Integer> durability, Map<String, NBTValue<?>> nbt) {
         this.nbt = nbt;
         this.id = id;
         this.material = material;
@@ -192,6 +214,7 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
         this.rarity = rarity;
         this.stats = stats;
         this.type = type;
+        this.durability = durability;
     }
 
     /**
@@ -218,6 +241,9 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
                     item.setColor(color[0], color[1], color[2]);
                 }
 
+                item.getNbt().remove("display.Name");
+                item.getNbt().remove("display.Lore");
+
                 if (item.getNbt().containsKey("grapes.name")) item.setName((String) item.getNbt().get("grapes.name").getValue());
                 else item.setName(null);
                 if (item.getNbt().containsKey("grapes.rarity")) item.setRarity(Rarity.getById(((int) item.getNbt().get("grapes.rarity").getValue())));
@@ -228,6 +254,12 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
                 if (item.getNbt().containsKey("grapes.stats.magical")) statsNew.setY((Integer) item.getNbt().get("grapes.stats.magical").getValue());
                 if (item.getNbt().containsKey("grapes.stats.void")) statsNew.setZ((Integer) item.getNbt().get("grapes.stats.void").getValue());
                 item.setStats(statsNew);
+
+                Group2<Integer, Integer> durability = new Group2<>(-1, -1);
+                if (item.getNbt().containsKey("grapes.durability.current")) durability.setX(((Integer) item.getNbt().get("grapes.durability.current").getValue()));
+                if (item.getNbt().containsKey("grapes.durability.max")) durability.setY(((Integer) item.getNbt().get("grapes.durability.max").getValue()));
+
+                item.setDurability(durability);
 
                 ItemType typeNew = ItemType.DEFAULT_TYPE;
                 if (item.getNbt().containsKey("grapes.stats.type")) typeNew = ItemType.valueOf(((String) item.getNbt().get("grapes.stats.type").getValue()));
@@ -616,6 +648,88 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
     }
 
     /**
+     * This method updates an items lore, name and other stuff.
+     *
+     * @param is The item, which you want to update.
+     * @return The Updated item.
+     */
+    public static ItemStack update(ItemStack is) {
+        GrapesItem i = GrapesItem.fromItemStack(is);
+        if (i != null) return i.build();
+        else return is;
+    }
+
+    /**
+     * If the item is unbreakable, this method will return true.
+     *
+     * @return true if the item is unbreakable.
+     */
+    public boolean isUnbreakable() {
+        return this.durability.getY() <= -1;
+    }
+
+    /**
+     * Getter for the items durability.
+     *
+     * @return The items durability.
+     */
+    public Group2<Integer, Integer> getDurability() {
+        return durability;
+    }
+
+    /**
+     * This sets the items maximum durability and set fills the items current durability to the maximum.
+     *
+     * @param maxDurability The new maximum durability of the item.
+     * @return The GrapesItem. Used for creating command chains.
+     */
+    public GrapesItem setDurability(int maxDurability) {
+        return this.setDurability(maxDurability, maxDurability);
+    }
+
+    /**
+     * Setter for the items durability.
+     *
+     * @param durability The items new durability
+     * @return The GrapesItem. Used for creating command chains.
+     */
+    public GrapesItem setDurability(Group2<Integer, Integer> durability) {
+        Preconditions.checkArgument(durability.getX() <= durability.getY(), "An items current durability (" +
+                durability.getX() + ") can't be bigger than the items maximum durability (" + durability.getY() + ").");
+        this.durability = durability;
+        return this;
+    }
+
+    /**
+     * Getter for the items current durability.
+     *
+     * @return The items current durability.
+     */
+    public int getCurrentDurability() {
+        return durability.getX();
+    }
+
+    /**
+     * Getter for the items maximum durability.
+     *
+     * @return The items maximum durability.
+     */
+    public int getMaxDurability() {
+        return durability.getY();
+    }
+
+    /**
+     * Setter for the items durability.
+     *
+     * @param currentDurability The items new max durability.
+     * @param maxDurability     The items new maximum durability.
+     * @return The GrapesItem. Used for creating command chains.
+     */
+    public GrapesItem setDurability(int currentDurability, int maxDurability) {
+        return this.setDurability(new Group2<>(currentDurability, maxDurability));
+    }
+
+    /**
      * This method serializes an Object (t) into a String.
      *
      * @param grapesItem The Object, which you want to serialize.
@@ -659,16 +773,29 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
 
             //Add item damage / protection
             if (!this.stats.equals(DEFAULT_STATS)) {
-                String typeString = this.type.getLoreEntry();
+                String typeString = (this.type == ItemType.MELEE) ? "Protection" : "Damage";
                 String[] lines = new String[]{
-                        "    &#9d9fa3" + this.stats.getX() + " physical",
-                        "    &#ae55d4" + this.stats.getY() + " magical",
-                        "    &#441957" + this.stats.getZ() + " void",
+                        "&#9d9fa3Physical " + typeString + ": " + this.stats.getX(),
+                        "&#ae55d4Magical " + typeString + ": " + this.stats.getY(),
+                        "&#441957Void " + typeString + ": " + this.stats.getZ(),
                 };
-                lore.add("&7Type: " + typeString);
-                lore.add("&c&l&a&b");
-                lore.add("&cStats:");
                 lore.addAll(Arrays.asList(lines));
+            }
+
+            if (durability != null) {
+                if (durability.getY() > 0) {
+                    char color = 'a';
+                    if (((double) durability.getY()) / 100. * 25. > durability.getX()) color = 'e';
+                    if (((double) durability.getY()) / 100. * 15. > durability.getX()) color = 'c';
+                    if (((double) durability.getY()) / 100. * 5. > durability.getX()) color = '4';
+
+                    String line;
+                    if (durability.getX() != 0) line = "&" + color + "&lDurability: " + durability.getX() + " / " + durability.getY();
+                    else line = "&c&lBROKEN";
+
+                    lore.add("");
+                    lore.add(line);
+                }
             }
 
             //Add Rarity to item lore
@@ -682,7 +809,6 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
             lore = Arrays.asList(strings);
 
             meta.setLore(lore);
-
             is.setItemMeta(meta);
         }
 
@@ -694,6 +820,8 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
         is = NBTEditor.setNBTValue(is, "grapes.stats.physical", this.stats.getX());
         is = NBTEditor.setNBTValue(is, "grapes.stats.magical", this.stats.getY());
         is = NBTEditor.setNBTValue(is, "grapes.stats.void", this.stats.getZ());
+        is = NBTEditor.setNBTValue(is, "grapes.durability.current", this.durability != null ? this.durability.getX() : 0);
+        is = NBTEditor.setNBTValue(is, "grapes.durability.max", this.durability != null ? this.durability.getY() : 0);
 
         return is;
     }

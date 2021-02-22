@@ -33,12 +33,7 @@ public class InventoryClickListener implements Listener {
         ItemStack is = e.getCurrentItem();
 
         // Update item lore on click
-        if (is != null) {
-            GrapesItem item = GrapesItem.fromItemStack(is);
-            if (item != null) {
-                e.setCurrentItem(item.build());
-            }
-        }
+        is = GrapesItem.update(is);
 
         // Run Menu options
         if (e.getClickedInventory() != null) {

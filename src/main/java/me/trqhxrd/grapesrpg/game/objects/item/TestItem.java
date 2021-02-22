@@ -9,6 +9,6 @@ import java.util.HashMap;
 
 public class TestItem extends GrapesItem {
     public TestItem() {
-        super(10, Material.DIRT, "TestItem", 1, Rarity.HEAVENLY, 300, 200, 100, ItemType.MELEE, new HashMap<>());
+        super(10, Material.DIRT, "TestItem", 1, Rarity.HEAVENLY, 300, 200, 100, ItemType.MELEE, 100, new HashMap<>());
     }
 }

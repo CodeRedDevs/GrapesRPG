@@ -28,8 +28,7 @@ public class NBTEditor {
         NBTTagCompound[] nbts = new NBTTagCompound[pathArray.length - 1];
         for (int i = 0; i < pathArray.length; i++) {
             String part = pathArray[i];
-            if (i == 0) nbts[i] = nms.getOrCreateTag();
-            else {
+            if (i != 0) {
                 if (i == pathArray.length - 1) {
                     if (value instanceof NBTValue.String) nbts[i - 1].setString(part, (((NBTValue.String) value).getValue() == null) ? "" : (String) value.getValue());
                     else if (value instanceof NBTValue.Integer) nbts[i - 1].setInt(part, (int) value.getValue());
@@ -40,7 +39,7 @@ public class NBTEditor {
                         nbts[i - 1].setIntArray(part, ints);
                     } else nbts[i - 1].setString(part, value.getValue().toString());
                 } else nbts[i] = nbts[i - 1].getCompound(pathArray[i]);
-            }
+            } else nbts[i] = nms.getOrCreateTag();
         }
         for (int i = nbts.length; i-- > 0; ) {
             if (i - 1 < nbts.length && i - 1 >= 0) {

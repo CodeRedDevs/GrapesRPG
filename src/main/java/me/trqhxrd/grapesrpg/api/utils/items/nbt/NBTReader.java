@@ -89,34 +89,45 @@ public class NBTReader {
         Map<String, NBTValue<?>> out = new HashMap<>();
         net.minecraft.server.v1_16_R3.ItemStack nms = CraftItemStack.asNMSCopy(is);
         NBTTagCompound nbt = nms.getOrCreateTag();
-        List<String> list = new ArrayList<>(nbt.getKeys());
-
-        for (int i = 0; i < list.size(); i++) {
-            String path = list.get(i);
-            if (path != null && !path.isBlank()) {
-                if (getFolder(nbt, path) != null) {
-                    nbt = getFolder(nbt, path);
-                    for (String key : Objects.requireNonNull(nbt).getKeys())
-                        list.add(!Objects.requireNonNull(path).isBlank() ? path + "." + key : key);
-                }
-            }
-        }
+        List<String> list = detectEntries(nbt);
 
         for (String s : list) {
             if (!s.isBlank()) {
                 NBTBase base = getNBTValue(is, s);
+                if (base instanceof NBTTagCompound) continue;
                 if (base instanceof NBTTagInt) out.put(s, new NBTValue.Integer(((NBTTagInt) base).asInt()));
                 else if (base instanceof NBTTagString) out.put(s, new NBTValue.String(base.asString()));
                 else if (base instanceof NBTTagIntArray) {
                     List<Integer> ints = new ArrayList<>();
                     NBTTagInt[] nbts = ((NBTTagIntArray) base).toArray(new NBTTagInt[0]);
                     for (NBTTagInt tag : nbts) ints.add(tag.asInt());
-
                     out.put(s, new NBTValue.IntegerArray(ints));
                 } else if (base instanceof NBTTagDouble) out.put(s, new NBTValue.Double(((NBTTagDouble) base).asDouble()));
             }
         }
         return out;
+    }
+
+    /**
+     * This method returns a list of all keys of NBT-Entries in the root folder.
+     * This method works recursive, which means, that it will detect also entries, that are in a sub entry of root.
+     * However you have to detect all the values for these paths.
+     *
+     * @param root The parent directory, which you want to scan for entries.
+     * @return A List of all entries in the NBT-Directory.
+     */
+    public static List<String> detectEntries(NBTTagCompound root) {
+        List<String> entries = new ArrayList<>(root.getKeys());
+        for (int i = 0; i < entries.size(); i++) {
+            String parentName = entries.get(i);
+            NBTBase base = root.get(parentName);
+            if (base instanceof NBTTagCompound) {
+                List<String> sub = detectEntries(((NBTTagCompound) base));
+                for (String s : sub) entries.add(parentName + "." + s);
+            }
+        }
+
+        return entries;
     }
 
     /**
@@ -127,13 +138,9 @@ public class NBTReader {
      * @return If the Sub-Folder isn't null, it will return the sub-folder. Otherwise it will return null.
      */
     private static NBTTagCompound getFolder(NBTTagCompound root, String name) {
-        String[] split = name.split("\\.");
-        String part = split[split.length - 1];
-        try {
-            if (root.get(part) instanceof NBTTagCompound) root = root.getCompound(part);
-            else return null;
-        } catch (Exception ignored) {
-        }
-        return root;
+        if (root == null) return null;
+        if (!root.getKeys().contains(name)) return null;
+        if (root.get(name) instanceof NBTTagCompound) return root.getCompound(name);
+        else return null;
     }
 }

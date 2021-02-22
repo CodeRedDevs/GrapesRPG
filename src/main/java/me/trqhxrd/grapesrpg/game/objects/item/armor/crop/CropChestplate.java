@@ -19,7 +19,7 @@ public class CropChestplate extends GrapesItem {
      * This constructor can be used, if you need another instance of this item.
      */
     public CropChestplate() {
-        super(104, Material.LEATHER_CHESTPLATE, "Crop Chestplate", 1, Rarity.COMMON, 10, 0, 0, ItemType.ARMOR, new HashMap<>());
+        super(104, Material.LEATHER_CHESTPLATE, "Crop Chestplate", 1, Rarity.COMMON, 10, 0, 0, ItemType.ARMOR, 250, new HashMap<>());
         super.setColor(254, 215, 61);
     }
 }
