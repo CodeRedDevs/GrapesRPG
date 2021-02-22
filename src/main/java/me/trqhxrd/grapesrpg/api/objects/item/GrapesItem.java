@@ -24,7 +24,6 @@ import java.awt.*;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.sql.SQLOutput;
 import java.util.List;
 import java.util.*;
 
@@ -287,6 +286,18 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      */
     public static GrapesItem deserialize(String serializedObject) {
         return Grapes.GSON.fromJson(serializedObject, GrapesItem.class);
+    }
+
+    /**
+     * This method updates an items lore, name and other stuff.
+     *
+     * @param is The item, which you want to update.
+     * @return The Updated item.
+     */
+    public static ItemStack update(ItemStack is) {
+        GrapesItem i = GrapesItem.fromItemStack(is);
+        if (i != null) return i.build();
+        else return is;
     }
 
     /**
@@ -645,18 +656,6 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      */
     public GrapesItem setColor(int r, int g, int b) {
         return this.setColor(new Color(r, g, b));
-    }
-
-    /**
-     * This method updates an items lore, name and other stuff.
-     *
-     * @param is The item, which you want to update.
-     * @return The Updated item.
-     */
-    public static ItemStack update(ItemStack is) {
-        GrapesItem i = GrapesItem.fromItemStack(is);
-        if (i != null) return i.build();
-        else return is;
     }
 
     /**

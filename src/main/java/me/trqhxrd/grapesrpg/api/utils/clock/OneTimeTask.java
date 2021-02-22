@@ -5,6 +5,7 @@ import java.util.UUID;
 /**
  * This abstract class is a ClockTask, that will be run delayed.
  * After it got run, it will be removed from the clock.
+ *
  * @author Trqhxrd
  */
 public abstract class OneTimeTask implements ClockTask {
