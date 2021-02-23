@@ -11,6 +11,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 /**
  * This BlockBreakListener will reduce the durability of item if you break a block with it.
  * If the durability is 0 the block-breaking will be cancelled.
+ *
  * @author Trqhxrd
  */
 @Register
@@ -18,6 +19,7 @@ public class BlockBreakListener implements Listener {
 
     /**
      * The Handler-Method
+     *
      * @param e A BlockBreakEvent.
      */
     @EventHandler(ignoreCancelled = true)

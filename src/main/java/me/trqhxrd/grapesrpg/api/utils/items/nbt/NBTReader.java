@@ -129,18 +129,4 @@ public class NBTReader {
 
         return entries;
     }
-
-    /**
-     * This method gives a sub-folder, if you give the method its name and its parent folder.
-     *
-     * @param root The Parent-Directory.
-     * @param name The Name of the Folder
-     * @return If the Sub-Folder isn't null, it will return the sub-folder. Otherwise it will return null.
-     */
-    private static NBTTagCompound getFolder(NBTTagCompound root, String name) {
-        if (root == null) return null;
-        if (!root.getKeys().contains(name)) return null;
-        if (root.get(name) instanceof NBTTagCompound) return root.getCompound(name);
-        else return null;
-    }
 }

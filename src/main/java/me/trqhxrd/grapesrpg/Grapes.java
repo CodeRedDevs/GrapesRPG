@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.attribute.Register;
+import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipe;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesShapedRecipe;
 import me.trqhxrd.grapesrpg.api.utils.Prefix;
@@ -26,6 +27,7 @@ import org.bukkit.plugin.java.JavaPluginLoader;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.util.Objects;
@@ -113,6 +115,7 @@ public class Grapes extends JavaPlugin {
 
         this.registerListeners("me.trqhxrd.grapesrpg");
         this.registerCommands("me.trqhxrd.grapesrpg");
+        this.registerItems("me.trqhxrd.grapesrpg");
 
         //Registering Recipes
         this.addRecipe(new CropHelmetRecipe());
@@ -191,6 +194,22 @@ public class Grapes extends JavaPlugin {
                 }
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                 e.printStackTrace();
+            }
+        });
+    }
+
+    /**
+     * This method scans the package given for items and registers them.
+     *
+     * @param aPackage The package, that should be scanned.
+     */
+    public void registerItems(String aPackage) {
+        Reflection.executeIfClassExtends(aPackage, GrapesItem.class, c -> {
+            try {
+                Constructor<?> constructor = c.getConstructor();
+                constructor.newInstance();
+            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException ignored) {
+                System.err.println("I am sorry, but the item \"" + c.getName() + "\" is not registrable. Please add a constructor with no parameters to the class.");
             }
         });
     }

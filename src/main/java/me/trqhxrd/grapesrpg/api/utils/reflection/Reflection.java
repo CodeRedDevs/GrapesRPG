@@ -4,6 +4,8 @@ import org.reflections.Reflections;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * This Utility-Class can be used to read values from a field, which can't be accessed normally.
@@ -58,7 +60,7 @@ public class Reflection {
      * @param annotation The annotation for which you want to scan.
      * @return An iterable of Classes, which only contains classes from the package aPackage and are annotated with the annotation.
      */
-    public static Iterable<Class<?>> getTypesAnnotatedWith(String aPackage, Class<? extends Annotation> annotation) {
+    public static Set<Class<?>> getTypesAnnotatedWith(String aPackage, Class<? extends Annotation> annotation) {
         return new Reflections(aPackage).getTypesAnnotatedWith(annotation);
     }
 
@@ -71,5 +73,27 @@ public class Reflection {
      */
     public static void executeIfClassIsAnnotated(String aPackage, Class<? extends Annotation> annotation, ReflectionTask task) {
         getTypesAnnotatedWith(aPackage, annotation).forEach(task::execute);
+    }
+
+    /**
+     * Returns all classes in a package, that extends a specific other class given.
+     *
+     * @param aPackage The package, that you want to scan.
+     * @param clazz    The class, that you want to scan for.
+     * @return A set of classes, that extend your class.
+     */
+    public static Set<Class<?>> getSubTypesOf(String aPackage, Class<?> clazz) {
+        return new HashSet<>(new Reflections(aPackage).getSubTypesOf(clazz));
+    }
+
+    /**
+     * This method a specific task on every class in a package, that extends a certain other class.
+     *
+     * @param aPackage   The package, that you want to scan.
+     * @param superClass The class for which you want to scan.
+     * @param task       The task, that should be executed.
+     */
+    public static void executeIfClassExtends(String aPackage, Class<?> superClass, ReflectionTask task) {
+        getSubTypesOf(aPackage, superClass).forEach(task::execute);
     }
 }

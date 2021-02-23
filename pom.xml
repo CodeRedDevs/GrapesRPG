@@ -29,6 +29,7 @@
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.settings.skipTests>false</project.settings.skipTests>
+        <project.trqhxrd.link>http://192.168.0.50:8081</project.trqhxrd.link>
         <mainClass>me.trqhxrd.grapesrpg.Grapes</mainClass>
         <author>Trqhxrd</author>
     </properties>
@@ -37,12 +38,12 @@
         <repository>
             <id>deployment</id>
             <name>Nexus Repository</name>
-            <url>https://repo.trqhxrd.de/repository/maven-releases/</url>
+            <url>${project.trqhxrd.link}/repository/maven-releases/</url>
         </repository>
         <snapshotRepository>
             <id>deployment</id>
             <name>Nexus Repository</name>
-            <url>https://repo.trqhxrd.de/repository/maven-snapshots/</url>
+            <url>${project.trqhxrd.link}/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 
@@ -157,7 +158,7 @@
         <repository>
             <id>deployment</id>
             <name>GrapesDev's Repository</name>
-            <url>https://maven.trqhxrd.de/repository/libraries/</url>
+            <url>${project.trqhxrd.link}/repository/libraries/</url>
         </repository>
         <!-- Maven Central -->
         <repository>

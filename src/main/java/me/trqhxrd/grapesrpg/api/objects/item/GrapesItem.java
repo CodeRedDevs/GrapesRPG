@@ -40,12 +40,20 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
     public static final Group3<Integer, Integer, Integer> DEFAULT_STATS = new Group3<>(1, 0, 0);
 
     /**
+     * A List of all items sorted by their id.
+     */
+    private static final HashMap<Integer, GrapesItem> items = new HashMap<>();
+    /**
      * Any custom NBT-Tags.
      * The Key is the path for the value.
      * '.' in the path mean, that there is a subgroup of NBT-Tags.
      * ("test.helloWorld", "value" -> {test: {helloWorld:value}})
      */
     private final Map<String, NBTValue<?>> nbt;
+    /**
+     * This action will be executed, if you right click the item.
+     */
+    private transient ClickAction clickAction;
     /**
      * This field contains all information about the items protection or damage.
      * This field is a {@link Group3}.
@@ -95,6 +103,15 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      * Index 0 is red. 1 is green and 2 is blue.
      */
     private int[] color;
+
+    /**
+     * If you use this constructor, you have to set all values individually.
+     * This constructor is generally unsafe to use.
+     * DO NOT USE IT UNLESS YOU KNOW WHAT YOU'RE DOING!
+     */
+    private GrapesItem() {
+        this.nbt = new HashMap<>();
+    }
 
     /**
      * A basic constructor to create a new GrapesItem.
@@ -219,6 +236,8 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
         this.stats = stats;
         this.type = type;
         this.durability = durability;
+
+        items.put(id, this);
     }
 
     /**
@@ -231,7 +250,9 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
         if (is != null) {
             Integer id = NBTReader.getNBTValueInt(is, "grapes.id");
             if (id != null) {
-                GrapesItem item = new GrapesItem(id, is.getType());
+                GrapesItem item = new GrapesItem();
+                item.setId(id);
+                item.setMaterial(is.getType());
                 item.setAmount(is.getAmount());
                 item.getNbt().clear();
                 item.getNbt().putAll(NBTReader.getAllNBTValues(is));
@@ -276,6 +297,9 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
                 for (String s : item.getNbt().keySet()) if (s.startsWith("grapes.")) remove.add(s);
                 for (String s : remove) item.getNbt().remove(s);
 
+                // Clone the click-action from the reference item.
+                item.setClickAction(items.get(item.getId()).getClickAction());
+
                 return item;
             }
         }
@@ -303,6 +327,16 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
         GrapesItem i = GrapesItem.fromItemStack(is);
         if (i != null) return i.build();
         else return is;
+    }
+
+    /**
+     * Getter for a map of all items.
+     * This map contains every type of item only once.
+     *
+     * @return A Map of all items and their ids.
+     */
+    public static HashMap<Integer, GrapesItem> getItems() {
+        return items;
     }
 
     /**
@@ -736,6 +770,28 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
     }
 
     /**
+     * Getter for the click-action of the item.
+     *
+     * @return The click-action of the item.
+     */
+    public ClickAction getClickAction() {
+        return clickAction;
+    }
+
+    /**
+     * Setter for the click action of the item.
+     * If set to null the default-action will be applied.
+     *
+     * @param clickAction The new click-action of the item.
+     * @return The GrapesItem. Used for creating command chains.
+     */
+    public GrapesItem setClickAction(ClickAction clickAction) {
+        if (clickAction != null) this.clickAction = clickAction;
+        else this.clickAction = ClickAction.DEFAULT;
+        return this;
+    }
+
+    /**
      * This method serializes an Object (t) into a String.
      *
      * @param grapesItem The Object, which you want to serialize.
@@ -830,5 +886,37 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
         is = NBTEditor.setNBTValue(is, "grapes.durability.max", this.durability != null ? this.durability.getY() : 0);
 
         return is;
+    }
+
+    @Override
+    public String toString() {
+        return "GrapesItem{" +
+                "clickAction=" + clickAction +
+                ", nbt=" + nbt +
+                ", stats=" + stats +
+                ", durability=" + durability +
+                ", type=" + type +
+                ", rarity=" + rarity +
+                ", id=" + id +
+                ", material=" + material +
+                ", name='" + name + '\'' +
+                ", amount=" + amount +
+                ", color=" + Arrays.toString(color) +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof GrapesItem)) return false;
+        GrapesItem item = (GrapesItem) o;
+        return id == item.id && amount == item.amount && nbt.equals(item.nbt) && Objects.equals(clickAction, item.clickAction) && Objects.equals(stats, item.stats) && Objects.equals(durability, item.durability) && type == item.type && rarity == item.rarity && material == item.material && Objects.equals(name, item.name) && Arrays.equals(color, item.color);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(nbt, clickAction, stats, durability, type, rarity, id, material, name, amount);
+        result = 31 * result + Arrays.hashCode(color);
+        return result;
     }
 }
