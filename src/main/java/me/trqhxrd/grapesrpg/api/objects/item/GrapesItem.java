@@ -546,7 +546,6 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
         return this;
     }
 
-
     /**
      * The Getter for the custom tags.
      *
