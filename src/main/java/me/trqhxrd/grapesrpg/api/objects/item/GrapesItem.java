@@ -54,6 +54,11 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      * The void damage / protection is stored in a field called {@code z}.
      */
     private Group3<Integer, Integer, Integer> stats;
+    /**
+     * This field contains all data about the items durability.
+     * Field X stores the items current durability.
+     * Field Y stores the items maximum durability.
+     */
     private Group2<Integer, Integer> durability;
     /**
      * This field contains the type of the item.
@@ -612,8 +617,10 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
             view.addRenderer(renderer);
         }
 
-        meta.setMapView(view);
-        build.setItemMeta(meta);
+        if (meta != null) {
+            meta.setMapView(view);
+            build.setItemMeta(meta);
+        }
 
         if (MapData.getInstance() == null) MapData.init();
         MapData.saveMapData(view.getId(), uri.toString());
