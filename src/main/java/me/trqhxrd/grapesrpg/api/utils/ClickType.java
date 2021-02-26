@@ -1,4 +1,4 @@
-package me.trqhxrd.grapesrpg.api.objects.entity.npc;
+package me.trqhxrd.grapesrpg.api.utils;
 
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.utils.packet.PacketReader;

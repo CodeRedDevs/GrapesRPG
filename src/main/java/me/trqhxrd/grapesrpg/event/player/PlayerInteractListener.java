@@ -2,7 +2,9 @@ package me.trqhxrd.grapesrpg.event.player;
 
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.attribute.Register;
+import me.trqhxrd.grapesrpg.api.objects.blocks.GrapesBlock;
 import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
+import me.trqhxrd.grapesrpg.api.utils.ClickType;
 import me.trqhxrd.grapesrpg.game.inventories.CraftingMenu;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -10,6 +12,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+
+import java.util.Objects;
 
 /**
  * This listener handles PlayerInteractions with Blocks or the air.
@@ -37,6 +41,12 @@ public class PlayerInteractListener implements Listener {
                     }
                 }
             }
+        }
+
+        if (e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.LEFT_CLICK_BLOCK) {
+            GrapesBlock b = GrapesBlock.getBlock(Objects.requireNonNull(e.getClickedBlock()).getLocation());
+            boolean bool = b.getState().onClick(GrapesPlayer.getByUniqueId(e.getPlayer().getUniqueId()), b, (e.getAction() == Action.LEFT_CLICK_BLOCK ? ClickType.LEFT : ClickType.RIGHT));
+            e.setCancelled(bool);
         }
 
         if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {

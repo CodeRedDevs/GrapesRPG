@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile;
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.event.GrapesPlayerClickNPCEvent;
+import me.trqhxrd.grapesrpg.api.utils.ClickType;
 import net.minecraft.server.v1_16_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

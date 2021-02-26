@@ -1,7 +1,7 @@
 package me.trqhxrd.grapesrpg.game.tasks.packet;
 
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;
-import me.trqhxrd.grapesrpg.api.objects.entity.npc.ClickType;
+import me.trqhxrd.grapesrpg.api.utils.ClickType;
 import me.trqhxrd.grapesrpg.api.objects.entity.npc.NPC;
 import me.trqhxrd.grapesrpg.api.utils.packet.PacketTask;
 import me.trqhxrd.grapesrpg.api.utils.reflection.Reflection;

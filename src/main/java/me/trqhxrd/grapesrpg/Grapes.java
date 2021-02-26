@@ -54,39 +54,16 @@ public class Grapes extends JavaPlugin {
      * Also if you want to use Plugin-Specific {@link Utils}, it is usable to get this Plugins Utils.
      */
     private static Grapes grapes;
-
     /**
      * This object is used for sending Messages to the Player.
      *
      * @see Utils
      */
     private Utils utils;
-
     /**
      * This clock executes all timed tasks of the GrapesRPG.
      */
     private GameClock clock;
-
-    /**
-     * Never use this constructor.
-     * This is only used for testing.
-     */
-    public Grapes() {
-        super();
-    }
-
-    /**
-     * Never use this constructor.
-     * This is only used for testing.
-     *
-     * @param loader      The loader used to load this plugin.
-     * @param dataFolder  The Folder, which contains all the plugins configurations.
-     * @param description The DescriptionFile of the Plugin.
-     * @param file        The Jar-File, which contains all the plugins code.
-     */
-    public Grapes(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
-        super(loader, description, dataFolder, file);
-    }
 
     /**
      * You need this method, if you want to do something with the Plugin instance.

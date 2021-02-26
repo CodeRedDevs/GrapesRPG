@@ -1,6 +1,7 @@
 package me.trqhxrd.grapesrpg.api.objects.entity.npc;
 
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;
+import me.trqhxrd.grapesrpg.api.utils.ClickType;
 
 /**
  * Classes, which implement this interface, can be added to an NPC.
