@@ -2,6 +2,8 @@ package me.trqhxrd.grapesrpg.event.block;
 
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.attribute.Register;
+import me.trqhxrd.grapesrpg.api.objects.block.GrapesBlock;
+import me.trqhxrd.grapesrpg.api.objects.block.GrapesBlockType;
 import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
 import org.bukkit.GameMode;
 import org.bukkit.event.EventHandler;
@@ -24,6 +26,7 @@ public class BlockBreakListener implements Listener {
      */
     @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent e) {
+        boolean cancel = false;
         if (e.getPlayer().getGameMode() != GameMode.CREATIVE) {
             GrapesItem i = GrapesItem.fromItemStack(e.getPlayer().getInventory().getItemInMainHand());
             if (i != null) {
@@ -32,12 +35,17 @@ public class BlockBreakListener implements Listener {
                     GrapesPlayer p = GrapesPlayer.getByUniqueId(e.getPlayer().getUniqueId());
                     p.getWrappedObject().getInventory().setItemInMainHand(i.build());
                     p.sendMessage("&c&lIt seems like your tool is broken...");
-                    e.setCancelled(true);
+                    cancel = true;
                 } else {
                     i.setDurability(durability - 1, i.getMaxDurability());
                     e.getPlayer().getInventory().setItemInMainHand(i.build());
                 }
             }
         }
+        GrapesBlock block = GrapesBlock.getBlock(e.getBlock().getLocation());
+        if (!cancel && block.getType() != GrapesBlockType.UNDEFINED) block.destroy();
+
+        e.setCancelled(cancel);
+
     }
 }

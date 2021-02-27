@@ -14,7 +14,7 @@ public enum GrapesBlockType {
     /**
      * This type will be applied, whenever a block is new and undefined.
      */
-    UNDEFINED(-1, null, GrapesBlockState.class),
+    UNDEFINED(-1, Material.AIR, GrapesBlockState.class),
     CRAFTING_TABLE(1, Material.CRAFTING_TABLE, CraftingTableBlock.class),
     ASCENSION_SHRINE(35, Material.BEACON, AscensionShrineBlock.class),
     TEST_BLOCK(36, Material.CHEST, GrapesBlockState.class);

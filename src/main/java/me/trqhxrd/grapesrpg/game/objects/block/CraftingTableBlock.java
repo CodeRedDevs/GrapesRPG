@@ -21,11 +21,14 @@ public class CraftingTableBlock extends GrapesBlockState {
      */
     @Override
     public boolean onClick(GrapesPlayer player, GrapesBlock block, BlockFace face, ClickType type) {
-        if (block.getBukkitBlock().getType().equals(Material.CRAFTING_TABLE)) {
-            CraftingMenu menu = new CraftingMenu();
-            menu.openInventory(player.getWrappedObject());
+        if (type == ClickType.RIGHT) {
+            if (block.getBukkitBlock().getType().equals(Material.CRAFTING_TABLE)) {
+                CraftingMenu menu = new CraftingMenu();
+                menu.openInventory(player.getWrappedObject());
+            }
+            return true;
         }
-        return true;
+        return false;
     }
 
     /**

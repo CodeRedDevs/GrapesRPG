@@ -77,11 +77,11 @@ public final class GrapesBlock {
      */
     public static void save() {
         cachedBlocks.forEach((loc, b) -> {
+            String s = loc.getBlockX() + "." + loc.getBlockY() + "." + loc.getBlockZ();
             if (b.getType() != GrapesBlockType.UNDEFINED) {
-                String s = loc.getBlockX() + "." + loc.getBlockY() + "." + loc.getBlockZ();
                 BlockData.getInstance().set(s + ".id", b.getType().getId());
                 b.getState().save(s, false);
-            }
+            } else BlockData.getInstance().set(s, null);
         });
         BlockData.getInstance().save();
         cachedBlocks.clear();
@@ -179,5 +179,16 @@ public final class GrapesBlock {
         }
         this.update();
         return state;
+    }
+
+    /**
+     * This method will destroy the block and delete all config entries.
+     */
+    public void destroy() {
+        String s = this.location.getBlockX() + "." + this.location.getBlockY() + "." + this.location.getBlockZ();
+        this.setType(GrapesBlockType.UNDEFINED);
+        this.blockState.destroy(this.location);
+        this.blockState.save(s, false);
+        this.update();
     }
 }

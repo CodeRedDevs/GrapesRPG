@@ -53,4 +53,13 @@ public class GrapesBlockState {
      */
     public void update(Location location) {
     }
+
+    /**
+     * This method gets called as soon as the block, which holds this BlockState.
+     * Here you should add stuff like dropping block-loot or deleting config entries.
+     *
+     * @param location The location of the Block, that got destroyed.
+     */
+    public void destroy(Location location) {
+    }
 }
