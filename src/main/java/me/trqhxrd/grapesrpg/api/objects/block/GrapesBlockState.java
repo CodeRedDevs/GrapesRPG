@@ -1,8 +1,9 @@
-package me.trqhxrd.grapesrpg.api.objects.blocks;
+package me.trqhxrd.grapesrpg.api.objects.block;
 
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.utils.ClickType;
 import org.bukkit.Location;
+import org.bukkit.block.BlockFace;
 
 /**
  * A GrapesBlockState is the data, a block stores.
@@ -20,9 +21,10 @@ public class GrapesBlockState {
      * @param player The Player, who clicked the block.
      * @param block  The block, which got clicked. (This Block stores this GrapesBlockState)
      * @param type   The Type of the click. (If it was left or right-click)
+     * @param face   The clicked BlockFace.
      * @return If you return true, the default-action of the block will be cancelled. (example: If you click a chest and return true, the chest won't open)
      */
-    public boolean onClick(GrapesPlayer player, GrapesBlock block, ClickType type) {
+    public boolean onClick(GrapesPlayer player, GrapesBlock block, BlockFace face, ClickType type) {
         return false;
     }
 

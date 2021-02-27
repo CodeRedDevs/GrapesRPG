@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.attribute.Register;
+import me.trqhxrd.grapesrpg.api.objects.block.GrapesBlock;
 import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipe;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesShapedRecipe;
@@ -21,9 +22,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.plugin.java.JavaPluginLoader;
 
 import java.io.File;
 import java.io.IOException;
@@ -118,6 +117,15 @@ public class Grapes extends JavaPlugin {
     }
 
     /**
+     * This method gets called as soon as the plugin gets disabled. it saves all the cached blocks to a file.
+     */
+    @Override
+    public void onDisable() {
+        GrapesPlayer.forEach(p -> p.getPacketReader().uninject());
+        GrapesBlock.save();
+    }
+
+    /**
      * Getter for the {@link Utils}
      *
      * @return The Plugin-Specific Utils.
@@ -183,8 +191,7 @@ public class Grapes extends JavaPlugin {
     public void registerItems(String aPackage) {
         Reflection.executeIfClassExtends(aPackage, GrapesItem.class, c -> {
             try {
-                Constructor<?> constructor = c.getConstructor();
-                constructor.newInstance();
+                 c.getConstructor().newInstance();
             } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException ignored) {
                 System.err.println("I am sorry, but the item \"" + c.getName() + "\" is not registrable. Please add a constructor with no parameters to the class.");
             }

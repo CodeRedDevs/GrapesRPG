@@ -1,7 +1,6 @@
 package me.trqhxrd.grapesrpg.game.config;
 
 import me.trqhxrd.grapesrpg.Grapes;
-import me.trqhxrd.grapesrpg.api.objects.blocks.GrapesBlock;
 import me.trqhxrd.grapesrpg.api.utils.config.Config;
 
 import java.io.File;

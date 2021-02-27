@@ -1,4 +1,4 @@
-package me.trqhxrd.grapesrpg.api.objects.blocks;
+package me.trqhxrd.grapesrpg.api.objects.block;
 
 import me.trqhxrd.grapesrpg.game.config.BlockData;
 import org.bukkit.Location;

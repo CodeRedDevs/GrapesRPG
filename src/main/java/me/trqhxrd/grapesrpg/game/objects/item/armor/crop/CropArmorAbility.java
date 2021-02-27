@@ -56,10 +56,10 @@ public class CropArmorAbility implements Listener {
     public void onBlockBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
         PlayerInventory inv = p.getInventory();
-        if (GrapesItem.fromItemStack(inv.getBoots()) != null && GrapesItem.fromItemStack(inv.getBoots()).getId() == new CropBoots().getId()) {
-            if (GrapesItem.fromItemStack(inv.getLeggings()) != null && GrapesItem.fromItemStack(inv.getLeggings()).getId() == new CropLeggings().getId()) {
-                if (GrapesItem.fromItemStack(inv.getChestplate()) != null && GrapesItem.fromItemStack(inv.getChestplate()).getId() == new CropChestplate().getId()) {
-                    if (GrapesItem.fromItemStack(inv.getHelmet()) != null && GrapesItem.fromItemStack(inv.getHelmet()).getId() == new CropHelmet().getId()) {
+        if (GrapesItem.fromItemStack(inv.getBoots()) != null && GrapesItem.fromItemStack(inv.getBoots()).getID() == new CropBoots().getID()) {
+            if (GrapesItem.fromItemStack(inv.getLeggings()) != null && GrapesItem.fromItemStack(inv.getLeggings()).getID() == new CropLeggings().getID()) {
+                if (GrapesItem.fromItemStack(inv.getChestplate()) != null && GrapesItem.fromItemStack(inv.getChestplate()).getID() == new CropChestplate().getID()) {
+                    if (GrapesItem.fromItemStack(inv.getHelmet()) != null && GrapesItem.fromItemStack(inv.getHelmet()).getID() == new CropHelmet().getID()) {
                         Block b = e.getBlock();
                         BlockData d = b.getBlockData();
                         if (cropMaterials.contains(b.getType())) {

@@ -38,11 +38,6 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      * The default damage-values of an item.
      */
     public static final Group3<Integer, Integer, Integer> DEFAULT_STATS = new Group3<>(1, 0, 0);
-
-    /**
-     * A List of all items sorted by their id.
-     */
-    private static final HashMap<Integer, GrapesItem> items = new HashMap<>();
     /**
      * Any custom NBT-Tags.
      * The Key is the path for the value.
@@ -236,8 +231,6 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
         this.stats = stats;
         this.type = type;
         this.durability = durability;
-
-        items.put(id, this);
     }
 
     /**
@@ -298,7 +291,7 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
                 for (String s : remove) item.getNbt().remove(s);
 
                 // Clone the click-action from the reference item.
-                item.setClickAction(items.get(item.getId()).getClickAction());
+                item.setClickAction(ClickAction.getClickAction(item.getID()));
 
                 return item;
             }
@@ -327,16 +320,6 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
         GrapesItem i = GrapesItem.fromItemStack(is);
         if (i != null) return i.build();
         else return is;
-    }
-
-    /**
-     * Getter for a map of all items.
-     * This map contains every type of item only once.
-     *
-     * @return A Map of all items and their ids.
-     */
-    public static HashMap<Integer, GrapesItem> getItems() {
-        return items;
     }
 
     /**
@@ -454,7 +437,7 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      * @param rarity The new rarity for the item.
      * @return The Item itself. Used for creating command chains.
      */
-    private GrapesItem setRarity(Rarity rarity) {
+    public GrapesItem setRarity(Rarity rarity) {
         this.rarity = rarity;
         return this;
     }
@@ -560,7 +543,7 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      *
      * @return The items id.
      */
-    public int getId() {
+    public int getID() {
         return id;
     }
 
@@ -786,8 +769,10 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      * @return The GrapesItem. Used for creating command chains.
      */
     public GrapesItem setClickAction(ClickAction clickAction) {
-        if (clickAction != null) this.clickAction = clickAction;
-        else this.clickAction = ClickAction.DEFAULT;
+        if (clickAction != null) {
+            this.clickAction = clickAction;
+            ClickAction.addClickAction(this.id, clickAction, false);
+        } else this.clickAction = ClickAction.DEFAULT;
         return this;
     }
 

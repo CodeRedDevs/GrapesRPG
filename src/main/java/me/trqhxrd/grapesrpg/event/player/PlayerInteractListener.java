@@ -2,16 +2,16 @@ package me.trqhxrd.grapesrpg.event.player;
 
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.attribute.Register;
-import me.trqhxrd.grapesrpg.api.objects.blocks.GrapesBlock;
+import me.trqhxrd.grapesrpg.api.objects.block.GrapesBlock;
 import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
 import me.trqhxrd.grapesrpg.api.utils.ClickType;
-import me.trqhxrd.grapesrpg.game.inventories.CraftingMenu;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.InventoryHolder;
 
 import java.util.Objects;
 
@@ -30,29 +30,33 @@ public class PlayerInteractListener implements Listener {
      */
     @EventHandler(ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent e) {
-        if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+
+        boolean cancel = false;
+        boolean done = false;
+
+        if (e.getClickedBlock() != null && !e.getPlayer().isSneaking() &&
+                e.getClickedBlock().getState() instanceof InventoryHolder &&
+                e.getClickedBlock().getType() != Material.CRAFTING_TABLE) done = true;
+
+        if (!done) {
             if (!e.getPlayer().isSneaking()) {
-                if (e.getClickedBlock() != null) {
-                    Block b = e.getClickedBlock();
-                    if (b.getType().equals(Material.CRAFTING_TABLE)) {
-                        CraftingMenu menu = new CraftingMenu();
-                        menu.openInventory(e.getPlayer());
-                        e.setCancelled(true);
-                    }
+                if (e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.LEFT_CLICK_BLOCK) {
+                    GrapesBlock b = GrapesBlock.getBlock(Objects.requireNonNull(e.getClickedBlock()).getLocation());
+                    cancel = b.getState().onClick(GrapesPlayer.getByUniqueId(e.getPlayer().getUniqueId()), b, e.getBlockFace(), (e.getAction() == Action.LEFT_CLICK_BLOCK ? ClickType.LEFT : ClickType.RIGHT));
+                    done = cancel;
                 }
             }
         }
 
-        if (e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.LEFT_CLICK_BLOCK) {
-            GrapesBlock b = GrapesBlock.getBlock(Objects.requireNonNull(e.getClickedBlock()).getLocation());
-            boolean bool = b.getState().onClick(GrapesPlayer.getByUniqueId(e.getPlayer().getUniqueId()), b, (e.getAction() == Action.LEFT_CLICK_BLOCK ? ClickType.LEFT : ClickType.RIGHT));
-            e.setCancelled(bool);
+        if (!done) {
+            if (e.getHand() == EquipmentSlot.HAND) {
+                GrapesItem i = GrapesItem.fromItemStack(e.getItem());
+                GrapesPlayer p = GrapesPlayer.getByUniqueId(e.getPlayer().getUniqueId());
+                if (i != null)
+                    cancel = i.getClickAction().onClick(p, i, e.getClickedBlock(), e.getBlockFace(), (e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.RIGHT_CLICK_AIR ? ClickType.RIGHT : ClickType.LEFT));
+            }
         }
 
-        if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            GrapesItem i = GrapesItem.fromItemStack(e.getItem());
-            GrapesPlayer p = GrapesPlayer.getByUniqueId(e.getPlayer().getUniqueId());
-            if (i != null) e.setCancelled(i.getClickAction().onClick(p, i, e.getClickedBlock(), e.getBlockFace()));
-        }
+        e.setCancelled(cancel);
     }
 }

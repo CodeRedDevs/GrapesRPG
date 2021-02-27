@@ -1,6 +1,7 @@
-package me.trqhxrd.grapesrpg.api.objects.blocks;
+package me.trqhxrd.grapesrpg.api.objects.block;
 
 import me.trqhxrd.grapesrpg.game.objects.block.AscensionShrineBlock;
+import me.trqhxrd.grapesrpg.game.objects.block.CraftingTableBlock;
 import org.bukkit.Material;
 
 /**
@@ -14,10 +15,9 @@ public enum GrapesBlockType {
      * This type will be applied, whenever a block is new and undefined.
      */
     UNDEFINED(-1, null, GrapesBlockState.class),
-    /**
-     * This is an AscensionShrine.
-     */
-    ASCENSION_SHRINE(35, Material.BEACON, AscensionShrineBlock.class);
+    CRAFTING_TABLE(1, Material.CRAFTING_TABLE, CraftingTableBlock.class),
+    ASCENSION_SHRINE(35, Material.BEACON, AscensionShrineBlock.class),
+    TEST_BLOCK(36, Material.CHEST, GrapesBlockState.class);
 
     /**
      * This id of the type.
@@ -59,6 +59,7 @@ public enum GrapesBlockType {
 
     /**
      * Getter for the type's bukkit material.
+     *
      * @return The type's bukkit material.
      */
     public Material getBukkitMaterial() {
@@ -67,6 +68,7 @@ public enum GrapesBlockType {
 
     /**
      * Getter for the type's BlockState-Class.
+     *
      * @return The type's BlockState-Class.
      */
     public Class<? extends GrapesBlockState> getBlockStateType() {
@@ -75,6 +77,7 @@ public enum GrapesBlockType {
 
     /**
      * Getter for the type's ID.
+     *
      * @return The type's id.
      */
     public int getId() {
