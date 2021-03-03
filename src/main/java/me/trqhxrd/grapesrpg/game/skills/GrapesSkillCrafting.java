@@ -1,6 +1,7 @@
 package me.trqhxrd.grapesrpg.game.skills;
 
 import me.trqhxrd.grapesrpg.api.skill.Skill;
+import me.trqhxrd.grapesrpg.api.skill.SkillTypes;
 import me.trqhxrd.grapesrpg.api.skill.Skills;
 import org.bukkit.Material;
 
@@ -22,6 +23,6 @@ public class GrapesSkillCrafting extends Skill {
 
     @Override
     public String getKey() {
-        return Skills.CRAFTING;
+        return SkillTypes.CRAFTING.getKey();
     }
 }

@@ -21,15 +21,6 @@ import java.util.function.BiConsumer;
 public class Skills implements MenuHolder, Owneable<GrapesPlayer> {
 
     /**
-     * This constant stores the key of the mining skill.
-     */
-    public static final String MINING = "grapes_mining";
-    /**
-     * This constant stores the key of the crafting skill.
-     */
-    public static final String CRAFTING = "grapes_crafting";
-
-    /**
      * This map stores all skills and their keys.
      */
     private final Map<String, Skill> skills = new HashMap<>();

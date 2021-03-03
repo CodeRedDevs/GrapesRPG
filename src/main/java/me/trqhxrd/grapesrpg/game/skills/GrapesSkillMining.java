@@ -5,6 +5,7 @@ import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.objects.block.GrapesBlock;
 import me.trqhxrd.grapesrpg.api.objects.block.GrapesBlockType;
 import me.trqhxrd.grapesrpg.api.skill.Skill;
+import me.trqhxrd.grapesrpg.api.skill.SkillTypes;
 import me.trqhxrd.grapesrpg.api.skill.Skills;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -57,7 +58,7 @@ public class GrapesSkillMining extends Skill implements Listener {
         if (levelTypes.containsKey(block.getType())) {
             int random = ThreadLocalRandom.current().nextInt(0, 500);
             if (random == 0) {
-                GrapesSkillMining mining = (GrapesSkillMining) GrapesPlayer.getByUniqueId(e.getPlayer().getUniqueId()).getSkills().getSkill(Skills.MINING);
+                GrapesSkillMining mining = (GrapesSkillMining) GrapesPlayer.getByUniqueId(e.getPlayer().getUniqueId()).getSkills().getSkill(SkillTypes.MINING.getKey());
                 int xp = levelTypes.get(block.getType());
                 mining.addXP(xp);
                 mining.getOwner().getOwner().sendMessage("&aYou got &b" + xp + " &aXP!");
@@ -69,6 +70,6 @@ public class GrapesSkillMining extends Skill implements Listener {
 
     @Override
     public String getKey() {
-        return Skills.MINING;
+        return SkillTypes.MINING.getKey();
     }
 }
