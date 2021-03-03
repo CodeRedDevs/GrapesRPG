@@ -44,13 +44,13 @@ public abstract class Menu implements InventoryHolder {
      * This constructor creates a new menu, with self-defined title, size and if you wish even with filler glass.
      *
      * @param title               The title of the inventory. ColorCodes can be used.
-     * @param size                The size of the inventory. Must be one of these numbers: {9, 18, 27, 36, 45, 54}.
+     * @param menuSize            The size of the inventory. Must be one of these numbers: {9, 18, 27, 36, 45, 54}.
      * @param setup               If true, the constructor will run the setup method.
      * @param fillWithFillerGlass If set to true, the whole inventory will be filled with filler glass and you can overwrite the slot, which you want to use.
      */
-    public Menu(String title, Size size, boolean setup, boolean fillWithFillerGlass) {
+    public Menu(String title, MenuSize menuSize, boolean setup, boolean fillWithFillerGlass) {
         this.title = title;
-        this.size = size.getSlots();
+        this.size = menuSize.getSlots();
         this.inventory = Bukkit.createInventory(this, this.size, Utils.translateColorCodes(title));
         if (fillWithFillerGlass) for (int i = 0; i < this.size; i++) inventory.setItem(i, FILLER_GLASS);
         if (setup) this.setupMenu();
@@ -60,22 +60,22 @@ public abstract class Menu implements InventoryHolder {
      * This constructor creates a new menu, with self-defined title, size and if you wish even with filler glass.
      *
      * @param title               The title of the inventory. ColorCodes can be used.
-     * @param size                The size of the inventory. Must be one of these numbers: {9, 18, 27, 36, 45, 54}.
+     * @param menuSize            The size of the inventory. Must be one of these numbers: {9, 18, 27, 36, 45, 54}.
      * @param fillWithFillerGlass If set to true, the whole inventory will be filled with filler glass and you can overwrite the slot, which you want to use.
      */
-    public Menu(String title, Size size, boolean fillWithFillerGlass) {
-        this(title, size, true, fillWithFillerGlass);
+    public Menu(String title, MenuSize menuSize, boolean fillWithFillerGlass) {
+        this(title, menuSize, true, fillWithFillerGlass);
     }
 
     /**
      * This constructor creates a new inventory with the title and size given.
      * The filler glass won't be used.
      *
-     * @param title The title of the inventory. ColorCodes can be used.
-     * @param size  The size of the inventory. Must be one of these numbers: {9, 18, 27, 36, 45, 54}.
+     * @param title    The title of the inventory. ColorCodes can be used.
+     * @param menuSize The size of the inventory. Must be one of these numbers: {9, 18, 27, 36, 45, 54}.
      */
-    public Menu(String title, Size size) {
-        this(title, size, true, false);
+    public Menu(String title, MenuSize menuSize) {
+        this(title, menuSize, true, false);
     }
 
     /**
@@ -140,7 +140,7 @@ public abstract class Menu implements InventoryHolder {
      *
      * @author Trqhxrd
      */
-    public enum Size {
+    public enum MenuSize {
         /**
          * This state is for creating an inventory with one line.
          */
@@ -176,7 +176,7 @@ public abstract class Menu implements InventoryHolder {
          *
          * @param slots The amount of slots, which the inventory should have.
          */
-        Size(int slots) {
+        MenuSize(int slots) {
             this.slots = slots;
         }
 

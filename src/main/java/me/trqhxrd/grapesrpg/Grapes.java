@@ -26,7 +26,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.util.Objects;
@@ -82,12 +81,19 @@ public class Grapes extends JavaPlugin {
      */
     @Override
     public void onEnable() {
+        try {
+            Bukkit.getConsoleSender().sendMessage("\n" + FigletFont.convertOneLine("GrapesRPG"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         grapes = this;
         this.utils = new Utils(Prefix.of("&c[&aGra&bpes&c] &7"));
         this.clock = new GameClock();
         this.clock.start();
 
         for (Player p : Bukkit.getOnlinePlayers()) new GrapesPlayer(p);
+
 
         this.registerListeners("me.trqhxrd.grapesrpg");
         this.registerCommands("me.trqhxrd.grapesrpg");
@@ -101,27 +107,12 @@ public class Grapes extends JavaPlugin {
     }
 
     /**
-     * The default onLoad method for Bukkit/Spigot-Plugins.
-     * Overwritten from the {@link JavaPlugin}.
-     * The only thing, which this method currently does is drawing the figlet-header during the loading of the plugin.
-     *
-     * @see JavaPlugin#onLoad()
-     */
-    @Override
-    public void onLoad() {
-        try {
-            Bukkit.getConsoleSender().sendMessage("\n" + FigletFont.convertOneLine("GrapesRPG"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
      * This method gets called as soon as the plugin gets disabled. it saves all the cached blocks to a file.
      */
     @Override
     public void onDisable() {
         GrapesPlayer.forEach(p -> p.getPacketReader().uninject());
+        GrapesPlayer.saveAll();
         GrapesBlock.save();
     }
 
@@ -191,7 +182,7 @@ public class Grapes extends JavaPlugin {
     public void registerItems(String aPackage) {
         Reflection.executeIfClassExtends(aPackage, GrapesItem.class, c -> {
             try {
-                 c.getConstructor().newInstance();
+                c.getConstructor().newInstance();
             } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException ignored) {
                 System.err.println("I am sorry, but the item \"" + c.getName() + "\" is not registrable. Please add a constructor with no parameters to the class.");
             }

@@ -77,7 +77,8 @@ public class EntityDamageByEntityListener implements Listener {
                 if (weapon != null && weapon.getType() == ItemType.MELEE && (weapon.isUnbreakable() || weapon.getCurrentDurability() > 0)) {
                     damageValues = weapon.getStats();
                     weapon.setDurability(weapon.getCurrentDurability() - 1, weapon.getMaxDurability());
-                } else GrapesPlayer.getByUniqueId(e.getEntity().getUniqueId()).sendMessage("&c&lIt seems like your weapon is broken...");
+                } else if (e.getDamager() instanceof Player) GrapesPlayer.getByUniqueId(e.getEntity().getUniqueId())
+                        .sendMessage("&c&lIt seems like your weapon is broken...");
             }
 
             appliedDamage.setX(((double) damageValues.getX()) / 1000. * (1000. - ((double) defenceValues.getX())));

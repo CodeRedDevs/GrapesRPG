@@ -2,9 +2,11 @@ package me.trqhxrd.grapesrpg.api;
 
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.event.GrapesPlayerInitEvent;
+import me.trqhxrd.grapesrpg.api.skill.Skills;
 import me.trqhxrd.grapesrpg.api.utils.Prefix;
 import me.trqhxrd.grapesrpg.api.utils.Wrapper;
 import me.trqhxrd.grapesrpg.api.utils.packet.PacketReader;
+import me.trqhxrd.grapesrpg.game.config.PlayerFile;
 import me.trqhxrd.grapesrpg.game.tasks.packet.NPCInteractionTask;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -34,7 +36,17 @@ public class GrapesPlayer extends Wrapper<Player> {
      * This is the PacketReader of the the Player.
      * Everytime the Player sends a Packet, it will run all the tasks in this PacketReader.
      */
-    private final PacketReader packetReader;
+    private transient final PacketReader packetReader;
+
+    /**
+     * This field contains a list of all skills the player has and their levels.
+     */
+    private final Skills skills;
+
+    /**
+     * This is the file, that stores the players data once he logged out.
+     */
+    private final PlayerFile file;
 
     /**
      * The Main Constructor for {@link GrapesPlayer}s.
@@ -44,12 +56,15 @@ public class GrapesPlayer extends Wrapper<Player> {
     public GrapesPlayer(Player player) {
         super(player);
 
-        //Call GrapesPlayerInitEvent
-        GrapesPlayerInitEvent event = new GrapesPlayerInitEvent(Grapes.getGrapes(), this);
-        Bukkit.getPluginManager().callEvent(event);
+        this.file = new PlayerFile(this);
+        this.skills = new Skills(this);
 
         this.packetReader = new PacketReader(this);
         new NPCInteractionTask(this);
+
+        //Call GrapesPlayerInitEvent
+        GrapesPlayerInitEvent event = new GrapesPlayerInitEvent(Grapes.getGrapes(), this);
+        Bukkit.getPluginManager().callEvent(event);
 
         if (!event.isCancelled()) players.add(this);
     }
@@ -95,9 +110,7 @@ public class GrapesPlayer extends Wrapper<Player> {
      *
      * @param name The name of the Player you want to get.
      * @return The GrapesPlayer with the name, which was give in the arguments. In case there is no Player with the given name, this method will return null.
-     * @deprecated
      */
-    @Deprecated
     public static GrapesPlayer getByName(String name) {
         for (GrapesPlayer p : GrapesPlayer.getPlayers())
             if (p.getName().equals(name)) return p;
@@ -128,6 +141,21 @@ public class GrapesPlayer extends Wrapper<Player> {
         for (GrapesPlayer player : players)
             if (player.getName().equals(name)) return true;
         return false;
+    }
+
+    /**
+     * This method saves the data for all players, that are logged in.
+     */
+    public static void saveAll() {
+        GrapesPlayer.forEach(GrapesPlayer::save);
+    }
+
+    /**
+     * This method saves a players stats, skill data, etc. into the players data file.
+     */
+    public void save() {
+        this.skills.save(false);
+        this.file.save();
     }
 
     /**
@@ -183,5 +211,23 @@ public class GrapesPlayer extends Wrapper<Player> {
      */
     public PacketReader getPacketReader() {
         return packetReader;
+    }
+
+    /**
+     * Getter for the players skill-list.
+     *
+     * @return The player skill-list.
+     */
+    public Skills getSkills() {
+        return skills;
+    }
+
+    /**
+     * Getter for the players data file.
+     *
+     * @return The players data file.
+     */
+    public PlayerFile getFile() {
+        return file;
     }
 }

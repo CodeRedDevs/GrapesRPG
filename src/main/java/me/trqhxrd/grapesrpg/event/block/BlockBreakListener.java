@@ -7,6 +7,7 @@ import me.trqhxrd.grapesrpg.api.objects.block.GrapesBlockType;
 import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
 import org.bukkit.GameMode;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
@@ -24,7 +25,7 @@ public class BlockBreakListener implements Listener {
      *
      * @param e A BlockBreakEvent.
      */
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onBlockBreak(BlockBreakEvent e) {
         boolean cancel = false;
         if (e.getPlayer().getGameMode() != GameMode.CREATIVE) {

@@ -6,13 +6,17 @@ import me.trqhxrd.grapesrpg.game.inventories.ColorMenu;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Register(command = "color")
-public class ColorCommand implements CommandExecutor {
+public class ColorCommand implements CommandExecutor, TabCompleter {
 
     /**
      * Executes the given command, returning its success.
@@ -57,5 +61,24 @@ public class ColorCommand implements CommandExecutor {
     private void showHelp(CommandSender sender) {
         Grapes.getGrapes().getUtils().sendMessage(sender, "&c/color random");
         Grapes.getGrapes().getUtils().sendMessage(sender, "&c/color menu");
+    }
+
+    /**
+     * Requests a list of possible completions for a command argument.
+     *
+     * @param sender  Source of the command.  For players tab-completing a
+     *                command inside of a command block, this will be the player, not
+     *                the command block.
+     * @param command Command which was executed
+     * @param alias   The alias used
+     * @param args    The arguments passed to the command, including final
+     *                partial argument to be completed and command label
+     * @return A List of possible completions for the final argument, or null
+     * to default to the command executor
+     */
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        if (args.length == 1) return Arrays.asList("random", "menu");
+        return Collections.emptyList();
     }
 }

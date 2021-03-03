@@ -2,8 +2,8 @@ package me.trqhxrd.grapesrpg.api.event;
 
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;
-import me.trqhxrd.grapesrpg.api.utils.ClickType;
 import me.trqhxrd.grapesrpg.api.objects.entity.npc.NPC;
+import me.trqhxrd.grapesrpg.api.utils.ClickType;
 import org.bukkit.event.HandlerList;
 
 /**

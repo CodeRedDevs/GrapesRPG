@@ -7,12 +7,14 @@ import org.bukkit.event.inventory.CraftItemEvent;
 
 /**
  * This listener cancels the native crafting.
+ *
  * @author Trqhxrd
  */
 @Register
 public class CraftItemListener implements Listener {
     /**
      * The Handler-Method.
+     *
      * @param e A CraftItemEvent.
      */
     @EventHandler(ignoreCancelled = true)

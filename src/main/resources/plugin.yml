@@ -9,9 +9,6 @@ commands:
   color:
     description: Gives you a random color.
     usage: /color
-  material:
-    description: gives you the material of the item in your hand.
-    usage: /material
-  npc:
-    description: Command for managing NPCs.
-    usage: /npc help for more information.
+  skill:
+    description: Shows you your skill data.
+    usage: /skill help for more information.

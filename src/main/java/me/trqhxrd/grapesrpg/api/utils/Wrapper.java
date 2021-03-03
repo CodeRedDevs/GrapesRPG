@@ -13,7 +13,7 @@ public abstract class Wrapper<T> {
      * Every Object of a Wrapper contains an Object of the class, it is wrapped around.
      * This field contains the wrapped object.
      */
-    protected final T wrappedObject;
+    protected transient final T wrappedObject;
 
     /**
      * This constructor creates a new Wrapper, with the wrappedObject as it's start-parameter.

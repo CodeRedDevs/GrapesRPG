@@ -4,6 +4,8 @@ import me.trqhxrd.grapesrpg.game.objects.block.AscensionShrineBlock;
 import me.trqhxrd.grapesrpg.game.objects.block.CraftingTableBlock;
 import org.bukkit.Material;
 
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * This enum contains all the different types of blocks that are available.
  *
@@ -11,11 +13,12 @@ import org.bukkit.Material;
  */
 public enum GrapesBlockType {
 
-    /**
-     * This type will be applied, whenever a block is new and undefined.
-     */
     UNDEFINED(-1, Material.AIR, GrapesBlockState.class),
     CRAFTING_TABLE(1, Material.CRAFTING_TABLE, CraftingTableBlock.class),
+    STONE(2, Material.STONE, GrapesBlockState.class),
+    COAL_ORE(3, Material.COAL_ORE, GrapesBlockState.class),
+    IRON_ORE(4, Material.IRON_ORE, GrapesBlockState.class),
+    GOLD_ORE(5, Material.GOLD_ORE, GrapesBlockState.class),
     ASCENSION_SHRINE(35, Material.BEACON, AscensionShrineBlock.class),
     TEST_BLOCK(36, Material.CHEST, GrapesBlockState.class);
 
@@ -82,5 +85,20 @@ public enum GrapesBlockType {
      */
     public int getId() {
         return id;
+    }
+
+    /**
+     * This method returns a new instance of the types {@link GrapesBlockState}.
+     * You can use this, if you don't want to add a try-catch-block for every method, where you need a new instance of a BlockState.
+     *
+     * @return A new instance of the {@link GrapesBlockState} for this type.
+     */
+    public GrapesBlockState getNewState() {
+        try {
+            return this.getBlockStateType().getConstructor().newInstance();
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

@@ -10,7 +10,9 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.BoundingBox;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
@@ -55,6 +57,17 @@ public class ClickActionPlaceBlock implements ClickAction {
     @Override
     public boolean onClick(GrapesPlayer player, GrapesItem item, Block block, BlockFace face, ClickType clickType) {
         if (clickType == ClickType.RIGHT) {
+            Location loc = block.getRelative(face).getLocation();
+            int x = loc.getBlockX();
+            int y = loc.getBlockY();
+            int z = loc.getBlockZ();
+
+            CraftPlayer p = ((CraftPlayer) player.getWrappedObject());
+            BoundingBox playerBox = p.getBoundingBox();
+            if (x < playerBox.getMaxX() && x + 1 > playerBox.getMinX() &&
+                    y < playerBox.getMaxY() && y + 1 > playerBox.getMinY() &&
+                    z < playerBox.getMaxZ() && z + 1 > playerBox.getMinZ()) return true;
+
             if (player.getWrappedObject().getGameMode() != GameMode.CREATIVE) {
                 ItemStack itemInHand = player.getWrappedObject().getInventory().getItemInMainHand();
                 int amount = itemInHand.getAmount() - 1;
