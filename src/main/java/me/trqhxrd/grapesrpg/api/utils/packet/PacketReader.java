@@ -1,5 +1,6 @@
 package me.trqhxrd.grapesrpg.api.utils.packet;
 
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import me.trqhxrd.grapesrpg.Grapes;
@@ -14,6 +15,7 @@ import java.util.Set;
 
 public class PacketReader {
 
+    public static final String DECODER_NAME = "grapes";
     private final Set<PacketTask> tasks = new HashSet<>();
     private final GrapesPlayer player;
 
@@ -33,15 +35,17 @@ public class PacketReader {
                 .networkManager
                 .channel
                 .pipeline()
-                .addAfter("decoder", "grapes", new MessageToMessageDecoder<Packet<?>>() {
+                .addAfter("decoder", DECODER_NAME, new MessageToMessageDecoder<Packet<?>>() {
                     @Override
                     protected void decode(ChannelHandlerContext channelHandlerContext, Packet<?> packet, List<Object> list) throws Exception {
                         list.add(packet);
                         new BukkitRunnable() {
                             @Override
                             public void run() {
-                                synchronized (tasks) {
-                                    tasks.forEach(t -> t.execute(packet));
+                                if (Grapes.getGrapes().isEnabled()) {
+                                    synchronized (tasks) {
+                                        tasks.forEach(t -> t.execute(packet));
+                                    }
                                 }
                             }
                         }.runTaskLater(Grapes.getGrapes(), 0);
@@ -50,7 +54,8 @@ public class PacketReader {
     }
 
     public void uninject() {
-
+        Channel channel = ((CraftPlayer) player.getWrappedObject()).getHandle().playerConnection.networkManager.channel;
+        if (channel.pipeline().get(DECODER_NAME) != null) channel.pipeline().remove(DECODER_NAME);
     }
 
     public void addTask(PacketTask task) {

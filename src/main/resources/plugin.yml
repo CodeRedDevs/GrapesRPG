@@ -15,3 +15,6 @@ commands:
   npc:
     description: Command for managing NPCs.
     usage: /npc help for more information.
+  skill:
+    description: Shows you your skill data.
+    usage: /skill help for more information.

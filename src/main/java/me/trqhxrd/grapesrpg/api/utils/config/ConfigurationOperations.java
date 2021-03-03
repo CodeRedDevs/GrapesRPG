@@ -16,7 +16,7 @@ public interface ConfigurationOperations {
      *
      * @param path The path, where you want to set the value.
      * @param t    The value, that should be set at the location.
-     * @param <T> The type of the object, that you want to store.
+     * @param <T>  The type of the object, that you want to store.
      */
     <T> void set(String path, T t);
 

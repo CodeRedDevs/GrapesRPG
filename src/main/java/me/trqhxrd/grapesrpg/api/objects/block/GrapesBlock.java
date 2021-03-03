@@ -60,14 +60,10 @@ public final class GrapesBlock {
      * @return The Block, which is located at the location given.
      */
     public static GrapesBlock getBlock(Location loc) {
-        try {
-            if (!cachedBlocks.containsKey(loc)) {
-                if (!BlockData.getInstance().contains(loc.getBlockX() + "." + loc.getBlockY() + "." + loc.getBlockZ() + ".id"))
-                    cachedBlocks.put(loc, new GrapesBlock(loc, GrapesBlockType.UNDEFINED.getBlockStateType().getConstructor().newInstance(), GrapesBlockType.UNDEFINED));
-                else cachedBlocks.put(loc, GrapesBlock.load(loc));
-            }
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            e.printStackTrace();
+        if (!cachedBlocks.containsKey(loc)) {
+            if (!BlockData.getInstance().contains(loc.getBlockX() + ":" + loc.getBlockY() + ":" + loc.getBlockZ() + ".id"))
+                cachedBlocks.put(loc, new GrapesBlock(loc, GrapesBlockType.UNDEFINED.getNewState(), GrapesBlockType.UNDEFINED));
+            else cachedBlocks.put(loc, GrapesBlock.load(loc));
         }
         return cachedBlocks.get(loc);
     }
@@ -77,7 +73,7 @@ public final class GrapesBlock {
      */
     public static void save() {
         cachedBlocks.forEach((loc, b) -> {
-            String s = loc.getBlockX() + "." + loc.getBlockY() + "." + loc.getBlockZ();
+            String s = loc.getBlockX() + ":" + loc.getBlockY() + ":" + loc.getBlockZ();
             if (b.getType() != GrapesBlockType.UNDEFINED) {
                 BlockData.getInstance().set(s + ".id", b.getType().getId());
                 b.getState().save(s, false);
@@ -96,7 +92,7 @@ public final class GrapesBlock {
      */
     private static GrapesBlock load(Location location) {
         try {
-            String s = location.getBlockX() + "." + location.getBlockY() + "." + location.getBlockZ();
+            String s = location.getBlockX() + ":" + location.getBlockY() + ":" + location.getBlockZ();
             int id = BlockData.getInstance().getInt(s + ".id");
             GrapesBlockType type = GrapesBlockType.fromID(id);
             GrapesBlockState state = type.getBlockStateType().getConstructor().newInstance();
@@ -185,10 +181,24 @@ public final class GrapesBlock {
      * This method will destroy the block and delete all config entries.
      */
     public void destroy() {
-        String s = this.location.getBlockX() + "." + this.location.getBlockY() + "." + this.location.getBlockZ();
+        String s = this.location.getBlockX() + ":" + this.location.getBlockY() + ":" + this.location.getBlockZ();
         this.setType(GrapesBlockType.UNDEFINED);
         this.blockState.destroy(this.location);
         this.blockState.save(s, false);
         this.update();
+    }
+
+    /**
+     * A basic toString method.
+     *
+     * @return The objects values in a human-readable way .
+     */
+    @Override
+    public String toString() {
+        return "GrapesBlock{" +
+                "location=" + location.toString() +
+                ", blockState=" + blockState.toString() +
+                ", type=" + type.name() +
+                '}';
     }
 }

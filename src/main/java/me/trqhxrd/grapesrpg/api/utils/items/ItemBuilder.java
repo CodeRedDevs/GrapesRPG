@@ -7,6 +7,10 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * This is just a simple ItemBuilder for {@link ItemStack}s.
  *
@@ -73,5 +77,52 @@ public class ItemBuilder implements Builder<ItemStack> {
     @Override
     public ItemStack build() {
         return is;
+    }
+
+    public ItemBuilder setLore(List<String> displayLore) {
+        List<String> colored = new ArrayList<>();
+        displayLore.forEach(s -> colored.add(Utils.translateColorCodes(s)));
+        ItemMeta meta = is.getItemMeta();
+        if (meta != null) meta.setLore(colored);
+        is.setItemMeta(meta);
+        return this;
+    }
+
+    /**
+     * This method sets the lore of the ItemStack.
+     *
+     * @param displayLore An Array of Strings. Every entry in this array is one line.
+     * @return The ItemBuilder. Used for creating command-chains.
+     */
+    public ItemBuilder setLore(String... displayLore) {
+        return this.setLore(Arrays.asList(displayLore));
+    }
+
+    /**
+     * This method clears the lore of the {@link ItemStack}.
+     *
+     * @return The ItemBuilder. Used for creating command-chains.
+     */
+    public ItemBuilder clearLore() {
+        return this.setLore();
+    }
+
+    /**
+     * This method overwrites a single line of the lore.
+     *
+     * @param line The line, that should be overwritten.
+     * @param text The text, that should be inserted.
+     * @return The ItemBuilder. Used for creating command-chains.
+     */
+    public ItemBuilder setLoreLine(int line, String text) {
+        ItemMeta meta = is.getItemMeta();
+        if (meta != null) {
+            List<String> lore = meta.getLore();
+            if (lore != null) {
+                lore.set(line, text);
+                return this.setLore(lore);
+            }
+        }
+        return this;
     }
 }

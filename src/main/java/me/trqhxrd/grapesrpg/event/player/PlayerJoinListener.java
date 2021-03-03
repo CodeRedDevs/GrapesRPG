@@ -4,7 +4,12 @@ import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.attribute.Register;
 import me.trqhxrd.grapesrpg.api.event.GrapesPlayerJoinEvent;
+import me.trqhxrd.grapesrpg.api.objects.block.GrapesBlockState;
+import me.trqhxrd.grapesrpg.api.objects.block.GrapesBlockType;
+import me.trqhxrd.grapesrpg.api.objects.item.ClickActionPlaceBlock;
+import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -63,6 +68,20 @@ public class PlayerJoinListener implements Listener {
             String message = joins.get(player.getUniqueId());
             e.setJoinMessage(message);
             joins.remove(e.getPlayer().getUniqueId());
+            /*e.getPlayer().getInventory().addItem(new GrapesItem(12, Material.DIAMOND_SWORD, "Swrod", 1, Rarity.EPIC, 120,
+                    35, 12, ItemType.MELEE, 650, new HashMap<>()).setClickAction((player1, item, block, face, type) -> {
+                player1.sendMessage(ChatColor.AQUA + "Working as intended!");
+                return false;
+            }).build());
+            Firework fw = (Firework) e.getPlayer().getLocation().getWorld().spawnEntity(e.getPlayer().getLocation().add(0, 3, 0), EntityType.FIREWORK);
+            FireworkMeta fm = fw.getFireworkMeta();
+            fm.addEffect(FireworkEffect.builder()
+                    .flicker(true)
+                    .trail(false)
+                    .withColor(Color.RED, Color.BLACK)
+                    .with(FireworkEffect.Type.BALL_LARGE)
+                    .build());*/
+            e.getPlayer().getInventory().addItem(new GrapesItem(-1, Material.STONE).setClickAction(new ClickActionPlaceBlock(GrapesBlockType.STONE, new GrapesBlockState())).build());
         } catch (Exception ex) {
             ex.printStackTrace();
         }

@@ -28,7 +28,7 @@ public class ColorMenu extends Menu {
     private final int[] rgb;
 
     public ColorMenu() {
-        super("&cChoose &ayour &9color!", Size.NINE_SIX, false, true);
+        super("&cChoose &ayour &9color!", MenuSize.NINE_SIX, false, true);
         rgb = new int[]{
                 ThreadLocalRandom.current().nextInt(0, 256),
                 ThreadLocalRandom.current().nextInt(0, 256),
