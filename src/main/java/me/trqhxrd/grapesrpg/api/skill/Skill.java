@@ -3,6 +3,7 @@ package me.trqhxrd.grapesrpg.api.skill;
 import me.trqhxrd.grapesrpg.api.attribute.Owneable;
 import me.trqhxrd.grapesrpg.api.attribute.key.StringKeyable;
 import me.trqhxrd.grapesrpg.api.objects.item.InventoryDisplayable;
+import me.trqhxrd.grapesrpg.api.utils.group.Group2;
 import me.trqhxrd.grapesrpg.api.utils.items.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -24,25 +25,17 @@ public abstract class Skill implements InventoryDisplayable, StringKeyable, Owne
      */
     public static final int START_XP = 100;
     /**
+     * This is the text, that will be used for the progress-bar.
+     */
+    public static final String PROGRESS_TEXT = "■";
+    /**
      * This field contains the owning set of skills.
      */
     private transient final Skills owner;
     /**
-     * This integer contains the slot in the skills-menu, where this slots item should displayed.
+     * This field contains the item, that will show the skills data and it's slot.
      */
-    private final int displaySlot;
-    /**
-     * This field contains the material of the display-icon.
-     */
-    private final Material displayType;
-    /**
-     * This field contains the display-name of the display-item.
-     */
-    private final String displayName;
-    /**
-     * This field contains the display-amount of the display-item.
-     */
-    private final int displayAmount;
+    private final Group2<ItemStack, Integer> displayPrototype;
     /**
      * This field contains the level of this skill.
      */
@@ -64,26 +57,38 @@ public abstract class Skill implements InventoryDisplayable, StringKeyable, Owne
      * @param displayAmount The amount of the skills icon.
      */
     public Skill(Skills owner, int level, int xp, int displaySlot, Material displayType, String displayName, int displayAmount) {
-        this.owner = owner;
-        this.level = level;
-        this.xp = xp;
-        this.displaySlot = displaySlot;
-        this.displayType = displayType;
-        this.displayName = displayName;
-        this.displayAmount = displayAmount;
+        this(owner, level, xp, displaySlot, new ItemBuilder(displayType)
+                .setName(displayName)
+                .setAmount(displayAmount)
+                .build());
     }
 
     /**
      * This constructor will create a new skill with an owner, level 1, 0 xp and a display-item.
      *
-     * @param owner         The owner of this skill
-     * @param displaySlot   The slot in the inventory of this skills icon.
-     * @param displayType   The material of the skills icon.
-     * @param displayName   The name of the skills-icon
-     * @param displayAmount The amount of the skills icon.
+     * @param owner       The owner of this skill
+     * @param displaySlot The slot in the inventory of this skills icon.
+     * @param displayItem The item, that will be shown in the Skills-Inventory.
      */
-    public Skill(Skills owner, int displaySlot, Material displayType, String displayName, int displayAmount) {
-        this(owner, 1, 0, displaySlot, displayType, displayName, displayAmount);
+    public Skill(Skills owner, int displaySlot, ItemStack displayItem) {
+        this(owner, 1, 0, displaySlot, displayItem);
+    }
+
+    /**
+     * This constructor will create a new skill.
+     *
+     * @param owner       The owning collection of skills.
+     * @param level       The initial level of the skill.
+     * @param xp          The initial amount of xp of the skill.
+     * @param displaySlot The slot of the display-icon in the inventory.
+     * @param displayItem The actual item in the menu.
+     */
+    public Skill(Skills owner, int level, int xp, int displaySlot, ItemStack displayItem) {
+        this.owner = owner;
+        this.level = level;
+        this.xp = xp;
+        this.displayPrototype = new Group2<>(displayItem, displaySlot);
+
     }
 
     /**
@@ -164,8 +169,8 @@ public abstract class Skill implements InventoryDisplayable, StringKeyable, Owne
      *
      * @return The skills slot.
      */
-    public int getDisplaySlot() {
-        return displaySlot;
+    public int getSlot() {
+        return displayPrototype.getY();
     }
 
     /**
@@ -180,13 +185,10 @@ public abstract class Skill implements InventoryDisplayable, StringKeyable, Owne
         String[] lore = new String[]{
                 "&#ba03fcLevel: &e" + this.level,
                 "&#ba03fcXP: &c" + this.xp,
-                "&8[&#03fcb5" + "-".repeat(part) + "&7" + "-".repeat(10 - part) + "&8]"
+                "&8[&#03fcb5" + PROGRESS_TEXT.repeat(part) + "&7" + PROGRESS_TEXT.repeat(10 - part) + "&8]"
         };
-        return new ItemBuilder(displayType)
-                .setName(displayName)
-                .setAmount(displayAmount)
-                .setLore(lore)
-                .build();
+
+        return new ItemBuilder(displayPrototype.getX()).setLore(lore).build();
     }
 
     /**

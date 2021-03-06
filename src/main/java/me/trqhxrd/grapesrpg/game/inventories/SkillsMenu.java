@@ -25,7 +25,7 @@ public class SkillsMenu extends Menu implements Owneable<Skills> {
      * @param skills The collection of skills, that should be displayed.
      */
     public SkillsMenu(Skills skills) {
-        super("&#524df0", MenuSize.NINE_SIX, false, true);
+        super("&#524df0Skills:", MenuSize.NINE_FIVE, false, true);
         this.skills = skills;
         this.setupMenu();
     }
@@ -55,7 +55,7 @@ public class SkillsMenu extends Menu implements Owneable<Skills> {
     @Override
     public void setupMenu() {
         this.skills.forEach((key, skill) -> {
-            int slot = skill.getDisplaySlot();
+            int slot = skill.getSlot();
             this.getInventory().setItem(slot, skill.getDisplayItem());
         });
     }

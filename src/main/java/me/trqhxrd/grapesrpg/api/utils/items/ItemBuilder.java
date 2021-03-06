@@ -4,12 +4,14 @@ import com.google.common.base.Preconditions;
 import me.trqhxrd.grapesrpg.api.utils.Builder;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This is just a simple ItemBuilder for {@link ItemStack}s.
@@ -123,6 +125,29 @@ public class ItemBuilder implements Builder<ItemStack> {
                 return this.setLore(lore);
             }
         }
+        return this;
+    }
+
+    /**
+     * This method adds a list of enchantments and their levels.
+     *
+     * @param enchantments A map of enchantments and integers, the enchantment is the type of enchantment, that should be added and the integer is the level of that enchantment.
+     * @return The ItemBuilder. Used for creating command-chains.
+     */
+    public ItemBuilder addEnchants(Map<Enchantment, Integer> enchantments) {
+        enchantments.forEach(this::addEnchant);
+        return this;
+    }
+
+    /**
+     * This method adds a single enchant onto the item.
+     *
+     * @param enchantment The enchantment, that should be added.
+     * @param level       The level, that the enchantments should have.
+     * @return The ItemBuilder. Used for creating command-chains.
+     */
+    public ItemBuilder addEnchant(Enchantment enchantment, int level) {
+        this.is.addUnsafeEnchantment(enchantment, level);
         return this;
     }
 }

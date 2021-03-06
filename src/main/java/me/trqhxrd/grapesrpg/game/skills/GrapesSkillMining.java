@@ -5,8 +5,8 @@ import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.objects.block.GrapesBlock;
 import me.trqhxrd.grapesrpg.api.objects.block.GrapesBlockType;
 import me.trqhxrd.grapesrpg.api.skill.Skill;
-import me.trqhxrd.grapesrpg.api.skill.SkillTypes;
 import me.trqhxrd.grapesrpg.api.skill.Skills;
+import me.trqhxrd.grapesrpg.api.utils.items.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -44,7 +44,9 @@ public class GrapesSkillMining extends Skill implements Listener {
      * @param owner The owner of this skill.
      */
     public GrapesSkillMining(Skills owner) {
-        super(owner, 3, Material.IRON_PICKAXE, "&bMining", 1);
+        super(owner, 38, new ItemBuilder(Material.IRON_PICKAXE)
+                .setName("&bMining")
+                .build());
     }
 
     /**
