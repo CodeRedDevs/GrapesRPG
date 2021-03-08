@@ -19,6 +19,10 @@ public enum GrapesBlockType {
     COAL_ORE(3, Material.COAL_ORE, GrapesBlockState.class),
     IRON_ORE(4, Material.IRON_ORE, GrapesBlockState.class),
     GOLD_ORE(5, Material.GOLD_ORE, GrapesBlockState.class),
+    LAPIS_LAZULI_ORE(5, Material.GOLD_ORE, GrapesBlockState.class),
+    REDSTONE_ORE(5, Material.REDSTONE_ORE, GrapesBlockState.class),
+    DIAMOND_ORE(5, Material.DIAMOND_ORE, GrapesBlockState.class),
+    EMERALD_ORE(5, Material.EMERALD_ORE, GrapesBlockState.class),
     ASCENSION_SHRINE(35, Material.BEACON, AscensionShrineBlock.class),
     TEST_BLOCK(36, Material.CHEST, GrapesBlockState.class);
 

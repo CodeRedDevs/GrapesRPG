@@ -2,7 +2,7 @@ package me.trqhxrd.grapesrpg.commands;
 
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.attribute.Register;
-import me.trqhxrd.grapesrpg.api.skill.SkillTypes;
+import me.trqhxrd.grapesrpg.game.skills.SkillTypes;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -122,7 +122,6 @@ public class SkillsCommand implements CommandExecutor, TabCompleter {
         List<String> list = new ArrayList<>();
         switch (args.length) {
             case 1:
-                list.add("help");
                 GrapesPlayer.forEach(p -> list.add(p.getName()));
                 break;
             case 2:

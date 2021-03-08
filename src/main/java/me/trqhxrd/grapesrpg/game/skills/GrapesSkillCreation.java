@@ -1,8 +1,8 @@
 package me.trqhxrd.grapesrpg.game.skills;
 
 import me.trqhxrd.grapesrpg.api.skill.Skill;
-import me.trqhxrd.grapesrpg.api.skill.SkillTypes;
 import me.trqhxrd.grapesrpg.api.skill.Skills;
+import me.trqhxrd.grapesrpg.api.utils.items.ItemBuilder;
 import org.bukkit.Material;
 
 /**
@@ -10,19 +10,21 @@ import org.bukkit.Material;
  *
  * @author Trqhxrd
  */
-public class GrapesSkillCrafting extends Skill {
+public class GrapesSkillCreation extends Skill {
 
     /**
      * This creates a new object of this skill.
      *
      * @param owner The owner of this skill.
      */
-    public GrapesSkillCrafting(Skills owner) {
-        super(owner, 5, Material.CRAFTING_TABLE, "&cCrafting", 1);
+    public GrapesSkillCreation(Skills owner) {
+        super(owner, 6, new ItemBuilder(Material.CRAFTING_TABLE)
+                .setName("&cCreation")
+                .build());
     }
 
     @Override
     public String getKey() {
-        return SkillTypes.CRAFTING.getKey();
+        return SkillTypes.CREATION.getKey();
     }
 }

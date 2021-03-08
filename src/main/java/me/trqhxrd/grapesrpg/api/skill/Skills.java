@@ -52,6 +52,7 @@ public class Skills implements MenuHolder, Owneable<GrapesPlayer> {
         });
 
         Skills.load(this);
+        Skills.save(this, true);
         this.menu = new SkillsMenu(this);
     }
 

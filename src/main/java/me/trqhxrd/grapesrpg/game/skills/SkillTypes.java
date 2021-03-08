@@ -1,4 +1,4 @@
-package me.trqhxrd.grapesrpg.api.skill;
+package me.trqhxrd.grapesrpg.game.skills;
 
 import me.trqhxrd.grapesrpg.api.attribute.key.StringKeyable;
 
@@ -7,8 +7,16 @@ import me.trqhxrd.grapesrpg.api.attribute.key.StringKeyable;
  */
 public enum SkillTypes implements StringKeyable {
 
-    MINING("grapes_mining"),
-    CRAFTING("grapes_crafting");
+    SLAYER("slayer"),
+    MINING("mining"),
+    CREATION("creation"),
+    FARMING("farming"),
+    FISHING("fishing"),
+    ALCHEMY("alchemy"),
+    WOODCUTTING("woodcutting"),
+    CONJURATION("conjuration"),
+    INFUSION("infusion"),
+    EXPLORATION("exploration");
 
     private final String key;
 
