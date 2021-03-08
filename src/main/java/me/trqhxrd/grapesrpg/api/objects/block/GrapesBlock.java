@@ -91,17 +91,13 @@ public final class GrapesBlock {
      * @return The block that is located at your location. Returns null if not available.
      */
     private static GrapesBlock load(Location location) {
-        try {
+
             String s = location.getBlockX() + ":" + location.getBlockY() + ":" + location.getBlockZ();
             int id = BlockData.getInstance().getInt(s + ".id");
             GrapesBlockType type = GrapesBlockType.fromID(id);
-            GrapesBlockState state = type.getBlockStateType().getConstructor().newInstance();
+            GrapesBlockState state = type.getNewState();
             state.load(s);
             return new GrapesBlock(location, state, type);
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     /**

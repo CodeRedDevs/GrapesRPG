@@ -34,6 +34,10 @@ public class GrapesSkillMining extends Skill implements Listener {
         levelTypes.put(GrapesBlockType.COAL_ORE, 3);
         levelTypes.put(GrapesBlockType.IRON_ORE, 5);
         levelTypes.put(GrapesBlockType.GOLD_ORE, 8);
+        levelTypes.put(GrapesBlockType.LAPIS_LAZULI_ORE, 6);
+        levelTypes.put(GrapesBlockType.REDSTONE_ORE, 8);
+        levelTypes.put(GrapesBlockType.DIAMOND_ORE, 10);
+        levelTypes.put(GrapesBlockType.EMERALD_ORE, 15);
 
         Bukkit.getPluginManager().registerEvents(new GrapesSkillMining(null), Grapes.getGrapes());
     }
