@@ -1,5 +1,7 @@
 package me.trqhxrd.grapesrpg.api.utils.group;
 
+import java.util.Objects;
+
 /**
  * This Class can store 3 different Objects from 3 different types.
  *
@@ -71,5 +73,19 @@ public class Group3<X, Y, Z> extends Group2<X, Y> {
                 ", y=" + y +
                 ", z=" + z +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Group3)) return false;
+        if (!super.equals(o)) return false;
+        Group3<?, ?, ?> group3 = (Group3<?, ?, ?>) o;
+        return Objects.equals(z, group3.z);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), z);
     }
 }

@@ -1,5 +1,7 @@
 package me.trqhxrd.grapesrpg.api.utils.group;
 
+import java.util.Objects;
+
 /**
  * A collection for 2 different Field-types.
  * Extends from a one-dimensional Group.
@@ -68,5 +70,19 @@ public class Group2<X, Y> extends Group<X> {
                 "x=" + x +
                 ", y=" + y +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Group2)) return false;
+        if (!super.equals(o)) return false;
+        Group2<?, ?> group2 = (Group2<?, ?>) o;
+        return Objects.equals(y, group2.y);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), y);
     }
 }

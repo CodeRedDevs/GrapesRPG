@@ -1,5 +1,7 @@
 package me.trqhxrd.grapesrpg.api.utils.group;
 
+import java.util.Objects;
+
 /**
  * A simple class, which can store 1 value of one type.
  *
@@ -60,5 +62,18 @@ public class Group<X> {
         return "Group{" +
                 "x=" + x +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Group)) return false;
+        Group<?> group = (Group<?>) o;
+        return Objects.equals(x, group.x);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x);
     }
 }

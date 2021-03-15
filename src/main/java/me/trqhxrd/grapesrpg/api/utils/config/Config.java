@@ -8,7 +8,10 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * This class is a blueprint for all other configs.
@@ -179,9 +182,34 @@ public class Config extends Wrapper<FileConfiguration> implements ConfigurationO
     @Override
     public void save() {
         try {
+            this.purge();
             this.getWrappedObject().save(file);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * This method removes all empty ConfigurationSections from the config.
+     *
+     * @return Returns true, if empty entries were found. This value can be used to call this method recursively until no values will be found anymore.
+     */
+    @Override
+    public boolean purge() {
+        AtomicBoolean b = new AtomicBoolean(false);
+        Set<String> keys = new HashSet<>(this.getWrappedObject().getKeys(true));
+        keys.forEach(k -> {
+            if (this.getWrappedObject().get(k) instanceof ConfigurationSection) {
+                ConfigurationSection section = this.getWrappedObject().getConfigurationSection(k);
+                if (section != null && section.getKeys(false).size() == 0) {
+                    this.getWrappedObject().set(k, null);
+                    b.set(true);
+                }
+            }
+        });
+
+        if (b.get()) this.purge();
+
+        return b.get();
     }
 }

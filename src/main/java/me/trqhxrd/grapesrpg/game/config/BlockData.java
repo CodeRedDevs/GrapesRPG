@@ -2,8 +2,10 @@ package me.trqhxrd.grapesrpg.game.config;
 
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.utils.config.Config;
+import org.bukkit.Location;
 
 import java.io.File;
+import java.util.Objects;
 
 /**
  * This class contains a config, that stores all information about blocks.
@@ -42,5 +44,15 @@ public class BlockData extends Config {
     public static BlockData getInstance() {
         if (instance == null) init();
         return instance;
+    }
+
+    /**
+     * This method returns the key for the ConfigurationSection in the config.
+     *
+     * @param location The location for which you want to get the key.
+     * @return The path to the ConfigurationSection in the config.
+     */
+    public static String getConfigKey(Location location) {
+        return Objects.requireNonNull(location.getWorld()).getName() + "." + location.getBlockX() + ":" + location.getBlockY() + ":" + location.getBlockZ();
     }
 }

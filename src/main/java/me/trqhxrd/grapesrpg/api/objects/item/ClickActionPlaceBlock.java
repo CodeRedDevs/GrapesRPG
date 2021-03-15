@@ -31,6 +31,7 @@ public class ClickActionPlaceBlock implements ClickAction {
         replaceableBlocks.add(Material.LAVA);
         replaceableBlocks.add(Material.TALL_GRASS);
         replaceableBlocks.add(Material.DEAD_BUSH);
+        replaceableBlocks.add(Material.SNOW);
     }
 
     private final GrapesBlockType type;
@@ -48,16 +49,21 @@ public class ClickActionPlaceBlock implements ClickAction {
     /**
      * This is the method, that will be executed, if the item gets clicked.
      *
-     * @param player The player who clicks the item.
-     * @param item   The item, that he clicks.
-     * @param block  The block, that is clicked. If this is null, the player did not aim at a block.
-     * @param face   The BlockFace, that got clicked by the player. If this is null, the player did not aim at a block.
+     * @param player    The player who clicks the item.
+     * @param item      The item, that he clicks.
+     * @param block     The block, that is clicked. If this is null, the player did not aim at a block.
+     * @param face      The BlockFace, that got clicked by the player. If this is null, the player did not aim at a block.
+     * @param clickType This represents the type of click. Can be left or right.
      * @return Returns whether the default-action if the item is clicked should be cancelled. If set to true, the default action will be suppressed.
      */
     @Override
     public boolean onClick(GrapesPlayer player, GrapesItem item, Block block, BlockFace face, ClickType clickType) {
         if (clickType == ClickType.RIGHT) {
             Location loc = block.getRelative(face).getLocation();
+
+            // If block is replaceable change coordinate of placed block to the coordinates of the bloc, that should be replaced.
+            if (replaceableBlocks.contains(block.getType())) loc = block.getLocation();
+
             int x = loc.getBlockX();
             int y = loc.getBlockY();
             int z = loc.getBlockZ();
@@ -75,14 +81,11 @@ public class ClickActionPlaceBlock implements ClickAction {
                 else itemInHand.setAmount(amount);
                 player.getWrappedObject().getInventory().setItemInMainHand(itemInHand);
             }
-            Location location = block.getRelative(face).getLocation();
-            Block bl = location.getBlock();
-            if (replaceableBlocks.contains(bl.getType())) {
-                GrapesBlock b = GrapesBlock.getBlock(location);
-                b.setType(type);
-                b.setState(state);
-                b.update();
-            }
+
+            GrapesBlock b = GrapesBlock.getBlock(loc);
+            b.setType(type);
+            b.setState(state);
+            b.update();
             return true;
         }
         return false;

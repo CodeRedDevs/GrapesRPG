@@ -1,5 +1,7 @@
 package me.trqhxrd.grapesrpg.api.utils.group;
 
+import java.util.Objects;
+
 /**
  * A Group, which contains four different Object of four different types.
  *
@@ -74,5 +76,19 @@ public class Group4<X, Y, Z, T> extends Group3<X, Y, Z> {
                 ", z=" + z +
                 ", t=" + t +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Group4)) return false;
+        if (!super.equals(o)) return false;
+        Group4<?, ?, ?, ?> group4 = (Group4<?, ?, ?, ?>) o;
+        return Objects.equals(t, group4.t);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), t);
     }
 }

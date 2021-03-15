@@ -13,6 +13,7 @@ import me.trqhxrd.grapesrpg.api.utils.Prefix;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
 import me.trqhxrd.grapesrpg.api.utils.reflection.Reflection;
 import me.trqhxrd.grapesrpg.game.GameClock;
+import me.trqhxrd.grapesrpg.game.config.json.adapters.ConfigurationSerializableAdapter;
 import me.trqhxrd.grapesrpg.game.objects.recipe.armor.crop.CropBootsRecipe;
 import me.trqhxrd.grapesrpg.game.objects.recipe.armor.crop.CropChestplateRecipe;
 import me.trqhxrd.grapesrpg.game.objects.recipe.armor.crop.CropHelmetRecipe;
@@ -20,6 +21,7 @@ import me.trqhxrd.grapesrpg.game.objects.recipe.armor.crop.CropLeggingsRecipe;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -45,6 +47,13 @@ public class Grapes extends JavaPlugin {
     public static final Gson GSON = new GsonBuilder()
             .setPrettyPrinting()
             .serializeNulls()
+            .disableHtmlEscaping()
+            .registerTypeHierarchyAdapter(ConfigurationSerializable.class, new ConfigurationSerializableAdapter())
+            .create();
+    public static final Gson GSON_NO_PRETTY_PRINT = new GsonBuilder()
+            .serializeNulls()
+            .disableHtmlEscaping()
+            .registerTypeHierarchyAdapter(ConfigurationSerializable.class, new ConfigurationSerializableAdapter())
             .create();
     /**
      * This is the instance of the GrapesRPG plugin.

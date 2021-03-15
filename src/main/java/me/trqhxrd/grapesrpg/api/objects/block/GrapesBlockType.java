@@ -2,6 +2,7 @@ package me.trqhxrd.grapesrpg.api.objects.block;
 
 import me.trqhxrd.grapesrpg.game.objects.block.AscensionShrineBlock;
 import me.trqhxrd.grapesrpg.game.objects.block.CraftingTableBlock;
+import me.trqhxrd.grapesrpg.game.objects.block.CrucibleBlock;
 import org.bukkit.Material;
 
 import java.lang.reflect.InvocationTargetException;
@@ -24,7 +25,8 @@ public enum GrapesBlockType {
     DIAMOND_ORE(5, Material.DIAMOND_ORE, GrapesBlockState.class),
     EMERALD_ORE(5, Material.EMERALD_ORE, GrapesBlockState.class),
     ASCENSION_SHRINE(35, Material.BEACON, AscensionShrineBlock.class),
-    TEST_BLOCK(36, Material.CHEST, GrapesBlockState.class);
+    TEST_BLOCK(36, Material.CHEST, GrapesBlockState.class),
+    CRUCIBLE(37,Material.CAULDRON , CrucibleBlock.class);
 
     /**
      * This id of the type.

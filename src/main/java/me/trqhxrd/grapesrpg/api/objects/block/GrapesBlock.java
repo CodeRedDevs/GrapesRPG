@@ -7,6 +7,7 @@ import org.bukkit.block.Block;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 /**
  * This Class represents a Block.
@@ -56,16 +57,32 @@ public final class GrapesBlock {
      * If there is no cached block, a new block will be loaded from the config.
      * If that block is also null, a new block will be created with unset data values.
      *
-     * @param loc The location of which you want to get the block.
+     * @param location The location of which you want to get the block.
+     * @param update If this is set to true, the block's update-method will be run.
      * @return The Block, which is located at the location given.
      */
-    public static GrapesBlock getBlock(Location loc) {
+    public static GrapesBlock getBlock(Location location, boolean update) {
+        Location loc = new Location(location.getWorld(), location.getBlockX(), location.getBlockY(), location.getBlockZ());
+
         if (!cachedBlocks.containsKey(loc)) {
-            if (!BlockData.getInstance().contains(loc.getBlockX() + ":" + loc.getBlockY() + ":" + loc.getBlockZ() + ".id"))
+            if (!BlockData.getInstance().contains(BlockData.getConfigKey(loc) + ".id"))
                 cachedBlocks.put(loc, new GrapesBlock(loc, GrapesBlockType.UNDEFINED.getNewState(), GrapesBlockType.UNDEFINED));
             else cachedBlocks.put(loc, GrapesBlock.load(loc));
         }
+        if (update && cachedBlocks.get(loc).getType() != GrapesBlockType.UNDEFINED) cachedBlocks.get(loc).update();
         return cachedBlocks.get(loc);
+    }
+
+    /**
+     * This method returns a cached block, that is located at the location given.
+     * If there is no cached block, a new block will be loaded from the config.
+     * If that block is also null, a new block will be created with unset data values.
+     *
+     * @param location The location of which you want to get the block.
+     * @return The Block, which is located at the location given.
+     */
+    public static GrapesBlock getBlock(Location location) {
+        return GrapesBlock.getBlock(location, true);
     }
 
     /**
@@ -73,7 +90,7 @@ public final class GrapesBlock {
      */
     public static void save() {
         cachedBlocks.forEach((loc, b) -> {
-            String s = loc.getBlockX() + ":" + loc.getBlockY() + ":" + loc.getBlockZ();
+            String s = BlockData.getConfigKey(loc);
             if (b.getType() != GrapesBlockType.UNDEFINED) {
                 BlockData.getInstance().set(s + ".id", b.getType().getId());
                 b.getState().save(s, false);
@@ -91,13 +108,21 @@ public final class GrapesBlock {
      * @return The block that is located at your location. Returns null if not available.
      */
     private static GrapesBlock load(Location location) {
-
-            String s = location.getBlockX() + ":" + location.getBlockY() + ":" + location.getBlockZ();
-            int id = BlockData.getInstance().getInt(s + ".id");
-            GrapesBlockType type = GrapesBlockType.fromID(id);
+        String s = BlockData.getConfigKey(location);
+        int id = BlockData.getInstance().getInt(s + ".id");
+        GrapesBlockType type = GrapesBlockType.fromID(id);
+        if (type != null) {
             GrapesBlockState state = type.getNewState();
-            state.load(s);
-            return new GrapesBlock(location, state, type);
+            if (state != null) {
+                state.load(s);
+                return new GrapesBlock(location, state, type);
+            }
+        }
+        return null;
+    }
+
+    public static void forEach(BiConsumer<Location, GrapesBlock> consumer) {
+        cachedBlocks.forEach(consumer);
     }
 
     /**
@@ -122,8 +147,10 @@ public final class GrapesBlock {
      * This method transfers data from the GrapesBlock to the Bukkit Block.
      */
     public void update() {
-        if (this.type.getBukkitMaterial() != null) this.getBukkitBlock().setType(this.type.getBukkitMaterial());
-        if (this.blockState != null) this.blockState.update(this.getLocation());
+        if (this.type != GrapesBlockType.UNDEFINED) {
+            if (this.type.getBukkitMaterial() != null) this.getBukkitBlock().setType(this.type.getBukkitMaterial());
+            if (this.blockState != null) this.blockState.update(this.getLocation());
+        }
     }
 
     /**
@@ -177,10 +204,10 @@ public final class GrapesBlock {
      * This method will destroy the block and delete all config entries.
      */
     public void destroy() {
-        String s = this.location.getBlockX() + ":" + this.location.getBlockY() + ":" + this.location.getBlockZ();
-        this.setType(GrapesBlockType.UNDEFINED);
+        String s = BlockData.getConfigKey(this.getLocation());
         this.blockState.destroy(this.location);
         this.blockState.save(s, false);
+        this.setType(GrapesBlockType.UNDEFINED);
         this.update();
     }
 

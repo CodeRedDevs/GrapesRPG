@@ -2,7 +2,7 @@ package me.trqhxrd.grapesrpg.game.config;
 
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.utils.config.Config;
-import me.trqhxrd.grapesrpg.api.utils.items.map.MapRendererImage;
+import me.trqhxrd.grapesrpg.api.utils.items.MapRendererImage;
 import org.bukkit.map.MapView;
 
 import java.io.File;

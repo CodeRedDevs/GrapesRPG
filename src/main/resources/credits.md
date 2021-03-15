@@ -24,6 +24,15 @@ Structures:
 1. Tabbyplayz
 1. oCxqp
 
+### Maths: 
+
+TravelingSalesMan
+
+---
+
+### Contributors:
+1. [Schottky](https://www.spigotmc.org/members/schottky.632864/)
+
 ---
 
 version: ${project.version}

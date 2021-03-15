@@ -88,4 +88,10 @@ public interface ConfigurationOperations {
      * This method saves the config to a file.
      */
     void save();
+
+    /**
+     * This method removes all empty ConfigurationSections from the config.
+     * @return Returns true, if empty entries were found. This value can be used to call this method recursively until no values will be found anymore.
+     */
+    boolean purge();
 }

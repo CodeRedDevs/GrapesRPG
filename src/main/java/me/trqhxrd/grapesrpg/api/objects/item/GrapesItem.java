@@ -7,7 +7,7 @@ import me.trqhxrd.grapesrpg.api.utils.Builder;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
 import me.trqhxrd.grapesrpg.api.utils.group.Group2;
 import me.trqhxrd.grapesrpg.api.utils.group.Group3;
-import me.trqhxrd.grapesrpg.api.utils.items.map.MapRendererImage;
+import me.trqhxrd.grapesrpg.api.utils.items.MapRendererImage;
 import me.trqhxrd.grapesrpg.api.utils.items.nbt.NBTEditor;
 import me.trqhxrd.grapesrpg.api.utils.items.nbt.NBTReader;
 import me.trqhxrd.grapesrpg.api.utils.items.nbt.NBTValue;
@@ -61,6 +61,7 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      * This field contains all data about the items durability.
      * Field X stores the items current durability.
      * Field Y stores the items maximum durability.
+     * If the max durability is -1, the item is unbreakable.
      */
     private Group2<Integer, Integer> durability;
     /**
@@ -244,7 +245,7 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
             Integer id = NBTReader.getNBTValueInt(is, "grapes.id");
             if (id != null) {
                 GrapesItem item = new GrapesItem();
-                item.setId(id);
+                item.setID(id);
                 item.setMaterial(is.getType());
                 item.setAmount(is.getAmount());
                 item.getNbt().clear();
@@ -551,9 +552,11 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      * Setter for the items id.
      *
      * @param id The new id.
+     * @return The GrapesItem. Used for creating command chains.
      */
-    public void setId(int id) {
+    public GrapesItem setID(int id) {
         this.id = id;
+        return this;
     }
 
     /**
@@ -569,9 +572,11 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      * Setter of the material of the item.
      *
      * @param material The new material of the item.
+     * @return The GrapesItem. Used for creating command chains.
      */
-    public void setMaterial(Material material) {
+    public GrapesItem setMaterial(Material material) {
         this.material = material;
+        return this;
     }
 
     /**
@@ -732,6 +737,11 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
         return durability.getX();
     }
 
+    public GrapesItem setCurrentDurability(int currentDurability) {
+        this.durability.setX(currentDurability);
+        return this;
+    }
+
     /**
      * Getter for the items maximum durability.
      *
@@ -777,6 +787,16 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
     }
 
     /**
+     * This method simply reduces the items durability by one.
+     *
+     * @return The item itself. If you want to get an itemStack use {@code yourItem.use().build}!
+     */
+    public GrapesItem use() {
+        this.setCurrentDurability(this.getCurrentDurability() - 1);
+        return this;
+    }
+
+    /**
      * This method serializes an Object (t) into a String.
      *
      * @param grapesItem The Object, which you want to serialize.
@@ -805,6 +825,8 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      */
     @Override
     public ItemStack build() {
+        if (this.material == Material.AIR) return null;
+
         ItemStack is = new ItemStack(this.material);
 
         is.setAmount(this.amount);
@@ -895,7 +917,7 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
         if (this == o) return true;
         if (!(o instanceof GrapesItem)) return false;
         GrapesItem item = (GrapesItem) o;
-        return id == item.id && amount == item.amount && nbt.equals(item.nbt) && Objects.equals(clickAction, item.clickAction) && Objects.equals(stats, item.stats) && Objects.equals(durability, item.durability) && type == item.type && rarity == item.rarity && material == item.material && Objects.equals(name, item.name) && Arrays.equals(color, item.color);
+        return id == item.id && amount == item.amount && Objects.equals(nbt, item.nbt) && Objects.equals(clickAction, item.clickAction) && Objects.equals(stats, item.stats) && Objects.equals(durability, item.durability) && type == item.type && rarity == item.rarity && material == item.material && Objects.equals(name, item.name) && Arrays.equals(color, item.color);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package me.trqhxrd.grapesrpg.api.utils.items.map;
+package me.trqhxrd.grapesrpg.api.utils.items;
 
 import org.bukkit.entity.Player;
 import org.bukkit.map.MapCanvas;
