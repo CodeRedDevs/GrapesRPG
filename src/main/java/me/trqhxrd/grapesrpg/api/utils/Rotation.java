@@ -1,4 +1,4 @@
-package me.trqhxrd.grapesrpg.api.objects.block;
+package me.trqhxrd.grapesrpg.api.utils;
 
 public enum Rotation {
     NORTH(Direction.NORTH),
