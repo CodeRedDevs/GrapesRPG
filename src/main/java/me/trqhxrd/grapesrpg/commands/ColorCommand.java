@@ -2,7 +2,7 @@ package me.trqhxrd.grapesrpg.commands;
 
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.attribute.Register;
-import me.trqhxrd.grapesrpg.game.inventories.ColorMenu;
+import me.trqhxrd.grapesrpg.game.inventory.ColorMenu;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

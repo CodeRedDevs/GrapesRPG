@@ -7,9 +7,26 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Directional;
 
+/**
+ * This class represents a Blockstate with a certain direction.
+ * The direction is defined by the enum {@link Direction}.
+ *
+ * @author Trqhxrd
+ */
 public class DirectableBlock extends GrapesBlockState {
 
+    /**
+     * The direction of this state.
+     * The default value is {@link Direction#NORTH}.
+     */
     private Direction direction;
+
+    /**
+     * This constructor creates a new BlockState with {@link Direction#NORTH} as it's default-direction.
+     */
+    public DirectableBlock() {
+        this.direction = Direction.NORTH;
+    }
 
     /**
      * Here you can load values from the config.
@@ -34,6 +51,11 @@ public class DirectableBlock extends GrapesBlockState {
         if (saveToFile) BlockData.getInstance().save();
     }
 
+    /**
+     * This will write the values in the state to the original Bukkit-Block ate the location of our GrapesBlock.
+     *
+     * @param location The location of the block.
+     */
     @Override
     public void update(Location location) {
         Block b = location.getBlock();
@@ -42,10 +64,18 @@ public class DirectableBlock extends GrapesBlockState {
         b.setBlockData(data);
     }
 
+    /**
+     * Getter for the block's direction
+     * @return The block's direction
+     */
     public Direction getDirection() {
         return direction;
     }
 
+    /**
+     * Setter for the block's direction
+     * @param direction The blocks direction.
+     */
     public void setDirection(Direction direction) {
         this.direction = direction;
     }

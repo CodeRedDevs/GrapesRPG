@@ -18,6 +18,7 @@ import me.trqhxrd.grapesrpg.game.objects.recipe.armor.crop.CropBootsRecipe;
 import me.trqhxrd.grapesrpg.game.objects.recipe.armor.crop.CropChestplateRecipe;
 import me.trqhxrd.grapesrpg.game.objects.recipe.armor.crop.CropHelmetRecipe;
 import me.trqhxrd.grapesrpg.game.objects.recipe.armor.crop.CropLeggingsRecipe;
+import me.trqhxrd.menus.Menus;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.TabCompleter;
@@ -103,6 +104,7 @@ public class Grapes extends JavaPlugin {
 
         for (Player p : Bukkit.getOnlinePlayers()) new GrapesPlayer(p);
 
+        Menus.registerListeners(this);
 
         this.registerListeners("me.trqhxrd.grapesrpg");
         this.registerCommands("me.trqhxrd.grapesrpg");

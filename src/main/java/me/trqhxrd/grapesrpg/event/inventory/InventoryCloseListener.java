@@ -1,7 +1,7 @@
 package me.trqhxrd.grapesrpg.event.inventory;
 
 import me.trqhxrd.grapesrpg.api.attribute.Register;
-import me.trqhxrd.grapesrpg.api.inventories.Menu;
+import me.trqhxrd.grapesrpg.api.inventory.GrapesInventory;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -21,6 +21,6 @@ public class InventoryCloseListener implements Listener {
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent e) {
         InventoryHolder holder = e.getView().getTopInventory().getHolder();
-        if (holder instanceof Menu) ((Menu) holder).handleMenuClose(e);
+        if (holder instanceof GrapesInventory) ((GrapesInventory) holder).handleMenuClose(e);
     }
 }

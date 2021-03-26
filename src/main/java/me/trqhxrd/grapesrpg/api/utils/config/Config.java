@@ -74,7 +74,7 @@ public class Config extends Wrapper<FileConfiguration> implements ConfigurationO
      */
     @Override
     public ConfigurationSection getConfigurationSection(String path) {
-        return null;
+        return this.getWrappedObject().getConfigurationSection(path);
     }
 
     /**
@@ -191,11 +191,9 @@ public class Config extends Wrapper<FileConfiguration> implements ConfigurationO
 
     /**
      * This method removes all empty ConfigurationSections from the config.
-     *
-     * @return Returns true, if empty entries were found. This value can be used to call this method recursively until no values will be found anymore.
      */
     @Override
-    public boolean purge() {
+    public void purge() {
         AtomicBoolean b = new AtomicBoolean(false);
         Set<String> keys = new HashSet<>(this.getWrappedObject().getKeys(true));
         keys.forEach(k -> {
@@ -209,7 +207,5 @@ public class Config extends Wrapper<FileConfiguration> implements ConfigurationO
         });
 
         if (b.get()) this.purge();
-
-        return b.get();
     }
 }

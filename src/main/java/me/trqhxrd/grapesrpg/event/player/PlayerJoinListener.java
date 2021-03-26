@@ -4,7 +4,11 @@ import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.attribute.Register;
 import me.trqhxrd.grapesrpg.api.event.GrapesPlayerJoinEvent;
+import me.trqhxrd.grapesrpg.api.objects.block.GrapesBlockType;
+import me.trqhxrd.grapesrpg.api.objects.item.ClickActionPlaceBlock;
+import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -63,6 +67,7 @@ public class PlayerJoinListener implements Listener {
             String message = joins.get(player.getUniqueId());
             e.setJoinMessage(message);
             joins.remove(e.getPlayer().getUniqueId());
+            e.getPlayer().getInventory().addItem(new GrapesItem(38, Material.ENDER_CHEST).setClickAction(new ClickActionPlaceBlock(GrapesBlockType.ENDER_CHEST)).build());
         } catch (Exception ex) {
             ex.printStackTrace();
         }

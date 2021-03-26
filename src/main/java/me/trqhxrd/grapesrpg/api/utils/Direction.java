@@ -4,9 +4,9 @@ import org.bukkit.block.BlockFace;
 
 public enum Direction {
     NORTH(Rotation.NORTH, BlockFace.NORTH),
-    SOUTH(Rotation.SOUTH,BlockFace.SOUTH),
-    EAST(Rotation.EAST,BlockFace.EAST),
-    WEST(Rotation.WEST,BlockFace.WEST);
+    SOUTH(Rotation.SOUTH, BlockFace.SOUTH),
+    EAST(Rotation.EAST, BlockFace.EAST),
+    WEST(Rotation.WEST, BlockFace.WEST);
 
     private final Rotation rotation;
     private final BlockFace blockFace;

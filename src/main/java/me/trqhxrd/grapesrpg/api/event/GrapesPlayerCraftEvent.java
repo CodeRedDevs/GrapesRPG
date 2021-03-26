@@ -3,7 +3,7 @@ package me.trqhxrd.grapesrpg.api.event;
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipe;
-import me.trqhxrd.grapesrpg.game.inventories.CraftingMenu;
+import me.trqhxrd.grapesrpg.game.inventory.CraftingMenu;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;

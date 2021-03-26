@@ -17,6 +17,7 @@ import java.util.UUID;
 /**
  * This task will be executed 20 times per second.
  * It is required, if you want to use the crucibles.
+ *
  * @author Trqhxrd
  */
 public class AlchemyTask implements ClockTask {
@@ -42,7 +43,7 @@ public class AlchemyTask implements ClockTask {
                     if (e instanceof Item) {
                         Item i = (Item) e;
                         Location loc = i.getLocation();
-                        GrapesBlock b = GrapesBlock.getBlock(loc,false);
+                        GrapesBlock b = GrapesBlock.getBlock(loc, false);
                         if (b.getType() == GrapesBlockType.CRUCIBLE) {
                             CrucibleBlock state = (CrucibleBlock) b.getState();
 

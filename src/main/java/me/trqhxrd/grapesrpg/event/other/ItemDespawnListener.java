@@ -9,6 +9,7 @@ import org.bukkit.persistence.PersistentDataType;
 
 /**
  * This listener disables item despawning for display-items.
+ *
  * @author Trqhxrd
  */
 @Register
@@ -16,6 +17,7 @@ public class ItemDespawnListener implements Listener {
 
     /**
      * The handler method.
+     *
      * @param e An ItemDespawnEvent
      */
     @EventHandler

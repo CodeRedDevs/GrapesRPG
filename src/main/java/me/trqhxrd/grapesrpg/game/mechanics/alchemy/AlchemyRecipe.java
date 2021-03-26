@@ -105,14 +105,17 @@ public class AlchemyRecipe {
 
     /**
      * This method checks, if the crucible given meets all the requirements to complete this recipe.
+     *
      * @param crucible The crucible, that should be checked.
      * @return true, if the crucible meets all the requirements. Otherwise false.
      */
     public boolean checkItems(CrucibleBlock crucible) {
         return this.checkItems(crucible.getItems());
     }
+
     /**
      * This method checks, if the crucible given meets all the requirements to complete this recipe.
+     *
      * @param items The list of items, that should be checked.
      * @return true, if the crucible meets all the requirements. Otherwise false.
      */
@@ -148,6 +151,7 @@ public class AlchemyRecipe {
 
     /**
      * This method removes all the items of this recipe from the crucible in the method arguments.
+     *
      * @param crucible The crucible, that should get the items removed.
      */
     public void removeItems(CrucibleBlock crucible) {
@@ -171,6 +175,7 @@ public class AlchemyRecipe {
 
     /**
      * Getter for the list of ingredients.
+     *
      * @return The list of ingredients.
      */
     public List<ItemStack> getIngredients() {
@@ -179,6 +184,7 @@ public class AlchemyRecipe {
 
     /**
      * Getter for the recipes result.
+     *
      * @return The recipes result.
      */
     public ItemStack getResult() {
@@ -187,6 +193,7 @@ public class AlchemyRecipe {
 
     /**
      * Getter for the recipes catalyst item.
+     *
      * @return The recipes catalyst item.
      */
     public ItemStack getCatalyst() {

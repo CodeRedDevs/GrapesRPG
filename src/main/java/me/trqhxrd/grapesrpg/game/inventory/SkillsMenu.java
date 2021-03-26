@@ -1,7 +1,7 @@
-package me.trqhxrd.grapesrpg.game.inventories;
+package me.trqhxrd.grapesrpg.game.inventory;
 
 import me.trqhxrd.grapesrpg.api.attribute.Owneable;
-import me.trqhxrd.grapesrpg.api.inventories.Menu;
+import me.trqhxrd.grapesrpg.api.inventory.GrapesInventory;
 import me.trqhxrd.grapesrpg.api.skill.Skills;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -12,7 +12,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
  *
  * @author Trqhxrd
  */
-public class SkillsMenu extends Menu implements Owneable<Skills> {
+public class SkillsMenu extends GrapesInventory implements Owneable<Skills> {
 
     /**
      * The skill-set, that is displayed.

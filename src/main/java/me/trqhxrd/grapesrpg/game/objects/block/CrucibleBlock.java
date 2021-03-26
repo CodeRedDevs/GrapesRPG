@@ -197,6 +197,7 @@ public class CrucibleBlock extends GrapesBlockState {
 
     /**
      * Getter for the list of items, which are in the crucible.
+     *
      * @return The list of items, that are currently in the crucible.
      */
     public List<ItemStack> getItems() {
@@ -205,6 +206,7 @@ public class CrucibleBlock extends GrapesBlockState {
 
     /**
      * Setter for the content of the crucible.
+     *
      * @param items The new contents of the crucible.
      */
     public void setItems(List<ItemStack> items) {
@@ -213,6 +215,7 @@ public class CrucibleBlock extends GrapesBlockState {
 
     /**
      * Getter for the crucibles water level.
+     *
      * @return The cauldrons water level.
      */
     public int getWaterLevel() {
@@ -221,6 +224,7 @@ public class CrucibleBlock extends GrapesBlockState {
 
     /**
      * Setter for the cauldrons water level.
+     *
      * @param waterLevel The cauldrons new water level.
      */
     public void setWaterLevel(int waterLevel) {

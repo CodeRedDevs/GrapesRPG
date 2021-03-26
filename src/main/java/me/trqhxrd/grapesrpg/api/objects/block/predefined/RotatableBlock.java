@@ -1,13 +1,31 @@
 package me.trqhxrd.grapesrpg.api.objects.block.predefined;
 
-import me.trqhxrd.grapesrpg.api.objects.block.GrapesBlockState;
 import me.trqhxrd.grapesrpg.api.attribute.Rotatable;
+import me.trqhxrd.grapesrpg.api.objects.block.GrapesBlockState;
 import me.trqhxrd.grapesrpg.api.utils.Rotation;
 import me.trqhxrd.grapesrpg.game.config.BlockData;
 
+/**
+ * This class represents a BlockState, which is rotatable.
+ * Rotatable means, it can face in any direction including up and down.
+ * All possible options are visible here: {@link Rotation}.
+ *
+ * @author Trqhxrd
+ */
 public class RotatableBlock extends GrapesBlockState implements Rotatable {
 
+    /**
+     * This field stores the current rotation.
+     * The default-rotation is {@link Rotation#NORTH}.
+     */
     private Rotation rotation;
+
+    /**
+     * This constructor creates a new RotatableBlock.
+     */
+    public RotatableBlock() {
+        this.rotation = Rotation.NORTH;
+    }
 
     /**
      * Here you can load values from the config.
@@ -32,11 +50,19 @@ public class RotatableBlock extends GrapesBlockState implements Rotatable {
         if (saveToFile) BlockData.getInstance().save();
     }
 
+    /**
+     * Getter for the block's rotation.
+     * @return The block's rotation.
+     */
     @Override
     public Rotation getRotation() {
         return rotation;
     }
 
+    /**
+     * Setter for the block's rotation.
+     * @param rotation The blocks new rotation.
+     */
     @Override
     public void setRotation(Rotation rotation) {
         this.rotation = rotation;

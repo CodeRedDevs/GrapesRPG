@@ -1,12 +1,14 @@
 package me.trqhxrd.grapesrpg.api;
 
 import me.trqhxrd.grapesrpg.Grapes;
+import me.trqhxrd.grapesrpg.api.attribute.Savable;
 import me.trqhxrd.grapesrpg.api.event.GrapesPlayerInitEvent;
 import me.trqhxrd.grapesrpg.api.skill.Skills;
 import me.trqhxrd.grapesrpg.api.utils.Prefix;
 import me.trqhxrd.grapesrpg.api.utils.Wrapper;
 import me.trqhxrd.grapesrpg.api.utils.packet.PacketReader;
 import me.trqhxrd.grapesrpg.game.config.PlayerFile;
+import me.trqhxrd.grapesrpg.game.inventory.EnderChestMenu;
 import me.trqhxrd.grapesrpg.game.tasks.packet.NPCInteractionTask;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -24,29 +26,29 @@ import java.util.function.Consumer;
  * @author Trqhxrd
  * @see Prefix
  */
-public class GrapesPlayer extends Wrapper<Player> {
-
+public class GrapesPlayer extends Wrapper<Player> implements Savable {
     /**
      * A list of all {@link GrapesPlayer}s.
      * Players will be added automatically added as soon as the {@link GrapesPlayer#GrapesPlayer(Player)} Constructor is called.
      */
     private static final Set<GrapesPlayer> players = new HashSet<>();
-
     /**
      * This is the PacketReader of the the Player.
      * Everytime the Player sends a Packet, it will run all the tasks in this PacketReader.
      */
     private transient final PacketReader packetReader;
-
     /**
      * This field contains a list of all skills the player has and their levels.
      */
     private final Skills skills;
-
     /**
      * This is the file, that stores the players data once he logged out.
      */
     private final PlayerFile file;
+    /**
+     * This field stores the EnderChestMenu of the player.
+     */
+    private final EnderChestMenu enderChest;
 
     /**
      * The Main Constructor for {@link GrapesPlayer}s.
@@ -58,6 +60,7 @@ public class GrapesPlayer extends Wrapper<Player> {
 
         this.file = new PlayerFile(this);
         this.skills = new Skills(this);
+        this.enderChest = new EnderChestMenu(this);
 
         this.packetReader = new PacketReader(this);
         new NPCInteractionTask(this);
@@ -95,6 +98,7 @@ public class GrapesPlayer extends Wrapper<Player> {
      *
      * @param uuid The {@link UUID} of the GrapesPlayer you want to get.
      * @return The GrapesPlayer with the UUID given as an argument. In case, that there is no GrapesPlayer, it will return null.
+     * @throws NullPointerException In case, that there is no player with the UUID given.
      */
     public static GrapesPlayer getByUniqueId(UUID uuid) {
         for (GrapesPlayer p : GrapesPlayer.getPlayers())
@@ -103,9 +107,18 @@ public class GrapesPlayer extends Wrapper<Player> {
     }
 
     /**
-     * This method is deprecated.
-     * The replacement is {@link GrapesPlayer#getUniqueId()}.
-     * <p>
+     * This method returns the GrapesPlayer with the same UUID as the player given. If there is no player with that UUId this method will throw a NullPointerException.
+     *
+     * @param player The player for which you want to get the GrapesPlayer.
+     * @return The player with the same UUID as the UUID of the player from the {@link Player}.
+     * @throws NullPointerException In case, that there is no player with the UUID given. If this exception is thrown, something is wrong because there has to be one GrapesPlayer for each {@link Player}.
+     * @see UUID
+     */
+    public static GrapesPlayer getByPlayer(Player player) {
+        return GrapesPlayer.getByUniqueId(player.getUniqueId());
+    }
+
+    /**
      * This method is able to get a Player with a certain name, but only if that player is online.
      *
      * @param name The name of the Player you want to get.
@@ -134,9 +147,7 @@ public class GrapesPlayer extends Wrapper<Player> {
      *
      * @param name The name for which you want to check.
      * @return {@literal  true -> player exists / false -> player doesn't exists.}
-     * @deprecated
      */
-    @Deprecated
     public static boolean exists(String name) {
         for (GrapesPlayer player : players)
             if (player.getName().equals(name)) return true;
@@ -151,11 +162,24 @@ public class GrapesPlayer extends Wrapper<Player> {
     }
 
     /**
-     * This method saves a players stats, skill data, etc. into the players data file.
+     * This method will save the current state of this class in some way.
+     *
+     * @param flush If flush is true, the changes will automatically be written to a file.
      */
-    public void save() {
+    @Override
+    public void save(boolean flush) {
         this.skills.save(false);
-        this.file.save();
+        this.enderChest.save(false);
+        if (flush) this.file.save();
+    }
+
+    /**
+     * This method just runs {@code this.save(true);}, which will save the state of this class and automatically write it to the file.
+     * This method has to be overwritten tho.
+     */
+    @Override
+    public void save() {
+        this.save(true);
     }
 
     /**
@@ -229,5 +253,14 @@ public class GrapesPlayer extends Wrapper<Player> {
      */
     public PlayerFile getFile() {
         return file;
+    }
+
+    /**
+     * Getter for the players enderchest.
+     *
+     * @return The enderchest of the player.
+     */
+    public EnderChestMenu getEnderChest() {
+        return enderChest;
     }
 }

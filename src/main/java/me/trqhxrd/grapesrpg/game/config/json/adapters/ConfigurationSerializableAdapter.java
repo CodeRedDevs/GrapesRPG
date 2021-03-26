@@ -11,6 +11,7 @@ import java.util.Map;
 
 /**
  * Made by Schottky {@literal https://www.spigotmc.org/members/schottky.632864/}.
+ *
  * @author Schottky
  */
 public class ConfigurationSerializableAdapter implements JsonSerializer<ConfigurationSerializable>, JsonDeserializer<ConfigurationSerializable> {
@@ -26,7 +27,8 @@ public class ConfigurationSerializableAdapter implements JsonSerializer<Configur
             final JsonElement value = entry.getValue();
             final String name = entry.getKey();
 
-            if (value.isJsonObject() && value.getAsJsonObject().has(ConfigurationSerialization.SERIALIZED_TYPE_KEY)) map.put(name, this.deserialize(value, value.getClass(), context));
+            if (value.isJsonObject() && value.getAsJsonObject().has(ConfigurationSerialization.SERIALIZED_TYPE_KEY))
+                map.put(name, this.deserialize(value, value.getClass(), context));
             else map.put(name, context.deserialize(value, Object.class));
         }
 

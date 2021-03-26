@@ -31,6 +31,9 @@ public class PlayerFile extends Config implements Owneable<GrapesPlayer> {
     public PlayerFile(GrapesPlayer player) {
         super(new File(Grapes.getGrapes().getDataFolder(), "player/" + player.getUniqueId().toString() + ".yml"));
         this.owner = player;
+        if (!this.contains("enderchest.content")) this.set("enderchest.content", new HashMap<>());
+        if (!this.contains("enderchest.size")) this.set("enderchest.size", 1);
+        if (!this.contains("enderchest.page")) this.set("enderchest.page", 0);
     }
 
     /**

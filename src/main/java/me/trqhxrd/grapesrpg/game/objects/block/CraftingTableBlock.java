@@ -4,7 +4,7 @@ import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.objects.block.GrapesBlock;
 import me.trqhxrd.grapesrpg.api.objects.block.GrapesBlockState;
 import me.trqhxrd.grapesrpg.api.utils.ClickType;
-import me.trqhxrd.grapesrpg.game.inventories.CraftingMenu;
+import me.trqhxrd.grapesrpg.game.inventory.CraftingMenu;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;

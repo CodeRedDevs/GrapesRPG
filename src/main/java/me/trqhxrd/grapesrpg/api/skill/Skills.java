@@ -2,10 +2,11 @@ package me.trqhxrd.grapesrpg.api.skill;
 
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.attribute.Owneable;
-import me.trqhxrd.grapesrpg.api.inventories.Menu;
-import me.trqhxrd.grapesrpg.api.inventories.MenuHolder;
+import me.trqhxrd.grapesrpg.api.attribute.Savable;
+import me.trqhxrd.grapesrpg.api.inventory.GrapesInventory;
+import me.trqhxrd.grapesrpg.api.inventory.GrapesInventoryHolder;
 import me.trqhxrd.grapesrpg.api.utils.reflection.Reflection;
-import me.trqhxrd.grapesrpg.game.inventories.SkillsMenu;
+import me.trqhxrd.grapesrpg.game.inventory.SkillsMenu;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -18,7 +19,7 @@ import java.util.function.BiConsumer;
  *
  * @author Trqhxrd
  */
-public class Skills implements MenuHolder, Owneable<GrapesPlayer> {
+public class Skills implements GrapesInventoryHolder, Owneable<GrapesPlayer>, Savable {
 
     /**
      * This map stores all skills and their keys.
@@ -31,7 +32,7 @@ public class Skills implements MenuHolder, Owneable<GrapesPlayer> {
     /**
      * This field stores the skill-menu of the player.
      */
-    private final Menu menu;
+    private final GrapesInventory menu;
 
     /**
      * This constructor creates a new set of skills and loads their values, if their values are stored in the config.
@@ -157,8 +158,23 @@ public class Skills implements MenuHolder, Owneable<GrapesPlayer> {
         return owner;
     }
 
-    public void save(boolean saveToFIle) {
-        Skills.save(this, saveToFIle);
+    /**
+     * This method will save the current state of this class in some way.
+     *
+     * @param flush If flush is true, the changes will automatically be written to a file.
+     */
+    @Override
+    public void save(boolean flush) {
+        Skills.save(this, flush);
+    }
+
+    /**
+     * This method just runs {@code this.save(true);}, which will save the state of this class and automatically write it to the file.
+     * This method has to be overwritten tho.
+     */
+    @Override
+    public void save() {
+        this.save(true);
     }
 
     /**
@@ -167,10 +183,15 @@ public class Skills implements MenuHolder, Owneable<GrapesPlayer> {
      * @return The objects menu.
      */
     @Override
-    public Menu getMenu() {
+    public GrapesInventory getMenu() {
         return menu;
     }
 
+    /**
+     * This method runs an action defined by the first parameter for each of the skills in this set.
+     *
+     * @param action The action, that you want to run.
+     */
     public void forEach(BiConsumer<String, Skill> action) {
         this.skills.forEach(action);
     }

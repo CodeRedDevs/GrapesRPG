@@ -58,7 +58,7 @@ public final class GrapesBlock {
      * If that block is also null, a new block will be created with unset data values.
      *
      * @param location The location of which you want to get the block.
-     * @param update If this is set to true, the block's update-method will be run.
+     * @param update   If this is set to true, the block's update-method will be run.
      * @return The Block, which is located at the location given.
      */
     public static GrapesBlock getBlock(Location location, boolean update) {

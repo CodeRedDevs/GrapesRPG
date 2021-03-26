@@ -1,9 +1,9 @@
-package me.trqhxrd.grapesrpg.game.inventories;
+package me.trqhxrd.grapesrpg.game.inventory;
 
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.event.GrapesPlayerCraftEvent;
-import me.trqhxrd.grapesrpg.api.inventories.Menu;
+import me.trqhxrd.grapesrpg.api.inventory.GrapesInventory;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipe;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipeChoice;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesShapedRecipe;
@@ -23,7 +23,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
-public class CraftingMenu extends Menu {
+public class CraftingMenu extends GrapesInventory {
 
     /**
      * This constant contains the title of the CraftingInventory.

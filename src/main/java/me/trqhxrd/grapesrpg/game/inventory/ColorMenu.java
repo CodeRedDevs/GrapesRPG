@@ -1,7 +1,7 @@
-package me.trqhxrd.grapesrpg.game.inventories;
+package me.trqhxrd.grapesrpg.game.inventory;
 
 import me.trqhxrd.grapesrpg.Grapes;
-import me.trqhxrd.grapesrpg.api.inventories.Menu;
+import me.trqhxrd.grapesrpg.api.inventory.GrapesInventory;
 import me.trqhxrd.grapesrpg.api.utils.items.ItemBuilder;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -15,7 +15,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class ColorMenu extends Menu {
+public class ColorMenu extends GrapesInventory {
 
     public static final int[] ARMOR_SLOTS = new int[]{10, 19, 28, 37};
     public static final int[] RED_SLOTS = new int[]{14, 23, 32};

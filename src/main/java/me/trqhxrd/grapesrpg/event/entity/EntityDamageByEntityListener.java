@@ -74,11 +74,13 @@ public class EntityDamageByEntityListener implements Listener {
 
             if (attackEquipment != null) {
                 GrapesItem weapon = GrapesItem.fromItemStack(attackEquipment.getItem(EquipmentSlot.HAND));
-                if (weapon != null && weapon.getType() == ItemType.MELEE && (weapon.isUnbreakable() || weapon.getCurrentDurability() > 0)) {
-                    damageValues = weapon.getStats();
-                    weapon.setDurability(weapon.getCurrentDurability() - 1, weapon.getMaxDurability());
-                } else if (GrapesPlayer.exists(e.getDamager().getUniqueId()))
-                    GrapesPlayer.getByUniqueId(e.getEntity().getUniqueId()).sendMessage("&c&lIt seems like your weapon is broken...");
+                if (weapon != null && weapon.getType() == ItemType.MELEE) {
+                    if (weapon.isUnbreakable() || weapon.getCurrentDurability() > 0) {
+                        damageValues = weapon.getStats();
+                        weapon.setDurability(weapon.getCurrentDurability() - 1, weapon.getMaxDurability());
+                    } else if (GrapesPlayer.exists(e.getDamager().getUniqueId()))
+                        GrapesPlayer.getByUniqueId(e.getDamager().getUniqueId()).sendMessage("&c&lIt seems like your weapon is broken...");
+                }
             }
 
             appliedDamage.setX(((double) damageValues.getX()) / 1000. * (1000. - ((double) defenceValues.getX())));

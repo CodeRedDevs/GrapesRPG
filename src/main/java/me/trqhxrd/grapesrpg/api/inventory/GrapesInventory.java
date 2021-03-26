@@ -1,4 +1,4 @@
-package me.trqhxrd.grapesrpg.api.inventories;
+package me.trqhxrd.grapesrpg.api.inventory;
 
 import me.trqhxrd.grapesrpg.api.utils.Utils;
 import me.trqhxrd.grapesrpg.api.utils.items.ItemBuilder;
@@ -13,11 +13,11 @@ import org.bukkit.inventory.ItemStack;
 
 /**
  * This Class represents an inventory menu.
- * It can be opened using {@link Menu#openInventory(HumanEntity)}.
+ * It can be opened using {@link GrapesInventory#openInventory(HumanEntity)}.
  *
  * @author Trqhxrd
  */
-public abstract class Menu implements InventoryHolder {
+public abstract class GrapesInventory implements InventoryHolder {
 
     /**
      * This is just a constant, with some standardized filler glass for slot, which aren't used.
@@ -48,7 +48,7 @@ public abstract class Menu implements InventoryHolder {
      * @param setup               If true, the constructor will run the setup method.
      * @param fillWithFillerGlass If set to true, the whole inventory will be filled with filler glass and you can overwrite the slot, which you want to use.
      */
-    public Menu(String title, MenuSize menuSize, boolean setup, boolean fillWithFillerGlass) {
+    public GrapesInventory(String title, MenuSize menuSize, boolean setup, boolean fillWithFillerGlass) {
         this.title = title;
         this.size = menuSize.getSlots();
         this.inventory = Bukkit.createInventory(this, this.size, Utils.translateColorCodes(title));
@@ -63,7 +63,7 @@ public abstract class Menu implements InventoryHolder {
      * @param menuSize            The size of the inventory. Must be one of these numbers: {9, 18, 27, 36, 45, 54}.
      * @param fillWithFillerGlass If set to true, the whole inventory will be filled with filler glass and you can overwrite the slot, which you want to use.
      */
-    public Menu(String title, MenuSize menuSize, boolean fillWithFillerGlass) {
+    public GrapesInventory(String title, MenuSize menuSize, boolean fillWithFillerGlass) {
         this(title, menuSize, true, fillWithFillerGlass);
     }
 
@@ -74,7 +74,7 @@ public abstract class Menu implements InventoryHolder {
      * @param title    The title of the inventory. ColorCodes can be used.
      * @param menuSize The size of the inventory. Must be one of these numbers: {9, 18, 27, 36, 45, 54}.
      */
-    public Menu(String title, MenuSize menuSize) {
+    public GrapesInventory(String title, MenuSize menuSize) {
         this(title, menuSize, true, false);
     }
 

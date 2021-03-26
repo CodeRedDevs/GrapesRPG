@@ -14,7 +14,6 @@ import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BoundingBox;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -42,8 +41,8 @@ public class ClickActionPlaceBlock implements ClickAction {
         this.state = state;
     }
 
-    public ClickActionPlaceBlock(GrapesBlockType type) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        this(type, type.getBlockStateType().getConstructor().newInstance());
+    public ClickActionPlaceBlock(GrapesBlockType type) {
+        this(type, type.getNewState());
     }
 
     /**
