@@ -6,7 +6,10 @@ import me.trqhxrd.grapesrpg.api.objects.item.InventoryDisplayable;
 import me.trqhxrd.grapesrpg.api.utils.group.Group2;
 import me.trqhxrd.grapesrpg.api.utils.items.ItemBuilder;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.Objects;
 
 /**
  * This class represents any skill, that you want to create.
@@ -33,7 +36,7 @@ public abstract class Skill implements InventoryDisplayable, StringKeyable, Owne
      */
     private transient final Skills owner;
     /**
-     * This field contains the item, that will show the skills data and it's slot.
+     * This field contains the item, that will show the skills data and its slot.
      */
     private final Group2<ItemStack, Integer> displayPrototype;
     /**
@@ -185,10 +188,13 @@ public abstract class Skill implements InventoryDisplayable, StringKeyable, Owne
         String[] lore = new String[]{
                 "&#ba03fcLevel: &e" + this.level,
                 "&#ba03fcXP: &c" + this.xp,
+                "",
+                "&" + Objects.requireNonNull(this.displayPrototype.getX().getItemMeta()).getDisplayName()
+                        .toCharArray()[Objects.requireNonNull(this.displayPrototype.getX().getItemMeta()).getDisplayName().indexOf('§') + 1] + "Progress:",
                 "&8[&#03fcb5" + PROGRESS_TEXT.repeat(part) + "&7" + PROGRESS_TEXT.repeat(10 - part) + "&8]"
         };
 
-        return new ItemBuilder(displayPrototype.getX()).setLore(lore).build();
+        return new ItemBuilder(displayPrototype.getX()).setLore(lore).applyFlags(ItemFlag.HIDE_ENCHANTS).build();
     }
 
     /**

@@ -842,7 +842,7 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
 
             //Add item damage / protection
             if (!this.stats.equals(DEFAULT_STATS)) {
-                String typeString = (this.type == ItemType.MELEE) ? "Protection" : "Damage";
+                String typeString = (this.type == ItemType.ARMOR) ? "Protection" : "Damage";
                 String[] lines = new String[]{
                         "&#9d9fa3Physical " + typeString + ": " + this.stats.getX(),
                         "&#ae55d4Magical " + typeString + ": " + this.stats.getY(),

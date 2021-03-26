@@ -3,8 +3,6 @@ package me.trqhxrd.grapesrpg.api.skill;
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.attribute.Owneable;
 import me.trqhxrd.grapesrpg.api.attribute.Savable;
-import me.trqhxrd.grapesrpg.api.inventory.GrapesInventory;
-import me.trqhxrd.grapesrpg.api.inventory.GrapesInventoryHolder;
 import me.trqhxrd.grapesrpg.api.utils.reflection.Reflection;
 import me.trqhxrd.grapesrpg.game.inventory.SkillsMenu;
 
@@ -19,7 +17,7 @@ import java.util.function.BiConsumer;
  *
  * @author Trqhxrd
  */
-public class Skills implements GrapesInventoryHolder, Owneable<GrapesPlayer>, Savable {
+public class Skills implements Owneable<GrapesPlayer>, Savable {
 
     /**
      * This map stores all skills and their keys.
@@ -32,7 +30,7 @@ public class Skills implements GrapesInventoryHolder, Owneable<GrapesPlayer>, Sa
     /**
      * This field stores the skill-menu of the player.
      */
-    private final GrapesInventory menu;
+    private final SkillsMenu menu;
 
     /**
      * This constructor creates a new set of skills and loads their values, if their values are stored in the config.
@@ -182,8 +180,7 @@ public class Skills implements GrapesInventoryHolder, Owneable<GrapesPlayer>, Sa
      *
      * @return The objects menu.
      */
-    @Override
-    public GrapesInventory getMenu() {
+    public SkillsMenu getMenu() {
         return menu;
     }
 

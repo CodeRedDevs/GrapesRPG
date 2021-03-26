@@ -37,7 +37,7 @@ public class SkillsCommand implements CommandExecutor, TabCompleter {
             Player player = (Player) sender;
             GrapesPlayer p = GrapesPlayer.getByUniqueId(player.getUniqueId());
             if (args.length == 0) {
-                p.getSkills().getMenu().openInventory(player);
+                p.getSkills().getMenu().open(player);
                 p.sendMessage("&aHere you go!");
             } else if (args.length == 1) {
                 if (args[0].equalsIgnoreCase("help")) {
@@ -53,7 +53,7 @@ public class SkillsCommand implements CommandExecutor, TabCompleter {
                 GrapesPlayer target = GrapesPlayer.getByName(args[0]);
                 if (target != null) {
                     if (args.length == 1) {
-                        target.getSkills().getMenu().openInventory(player);
+                        target.getSkills().getMenu().open(player);
                         p.sendMessage("&aHere you go!");
                     } else if (args.length == 5) {
                         try {

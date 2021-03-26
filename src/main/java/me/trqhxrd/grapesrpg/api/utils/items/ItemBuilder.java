@@ -5,6 +5,7 @@ import me.trqhxrd.grapesrpg.api.utils.Builder;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -149,5 +150,53 @@ public class ItemBuilder implements Builder<ItemStack> {
     public ItemBuilder addEnchant(Enchantment enchantment, int level) {
         this.is.addUnsafeEnchantment(enchantment, level);
         return this;
+    }
+
+    /**
+     * This method adds certain {@link ItemFlag}s to the item.
+     *
+     * @param flags An array of flags, which should be added,
+     * @return The ItemBuilder. Used for creating command-chains.
+     */
+    public ItemBuilder applyFlags(ItemFlag... flags) {
+        ItemMeta im = is.getItemMeta();
+        if (im != null) {
+            im.addItemFlags(flags);
+            is.setItemMeta(im);
+        }
+        return this;
+    }
+
+    /**
+     * This method removes certain {@link ItemFlag}s from the item.
+     *
+     * @param flags An array of flags, which should be removed,
+     * @return The ItemBuilder. Used for creating command-chains.
+     */
+    public ItemBuilder removeFlags(ItemFlag... flags) {
+        ItemMeta im = is.getItemMeta();
+        if (im != null) {
+            im.removeItemFlags(flags);
+            is.setItemMeta(im);
+        }
+        return this;
+    }
+
+    /**
+     * This method hides all values, that can be hidden using ItemFlags.
+     *
+     * @return The ItemBuilder. Used for creating command-chains.
+     */
+    public ItemBuilder applyAllFlags() {
+        return this.applyFlags(ItemFlag.values());
+    }
+
+    /**
+     * This method shows all values, that can be shown using ItemFlags.
+     *
+     * @return The ItemBuilder. Used for creating command-chains.
+     */
+    public ItemBuilder removeAllFlags() {
+        return this.removeFlags(ItemFlag.values());
     }
 }

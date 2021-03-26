@@ -1,8 +1,9 @@
 package me.trqhxrd.grapesrpg.game.inventory;
 
 import me.trqhxrd.grapesrpg.Grapes;
-import me.trqhxrd.grapesrpg.api.inventory.GrapesInventory;
+import me.trqhxrd.grapesrpg.api.utils.Utils;
 import me.trqhxrd.grapesrpg.api.utils.items.ItemBuilder;
+import me.trqhxrd.menus.Menu;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
@@ -13,9 +14,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class ColorMenu extends GrapesInventory {
+public class ColorMenu extends Menu {
 
     public static final int[] ARMOR_SLOTS = new int[]{10, 19, 28, 37};
     public static final int[] RED_SLOTS = new int[]{14, 23, 32};
@@ -28,12 +30,16 @@ public class ColorMenu extends GrapesInventory {
     private final int[] rgb;
 
     public ColorMenu() {
-        super("&cChoose &ayour &9color!", MenuSize.NINE_SIX, false, true);
+        super(Utils.translateColorCodes("&cChoose &ayour &9color!"),
+                "menu_color",
+                6 * 9,
+                new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName(" ").build(),
+                false);
         rgb = new int[]{
                 ThreadLocalRandom.current().nextInt(0, 256),
                 ThreadLocalRandom.current().nextInt(0, 256),
                 ThreadLocalRandom.current().nextInt(0, 256)};
-        this.setupMenu();
+        this.setupMenu(this.getContent());
     }
 
     /**
@@ -125,20 +131,22 @@ public class ColorMenu extends GrapesInventory {
 
     /**
      * This method sets all the default-items in the inventory.
+     *
+     * @param content A map of the content of this inventory. this can be edited or you can use {@code this.getContent()}. The result is the same.
      */
     @Override
-    public void setupMenu() {
-        for (int i : ARMOR_SLOTS) super.getInventory().setItem(i, null);
-        super.getInventory().setItem(RED_SLOTS[0], new ItemBuilder(Material.REDSTONE_TORCH).setName("&eIncrease: &cRED").build());
-        super.getInventory().setItem(RED_SLOTS[1], new ItemBuilder(Material.RED_DYE).setName("&c" + rgb[0]).build());
-        super.getInventory().setItem(RED_SLOTS[2], new ItemBuilder(Material.LEVER).setName("&eDecrease: &cRED").build());
-        super.getInventory().setItem(GREEN_SLOTS[0], new ItemBuilder(Material.REDSTONE_TORCH).setName("&eIncrease: &aGREEN").build());
-        super.getInventory().setItem(GREEN_SLOTS[1], new ItemBuilder(Material.LIME_DYE).setName("&a" + rgb[1]).build());
-        super.getInventory().setItem(GREEN_SLOTS[2], new ItemBuilder(Material.LEVER).setName("&eDecrease: &aGREEN").build());
-        super.getInventory().setItem(BLUE_SLOTS[0], new ItemBuilder(Material.REDSTONE_TORCH).setName("&eIncrease: &9Blue").build());
-        super.getInventory().setItem(BLUE_SLOTS[1], new ItemBuilder(Material.BLUE_DYE).setName("&9" + rgb[2]).build());
-        super.getInventory().setItem(BLUE_SLOTS[2], new ItemBuilder(Material.LEVER).setName("&eDecrease: &9Blue").build());
-        super.getInventory().setItem(TEXT_SLOT, new ItemBuilder(Material.STONE).setName("&#" + this.toHex(rgb) + "Example").build());
+    public void setupMenu(Map<Integer, ItemStack> content) {
+        for (int i : ARMOR_SLOTS) content.put(i, null);
+        content.put(RED_SLOTS[0], new ItemBuilder(Material.REDSTONE_TORCH).setName("&eIncrease: &cRED").build());
+        content.put(RED_SLOTS[1], new ItemBuilder(Material.RED_DYE).setName("&c" + rgb[0]).build());
+        content.put(RED_SLOTS[2], new ItemBuilder(Material.LEVER).setName("&eDecrease: &cRED").build());
+        content.put(GREEN_SLOTS[0], new ItemBuilder(Material.REDSTONE_TORCH).setName("&eIncrease: &aGREEN").build());
+        content.put(GREEN_SLOTS[1], new ItemBuilder(Material.LIME_DYE).setName("&a" + rgb[1]).build());
+        content.put(GREEN_SLOTS[2], new ItemBuilder(Material.LEVER).setName("&eDecrease: &aGREEN").build());
+        content.put(BLUE_SLOTS[0], new ItemBuilder(Material.REDSTONE_TORCH).setName("&eIncrease: &9Blue").build());
+        content.put(BLUE_SLOTS[1], new ItemBuilder(Material.BLUE_DYE).setName("&9" + rgb[2]).build());
+        content.put(BLUE_SLOTS[2], new ItemBuilder(Material.LEVER).setName("&eDecrease: &9Blue").build());
+        content.put(TEXT_SLOT, new ItemBuilder(Material.STONE).setName("&#" + this.toHex(rgb) + "Example").build());
     }
 
     private String toHex(int[] rgb) {

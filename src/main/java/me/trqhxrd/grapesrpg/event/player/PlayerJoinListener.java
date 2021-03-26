@@ -67,7 +67,7 @@ public class PlayerJoinListener implements Listener {
             String message = joins.get(player.getUniqueId());
             e.setJoinMessage(message);
             joins.remove(e.getPlayer().getUniqueId());
-            e.getPlayer().getInventory().addItem(new GrapesItem(38, Material.ENDER_CHEST).setClickAction(new ClickActionPlaceBlock(GrapesBlockType.ENDER_CHEST)).build());
+            e.getPlayer().getInventory().addItem(new GrapesItem(38, Material.ENDER_CHEST).setClickAction(new ClickActionPlaceBlock(GrapesBlockType.CRAFTING_TABLE)).build());
         } catch (Exception ex) {
             ex.printStackTrace();
         }

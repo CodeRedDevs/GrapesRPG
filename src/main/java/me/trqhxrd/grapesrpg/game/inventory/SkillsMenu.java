@@ -1,18 +1,24 @@
 package me.trqhxrd.grapesrpg.game.inventory;
 
 import me.trqhxrd.grapesrpg.api.attribute.Owneable;
-import me.trqhxrd.grapesrpg.api.inventory.GrapesInventory;
 import me.trqhxrd.grapesrpg.api.skill.Skills;
+import me.trqhxrd.grapesrpg.api.utils.Utils;
+import me.trqhxrd.grapesrpg.api.utils.items.ItemBuilder;
+import me.trqhxrd.menus.Menu;
+import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.Map;
 
 /**
  * This menu is used for displaying all data about every Skill in a good visible and understandable way to the player.
  *
  * @author Trqhxrd
  */
-public class SkillsMenu extends GrapesInventory implements Owneable<Skills> {
+public class SkillsMenu extends Menu implements Owneable<Skills> {
 
     /**
      * The skill-set, that is displayed.
@@ -25,9 +31,9 @@ public class SkillsMenu extends GrapesInventory implements Owneable<Skills> {
      * @param skills The collection of skills, that should be displayed.
      */
     public SkillsMenu(Skills skills) {
-        super("&#524df0Skills:", MenuSize.NINE_FIVE, false, true);
+        super(Utils.translateColorCodes("&#524df0Skills:"), "menu_skills", 6 * 9, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName(" ").build(), false);
         this.skills = skills;
-        this.setupMenu();
+        this.setupMenu(this.getContent());
     }
 
     /**
@@ -51,24 +57,25 @@ public class SkillsMenu extends GrapesInventory implements Owneable<Skills> {
 
     /**
      * This method sets all the default-items in the inventory.
+     *
+     * @param content This map contains the content of the inventory and can be changed to set the contents of the inventory. The inventory will be updated to the map-contents as soon as {@link Menu#updateInventory()} was called.
      */
     @Override
-    public void setupMenu() {
-        this.skills.forEach((key, skill) -> {
-            int slot = skill.getSlot();
-            this.getInventory().setItem(slot, skill.getDisplayItem());
-        });
+    public void setupMenu(Map<Integer, ItemStack> content) {
+        this.getContent().clear();
+        for (int i = 0; i < this.getSize(); i++) content.put(i, this.getBackground());
+        this.skills.forEach((key, skill) -> content.put(skill.getSlot(), skill.getDisplayItem()));
     }
 
     /**
      * This method opens the inventory for the player specified in the method arguments.
      *
-     * @param player The HumanEntity which should open the inventory.
+     * @param entity The HumanEntity which should open the inventory.
      */
     @Override
-    public void openInventory(HumanEntity player) {
-        this.setupMenu();
-        super.openInventory(player);
+    public void open(HumanEntity entity) {
+        this.setupMenu(this.getContent());
+        super.open(entity);
     }
 
     /**

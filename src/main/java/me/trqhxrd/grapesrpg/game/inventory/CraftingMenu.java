@@ -3,7 +3,6 @@ package me.trqhxrd.grapesrpg.game.inventory;
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.event.GrapesPlayerCraftEvent;
-import me.trqhxrd.grapesrpg.api.inventory.GrapesInventory;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipe;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipeChoice;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesShapedRecipe;
@@ -11,6 +10,7 @@ import me.trqhxrd.grapesrpg.api.utils.Utils;
 import me.trqhxrd.grapesrpg.api.utils.group.Group2;
 import me.trqhxrd.grapesrpg.api.utils.items.ItemBuilder;
 import me.trqhxrd.grapesrpg.event.inventory.InventoryClickListener;
+import me.trqhxrd.menus.Menu;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
@@ -23,56 +23,51 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
-public class CraftingMenu extends GrapesInventory {
+/**
+ * This Menu will be opened as soon as you click a crafting table.
+ */
+public class CraftingMenu extends Menu {
 
     /**
      * This constant contains the title of the CraftingInventory.
      * It is used for checking recipes in the {@link InventoryClickListener}.
      */
     public static final String TITLE = "&#065499Crafting";
-
     /**
      * These integers are the slots, which will contain binding items.
      * Binding items are a special ingredient, which are needed by some special crafting recipes.
      */
     public static final int[] BINDING_SLOTS = {9, 18, 27, 36};
-
     /**
      * The default 3x3 crafting matrix.
      * Every integer is one slot in the inventory.
      */
     public static final int[] CRAFTING_SLOTS = {11, 12, 13, 20, 21, 22, 29, 30, 31};
-
     /**
      * These are slots for additional upgrades like runes or enchanted books.
      * Upgrades are not needed to create a valid recipe but they are able to modify the output of the recipe.
      */
     public static final int[] UPGRADE_SLOTS = {47, 48, 49, 50, 51};
-
     /**
      * These slots will change their item, depending on the status of the current recipe in the inventory.
      * If the recipe is invalid, the items in these slots will become {@link CraftingMenu#ITEM_RECIPE_INVALID}.
      * Otherwise they will become {@link CraftingMenu#ITEM_RECIPE_VALID}.
      */
     public static final int[] STATUS_SLOTS = {34};
-
     /**
      * This integer is the output-slot in the inventory. This is not an array, because there cannot be multiple output-slots.
      */
     public static final int OUTPUT_SLOT = 16;
-
     /**
      * This item will be placed in every slot, which is on the {@link CraftingMenu#STATUS_SLOTS}-array,
      * as soon as a valid recipe has been applied to the crafting table.
      */
     public static final ItemStack ITEM_RECIPE_VALID = new ItemBuilder(Material.LIME_STAINED_GLASS_PANE).setName("&eStatus: &aVALID").build();
-
     /**
      * This item will be placed in every slot, which is on the {@link CraftingMenu#STATUS_SLOTS}-array,
      * if the recipe on the crafting table is not valid.
      */
     public static final ItemStack ITEM_RECIPE_INVALID = new ItemBuilder(Material.RED_STAINED_GLASS_PANE).setName("&eStatus: &cINVALID").build();
-
     /**
      * The Status, if a recipe is valid.
      * Can be VALID or INVALID.
@@ -83,9 +78,9 @@ public class CraftingMenu extends GrapesInventory {
      * This constructor creates a new CraftingInventory.
      */
     public CraftingMenu() {
-        super(TITLE, MenuSize.NINE_SIX, false, true);
-        this.setupMenu();
+        super(Utils.translateColorCodes(TITLE), "menu_crafting", 6 * 9, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName(" ").build(), false);
         this.status = Status.INVALID;
+        this.setupMenu(this.getContent());
     }
 
     /**
@@ -238,14 +233,17 @@ public class CraftingMenu extends GrapesInventory {
 
     /**
      * This method sets all the default-items in the inventory.
+     *
+     * @param content This map stores the content of the inventory. if it gets changed, the inventory gets changed. But the changes need to be loaded using {@link CraftingMenu#updateInventory()}.
      */
     @Override
-    public void setupMenu() {
-        for (int i : BINDING_SLOTS) super.getInventory().setItem(i, null);
-        for (int i : CRAFTING_SLOTS) super.getInventory().setItem(i, null);
-        for (int i : UPGRADE_SLOTS) super.getInventory().setItem(i, null);
-        for (int i : STATUS_SLOTS) super.getInventory().setItem(i, ITEM_RECIPE_INVALID);
-        super.getInventory().setItem(OUTPUT_SLOT, null);
+    public void setupMenu(Map<Integer, ItemStack> content) {
+        for (int i = 0; i < this.getSize(); i++) content.put(i, this.getBackground());
+        for (int i : BINDING_SLOTS) content.put(i, null);
+        for (int i : CRAFTING_SLOTS) content.put(i, null);
+        for (int i : UPGRADE_SLOTS) content.put(i, null);
+        for (int i : STATUS_SLOTS) content.put(i, ITEM_RECIPE_INVALID);
+        content.put(OUTPUT_SLOT, null);
     }
 
     /**
@@ -257,7 +255,7 @@ public class CraftingMenu extends GrapesInventory {
     public void handleMenuClose(InventoryCloseEvent e) {
         if (e.getView().getTitle().equals(Utils.translateColorCodes(CraftingMenu.TITLE))) {
             this.dropItems((Player) e.getPlayer(), e.getInventory(), CraftingMenu.CRAFTING_SLOTS);
-            this.dropItems((Player) e.getPlayer(), e.getInventory(), CraftingMenu.BINDING_SLOTS);
+            this.dropItems((Player) e.getPlayer(),e.getInventory(), CraftingMenu.BINDING_SLOTS);
             this.dropItems((Player) e.getPlayer(), e.getInventory(), CraftingMenu.UPGRADE_SLOTS);
         }
     }
