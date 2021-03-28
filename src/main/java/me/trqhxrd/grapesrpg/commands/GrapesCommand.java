@@ -36,15 +36,17 @@ public class GrapesCommand implements CommandExecutor, TabCompleter {
             if (args[0].equalsIgnoreCase("help")) this.sendHelp(sender);
         } else if (args.length == 3) {
             if (args[0].equalsIgnoreCase("admin")) {
-                if (args[1].equalsIgnoreCase("update")) {
-                    if (args[2].equalsIgnoreCase("recipe") || args[2].equalsIgnoreCase("recipes")) {
-                        Grapes.getGrapes().reloadRecipes();
-                        Grapes.getGrapes().getUtils().sendMessage(sender, "&aUpdated Recipes successfully!");
-                    } else if (args[2].equalsIgnoreCase("plugin")) {
-                        // TODO: 19.02.2021 Create Plugin Updater
-                        Grapes.getGrapes().getUtils().sendMessage(sender, "&cThis is not implemented yet!");
+                if (sender.hasPermission("grapes.admin")) {
+                    if (args[1].equalsIgnoreCase("update")) {
+                        if (args[2].equalsIgnoreCase("recipe") || args[2].equalsIgnoreCase("recipes")) {
+                            Grapes.getGrapes().reloadRecipes();
+                            Grapes.getGrapes().getUtils().sendMessage(sender, "&aUpdated Recipes successfully!");
+                        } else if (args[2].equalsIgnoreCase("plugin")) {
+                            // TODO: 19.02.2021 Create Plugin Updater
+                            Grapes.getGrapes().getUtils().sendMessage(sender, "&cThis is not implemented yet!");
+                        }
                     }
-                }
+                } else Grapes.getGrapes().getUtils().noPermission(sender);
             } else sendHelp(sender);
         }
         return true;

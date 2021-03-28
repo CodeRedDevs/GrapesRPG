@@ -97,9 +97,15 @@ public class EntityDamageByEntityListener implements Listener {
             if (entity.getHealth() - damage <= 0) {
                 entity.damage(1000000.);
                 e.setCancelled(true);
+                if (e.getEntity() instanceof Player) {
+                    GrapesPlayer p = GrapesPlayer.getByPlayer((Player) e.getEntity());
+                    p.getEcoSet().setWallet(0);
+                }
             } else entity.setHealth(Math.max(0.1, entity.getHealth() - damage));
 
-            if (e.getEntity() instanceof Player) waitForRegen.add(e.getEntity().getUniqueId());
+            if (e.getEntity() instanceof Player) {
+                waitForRegen.add(e.getEntity().getUniqueId());
+            }
         }
     }
 }

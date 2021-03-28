@@ -12,3 +12,12 @@ commands:
   skill:
     description: Shows you your skill data.
     usage: /skill help for more information.
+  pay:
+    description: You can pay another player ingame cash using this command.
+    usage: /pay <player> <amount>
+  balance:
+    description: This command gives you all the information about your or another players balance.
+    usage: /balance [player]
+  economy:
+    description: This command is used for administrating the economy on the server.
+    usage: Do /economy help for more information

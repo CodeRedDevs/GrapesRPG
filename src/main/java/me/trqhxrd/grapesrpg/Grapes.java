@@ -9,10 +9,10 @@ import me.trqhxrd.grapesrpg.api.objects.block.GrapesBlock;
 import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipe;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesShapedRecipe;
-import me.trqhxrd.grapesrpg.api.utils.Prefix;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
 import me.trqhxrd.grapesrpg.api.utils.reflection.Reflection;
 import me.trqhxrd.grapesrpg.game.GameClock;
+import me.trqhxrd.grapesrpg.game.config.GrapesConfig;
 import me.trqhxrd.grapesrpg.game.config.json.adapters.ConfigurationSerializableAdapter;
 import me.trqhxrd.grapesrpg.game.objects.recipe.armor.crop.CropBootsRecipe;
 import me.trqhxrd.grapesrpg.game.objects.recipe.armor.crop.CropChestplateRecipe;
@@ -73,6 +73,8 @@ public class Grapes extends JavaPlugin {
      */
     private GameClock clock;
 
+    private GrapesConfig grapesConfig;
+
     /**
      * You need this method, if you want to do something with the Plugin instance.
      * (e.g. Registering a listener.)
@@ -98,7 +100,8 @@ public class Grapes extends JavaPlugin {
         }
 
         grapes = this;
-        this.utils = new Utils(Prefix.of("&c[&aGra&bpes&c] &7"));
+        this.grapesConfig = GrapesConfig.getInstance();
+        this.utils = new Utils(this.grapesConfig.getPrefix());
         this.clock = new GameClock();
         this.clock.start();
 
@@ -207,6 +210,10 @@ public class Grapes extends JavaPlugin {
      */
     public GameClock getClock() {
         return clock;
+    }
+
+    public GrapesConfig getGrapesConfig() {
+        return grapesConfig;
     }
 
     /**

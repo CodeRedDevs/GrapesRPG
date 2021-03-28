@@ -50,10 +50,9 @@ public class ColorCommand implements CommandExecutor, TabCompleter {
                     colorCode.append(s);
                 }
 
-                Grapes.getGrapes().getUtils().sendMessage(sender, "&#" + colorCode.toString() + colorCode.toString());
-            } else if (args[0].equalsIgnoreCase("menu")) {
-                if (sender instanceof Player) new ColorMenu().open((HumanEntity) sender);
-            } else this.showHelp(sender);
+                Grapes.getGrapes().getUtils().sendMessage(sender, "&#" + colorCode.toString().repeat(2));
+            } else if (args[0].equalsIgnoreCase("menu") && sender instanceof Player) new ColorMenu().open((HumanEntity) sender);
+            else this.showHelp(sender);
         } else this.showHelp(sender);
         return true;
     }

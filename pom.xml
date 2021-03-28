@@ -158,6 +158,7 @@
         <!-- Spigot Repository -->
         <repository>
             <id>spigot-repo</id>
+            <name>Spigot Repository</name>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
         <!-- GrapesDevs Library Repository -->

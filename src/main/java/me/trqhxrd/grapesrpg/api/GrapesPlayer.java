@@ -2,6 +2,7 @@ package me.trqhxrd.grapesrpg.api;
 
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.attribute.Savable;
+import me.trqhxrd.grapesrpg.api.economy.EcoSet;
 import me.trqhxrd.grapesrpg.api.event.GrapesPlayerInitEvent;
 import me.trqhxrd.grapesrpg.api.skill.Skills;
 import me.trqhxrd.grapesrpg.api.utils.Prefix;
@@ -49,6 +50,10 @@ public class GrapesPlayer extends Wrapper<Player> implements Savable {
      * This field stores the EnderChestMenu of the player.
      */
     private final EnderChestMenu enderChest;
+    /**
+     * This field contains all data about the players financial status.
+     */
+    private final EcoSet ecoSet;
 
     /**
      * The Main Constructor for {@link GrapesPlayer}s.
@@ -61,6 +66,7 @@ public class GrapesPlayer extends Wrapper<Player> implements Savable {
         this.file = new PlayerFile(this);
         this.skills = new Skills(this);
         this.enderChest = new EnderChestMenu(this);
+        this.ecoSet = new EcoSet(this);
 
         this.packetReader = new PacketReader(this);
         new NPCInteractionTask(this);
@@ -170,6 +176,7 @@ public class GrapesPlayer extends Wrapper<Player> implements Savable {
     public void save(boolean flush) {
         this.skills.save(false);
         this.enderChest.save(false);
+        this.ecoSet.save(false);
         if (flush) this.file.save();
     }
 
@@ -262,5 +269,14 @@ public class GrapesPlayer extends Wrapper<Player> implements Savable {
      */
     public EnderChestMenu getEnderChest() {
         return enderChest;
+    }
+
+    /**
+     * Getter for the player's EcoSet.
+     *
+     * @return The player's EcoSet.
+     */
+    public EcoSet getEcoSet() {
+        return ecoSet;
     }
 }

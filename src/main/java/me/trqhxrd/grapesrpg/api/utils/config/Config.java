@@ -177,6 +177,17 @@ public class Config extends Wrapper<FileConfiguration> implements ConfigurationO
     }
 
     /**
+     * This method gets the long, which is stored at the given path.
+     *
+     * @param path The path of the value.
+     * @return The value, which is stored at that path.
+     */
+    @Override
+    public long getLong(String path) {
+        return this.getWrappedObject().getLong(path);
+    }
+
+    /**
      * This method saves the config to a file.
      */
     @Override

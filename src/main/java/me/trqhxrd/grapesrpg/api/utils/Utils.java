@@ -111,6 +111,10 @@ public class Utils {
         player.sendMessage(translateColorCodes(this.prefix.getRaw() + message));
     }
 
+    public void noPermission(CommandSender sender) {
+        sender.sendMessage("&cI'm sorry, but you do not have permission to execute this command! If you believe that this is an error, please contact the server administrator!");
+    }
+
     /**
      * Returns the prefix, which you set in the constructor or using the setter.
      *

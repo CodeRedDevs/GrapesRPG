@@ -56,46 +56,48 @@ public class SkillsCommand implements CommandExecutor, TabCompleter {
                         target.getSkills().getMenu().open(player);
                         p.sendMessage("&aHere you go!");
                     } else if (args.length == 5) {
-                        try {
-                            int amount = Integer.parseInt(args[4]);
-                            String skill = args[3];
-                            if (target.getSkills().getSkill(skill) != null) {
-                                if (amount >= 0) {
-                                    if (args[1].equalsIgnoreCase("set")) {
-                                        if (args[2].equalsIgnoreCase("xp")) {
-                                            target.getSkills().getSkill(skill).setXP(amount);
-                                            target.getSkills().levelUp();
-                                            p.sendMessage("&aSet &b" + target.getName() + "'s &aXP successfully!");
-                                        } else if (args[2].equalsIgnoreCase("level")) {
-                                            target.getSkills().getSkill(skill).setLevel(amount);
-                                            target.getSkills().levelUp();
-                                            p.sendMessage("&aSet &b" + target.getName() + "'s &aLevel successfully!");
+                        if (sender.hasPermission("grapes.admin") || sender.hasPermission("grapes.admin.skill")) {
+                            try {
+                                int amount = Integer.parseInt(args[4]);
+                                String skill = args[3];
+                                if (target.getSkills().getSkill(skill) != null) {
+                                    if (amount >= 0) {
+                                        if (args[1].equalsIgnoreCase("set")) {
+                                            if (args[2].equalsIgnoreCase("xp")) {
+                                                target.getSkills().getSkill(skill).setXP(amount);
+                                                target.getSkills().levelUp();
+                                                p.sendMessage("&aSet &b" + target.getName() + "'s &aXP successfully!");
+                                            } else if (args[2].equalsIgnoreCase("level")) {
+                                                target.getSkills().getSkill(skill).setLevel(amount);
+                                                target.getSkills().levelUp();
+                                                p.sendMessage("&aSet &b" + target.getName() + "'s &aLevel successfully!");
+                                            } else p.sendMessage("&cPlease use /skill help");
+                                        } else if (args[1].equalsIgnoreCase("add")) {
+                                            if (args[2].equalsIgnoreCase("xp")) {
+                                                target.getSkills().getSkill(skill).setXP(target.getSkills().getSkill(skill).getXP() + amount);
+                                                target.getSkills().levelUp();
+                                                p.sendMessage("&aAdded XP successfully to &b" + target.getName() + "'s &adata-file!");
+                                            } else if (args[2].equalsIgnoreCase("level")) {
+                                                target.getSkills().getSkill(skill).setLevel(target.getSkills().getSkill(skill).getLevel() + amount);
+                                                target.getSkills().levelUp();
+                                                p.sendMessage("&aAdded Level successfully to &b" + target.getName() + "'s &adata-file!");
+                                            } else p.sendMessage("&cPlease use /skill help");
+                                        } else if (args[1].equalsIgnoreCase("remove")) {
+                                            if (args[2].equalsIgnoreCase("xp")) {
+                                                target.getSkills().getSkill(skill).setXP(target.getSkills().getSkill(skill).getXP() - amount);
+                                                target.getSkills().levelUp();
+                                                p.sendMessage("&aRemoved XP successfully from &b" + target.getName() + "'s &adata-file!");
+                                            } else if (args[2].equalsIgnoreCase("level")) {
+                                                target.getSkills().getSkill(skill).setLevel(target.getSkills().getSkill(skill).getLevel() - amount);
+                                                target.getSkills().levelUp();
+                                                p.sendMessage("&aRemoved Level successfully from &b" + target.getName() + "'s &adata-file!");
+                                            } else p.sendMessage("&cPlease use /skill help");
                                         } else p.sendMessage("&cPlease use /skill help");
-                                    } else if (args[1].equalsIgnoreCase("add")) {
-                                        if (args[2].equalsIgnoreCase("xp")) {
-                                            target.getSkills().getSkill(skill).setXP(target.getSkills().getSkill(skill).getXP() + amount);
-                                            target.getSkills().levelUp();
-                                            p.sendMessage("&aAdded XP successfully to &b" + target.getName() + "'s &adata-file!");
-                                        } else if (args[2].equalsIgnoreCase("level")) {
-                                            target.getSkills().getSkill(skill).setLevel(target.getSkills().getSkill(skill).getLevel() + amount);
-                                            target.getSkills().levelUp();
-                                            p.sendMessage("&aAdded Level successfully to &b" + target.getName() + "'s &adata-file!");
-                                        } else p.sendMessage("&cPlease use /skill help");
-                                    } else if (args[1].equalsIgnoreCase("remove")) {
-                                        if (args[2].equalsIgnoreCase("xp")) {
-                                            target.getSkills().getSkill(skill).setXP(target.getSkills().getSkill(skill).getXP() - amount);
-                                            target.getSkills().levelUp();
-                                            p.sendMessage("&aRemoved XP successfully from &b" + target.getName() + "'s &adata-file!");
-                                        } else if (args[2].equalsIgnoreCase("level")) {
-                                            target.getSkills().getSkill(skill).setLevel(target.getSkills().getSkill(skill).getLevel() - amount);
-                                            target.getSkills().levelUp();
-                                            p.sendMessage("&aRemoved Level successfully from &b" + target.getName() + "'s &adata-file!");
-                                        } else p.sendMessage("&cPlease use /skill help");
-                                    } else p.sendMessage("&cPlease use /skill help");
-                                } else p.sendMessage("&cThe number entered must at least be 0!");
-                            } else p.sendMessage("&cThe Skill-Name \"" + skill + "\" is invalid!");
-                        } catch (NumberFormatException ex) {
-                            p.sendMessage("&cPlease enter a valid number!");
+                                    } else p.sendMessage("&cThe number entered must at least be 0!");
+                                } else p.sendMessage("&cThe Skill-Name \"" + skill + "\" is invalid!");
+                            } catch (NumberFormatException ex) {
+                                p.sendMessage("&cPlease enter a valid number!");
+                            }
                         }
                     } else p.sendMessage("&cPlease use /skill help");
                 } else p.sendMessage("There is no player with the name " + args[0] + "!");

@@ -69,6 +69,14 @@ public interface ConfigurationOperations {
     List<Integer> getIntList(String path);
 
     /**
+     * This method gets the long, which is stored at the given path.
+     *
+     * @param path The path of the value.
+     * @return The value, which is stored at that path.
+     */
+    long getLong(String path);
+
+    /**
      * This method returns true, if the path you gave contains a value.
      *
      * @param path The path, for which you want to check.
