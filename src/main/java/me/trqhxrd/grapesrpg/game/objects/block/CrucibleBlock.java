@@ -24,6 +24,7 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 public class CrucibleBlock extends GrapesBlockState {
 
@@ -36,6 +37,10 @@ public class CrucibleBlock extends GrapesBlockState {
     public CrucibleBlock() {
         this.items = new ArrayList<>();
         this.displayedItems = new ArrayList<>();
+    }
+
+    public static boolean isCrucibleItem(Item item) {
+        return item.getPersistentDataContainer().has(CRUCIBLE_ITEM_KEY, PersistentDataType.STRING);
     }
 
     public void addItem(Item i) {
@@ -60,7 +65,13 @@ public class CrucibleBlock extends GrapesBlockState {
             });
             this.items = itemsNew;
 
-            this.items.forEach(item -> {
+            this.items.stream().filter(new Predicate<>() {
+                int i = 0;
+                @Override
+                public boolean test(ItemStack itemStack) {
+                    return i++ <= 64;
+                }
+            }).forEach(item -> {
                 Item i = Objects.requireNonNull(center.getWorld()).dropItem(center, item);
 
                 i.setVelocity(new Vector(0., 0., 0.));
@@ -72,8 +83,6 @@ public class CrucibleBlock extends GrapesBlockState {
             });
         }
     }
-
-    // TODO: 15.03.2021 Add Lag prevention to crucibles!
 
     public void updateItems(Location crucible) {
         synchronized (this.displayedItems) {
@@ -188,10 +197,8 @@ public class CrucibleBlock extends GrapesBlockState {
         synchronized (this.displayedItems) {
             this.displayedItems.forEach(Entity::remove);
             this.displayedItems.clear();
-
-            BlockData.getInstance().set(BlockData.getConfigKey(location) + ".items", null);
-            BlockData.getInstance().set(BlockData.getConfigKey(location) + ".waterLevel", null);
-            BlockData.getInstance().save();
+            this.items.clear();
+            this.waterLevel = 0;
         }
     }
 

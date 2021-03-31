@@ -100,7 +100,7 @@ public class EcoSet implements Owneable<GrapesPlayer>, Savable {
      * @param amount The amount, that should be deposited.
      * @return Whether the deposition was successful. True if it was. Otherwise false.
      */
-    public boolean deposit(int amount) {
+    public boolean deposit(long amount) {
         if (!this.wouldBeInDeptIfPayed(amount)) {
             this.addWallet(-amount);
             this.addBank(amount);
@@ -115,7 +115,7 @@ public class EcoSet implements Owneable<GrapesPlayer>, Savable {
      * @param amount The amount of money, that should be withdrawn.
      * @return Whether the withdrawal was successful. True if it was. Otherwise false.
      */
-    public boolean withdraw(int amount) {
+    public boolean withdraw(long amount) {
         if (this.bank - amount >= 0) {
             this.addBank(-amount);
             this.addWallet(amount);
@@ -131,8 +131,8 @@ public class EcoSet implements Owneable<GrapesPlayer>, Savable {
      * @return A chat-message, which gives information about the player's money.
      */
     public String getBalanceFormatted() {
-        return Utils.translateColorCodes("&aYou &ehave &c" + this.wallet +
-                " &ein your wallet and &c" + this.bank + " &ein your bank-account!");
+        return Utils.translateColorCodes("&a" + this.owner.getName() + " &ehas &c" + this.wallet +
+                " coins &ein his/her wallet and &c" + this.bank + " coins &ein his/her bank-account!");
     }
 
     /**

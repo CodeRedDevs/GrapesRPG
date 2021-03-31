@@ -17,7 +17,6 @@ public class EnderChestBlock extends DirectableBlock {
     public boolean onClick(GrapesPlayer player, GrapesBlock block, BlockFace face, ClickType type) {
         if (type == ClickType.RIGHT) {
             player.getEnderChest().open(player.getWrappedObject());
-            System.out.println(player.getEnderChest().toString());
             return true;
         }
         return false;

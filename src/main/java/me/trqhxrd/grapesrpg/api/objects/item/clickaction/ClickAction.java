@@ -1,6 +1,7 @@
-package me.trqhxrd.grapesrpg.api.objects.item;
+package me.trqhxrd.grapesrpg.api.objects.item.clickaction;
 
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;
+import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
 import me.trqhxrd.grapesrpg.api.utils.ClickType;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;

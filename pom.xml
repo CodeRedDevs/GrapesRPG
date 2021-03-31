@@ -29,7 +29,7 @@
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.settings.skipTests>false</project.settings.skipTests>
-        <project.trqhxrd.link>http://maven.trqhxrd.de</project.trqhxrd.link>
+        <project.trqhxrd.link>https://maven.trqhxrd.de</project.trqhxrd.link>
         <mainClass>me.trqhxrd.grapesrpg.Grapes</mainClass>
         <author>Trqhxrd</author>
     </properties>

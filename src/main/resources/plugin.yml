@@ -18,6 +18,10 @@ commands:
   balance:
     description: This command gives you all the information about your or another players balance.
     usage: /balance [player]
+    aliases:
+      - bal
   economy:
     description: This command is used for administrating the economy on the server.
     usage: Do /economy help for more information
+    aliases:
+      - eco

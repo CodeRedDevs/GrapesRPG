@@ -84,6 +84,7 @@ public class EnderChestMenu extends Menu implements Owneable<GrapesPlayer>, Sava
         }
 
         this.getOwner().getFile().set("enderchest.size", this.getSize() / 9);
+        this.getOwner().getFile().set("enderchest.content", null);
         this.getContent().forEach((slot, item) -> this.getOwner().getFile().set("enderchest.content." + slot, Grapes.GSON_NO_PRETTY_PRINT.toJson(item)));
         this.getOwner().getFile().save();
     }

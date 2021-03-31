@@ -15,7 +15,7 @@ import java.lang.reflect.InvocationTargetException;
  */
 public enum GrapesBlockType {
 
-    UNDEFINED(-1, Material.AIR, GrapesBlockState.class),
+    UNDEFINED(-1, Material.AIR, null),
     CRAFTING_TABLE(1, Material.CRAFTING_TABLE, CraftingTableBlock.class),
     STONE(2, Material.STONE, GrapesBlockState.class),
     COAL_ORE(3, Material.COAL_ORE, GrapesBlockState.class),
@@ -102,8 +102,9 @@ public enum GrapesBlockType {
      * @return A new instance of the {@link GrapesBlockState} for this type.
      */
     public GrapesBlockState getNewState() {
+        if (this.blockStateType == null) return null;
         try {
-            return this.getBlockStateType().getConstructor().newInstance();
+            return this.blockStateType.getConstructor().newInstance();
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
         }

@@ -1,9 +1,9 @@
-package me.trqhxrd.grapesrpg.api.objects.item;
+package me.trqhxrd.grapesrpg.api.objects.item.clickaction;
 
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.objects.block.GrapesBlock;
-import me.trqhxrd.grapesrpg.api.objects.block.GrapesBlockState;
 import me.trqhxrd.grapesrpg.api.objects.block.GrapesBlockType;
+import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
 import me.trqhxrd.grapesrpg.api.utils.ClickType;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -34,15 +34,10 @@ public class ClickActionPlaceBlock implements ClickAction {
     }
 
     private final GrapesBlockType type;
-    private final GrapesBlockState state;
 
-    public ClickActionPlaceBlock(GrapesBlockType type, GrapesBlockState state) {
-        this.type = type;
-        this.state = state;
-    }
 
     public ClickActionPlaceBlock(GrapesBlockType type) {
-        this(type, type.getNewState());
+        this.type = type;
     }
 
     /**
@@ -83,7 +78,7 @@ public class ClickActionPlaceBlock implements ClickAction {
 
             GrapesBlock b = GrapesBlock.getBlock(loc);
             b.setType(type);
-            b.setState(state);
+            b.getState().onPlace(b.getLocation(), player.getWrappedObject());
             b.update();
             return true;
         }

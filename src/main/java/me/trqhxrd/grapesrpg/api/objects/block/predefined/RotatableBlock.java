@@ -1,9 +1,12 @@
 package me.trqhxrd.grapesrpg.api.objects.block.predefined;
 
-import me.trqhxrd.grapesrpg.api.attribute.Rotatable;
 import me.trqhxrd.grapesrpg.api.objects.block.GrapesBlockState;
-import me.trqhxrd.grapesrpg.api.utils.Rotation;
+import me.trqhxrd.grapesrpg.api.utils.block.Rotation;
 import me.trqhxrd.grapesrpg.game.config.BlockData;
+import org.bukkit.Location;
+import org.bukkit.block.Block;
+import org.bukkit.block.data.Rotatable;
+import org.bukkit.entity.Player;
 
 /**
  * This class represents a BlockState, which is rotatable.
@@ -12,7 +15,7 @@ import me.trqhxrd.grapesrpg.game.config.BlockData;
  *
  * @author Trqhxrd
  */
-public class RotatableBlock extends GrapesBlockState implements Rotatable {
+public class RotatableBlock extends GrapesBlockState implements me.trqhxrd.grapesrpg.api.attribute.Rotatable {
 
     /**
      * This field stores the current rotation.
@@ -25,6 +28,11 @@ public class RotatableBlock extends GrapesBlockState implements Rotatable {
      */
     public RotatableBlock() {
         this.rotation = Rotation.NORTH;
+    }
+
+    @Override
+    public void onPlace(Location block, Player player) {
+        this.setRotation(Rotation.getRotation(player.getLocation()));
     }
 
     /**
@@ -50,8 +58,17 @@ public class RotatableBlock extends GrapesBlockState implements Rotatable {
         if (saveToFile) BlockData.getInstance().save();
     }
 
+    @Override
+    public void update(Location location) {
+        Block b = location.getBlock();
+        org.bukkit.block.data.BlockData data = b.getBlockData();
+        if (data instanceof Rotatable) ((Rotatable) data).setRotation(this.rotation.getBlockFace());
+        b.setBlockData(data);
+    }
+
     /**
      * Getter for the block's rotation.
+     *
      * @return The block's rotation.
      */
     @Override
@@ -61,6 +78,7 @@ public class RotatableBlock extends GrapesBlockState implements Rotatable {
 
     /**
      * Setter for the block's rotation.
+     *
      * @param rotation The blocks new rotation.
      */
     @Override

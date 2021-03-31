@@ -4,7 +4,6 @@ import me.trqhxrd.grapesrpg.game.config.BlockData;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -113,10 +112,8 @@ public final class GrapesBlock {
         GrapesBlockType type = GrapesBlockType.fromID(id);
         if (type != null) {
             GrapesBlockState state = type.getNewState();
-            if (state != null) {
-                state.load(s);
-                return new GrapesBlock(location, state, type);
-            }
+            if (state != null) state.load(s);
+            return new GrapesBlock(location, state, type);
         }
         return null;
     }
@@ -191,11 +188,7 @@ public final class GrapesBlock {
     public GrapesBlockState setType(GrapesBlockType type) {
         this.type = type;
         GrapesBlockState state = this.blockState;
-        try {
-            this.blockState = type.getBlockStateType().getConstructor().newInstance();
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            e.printStackTrace();
-        }
+        this.blockState = type.getNewState();
         this.update();
         return state;
     }
@@ -206,9 +199,9 @@ public final class GrapesBlock {
     public void destroy() {
         String s = BlockData.getConfigKey(this.getLocation());
         this.blockState.destroy(this.location);
-        this.blockState.save(s, false);
         this.setType(GrapesBlockType.UNDEFINED);
         this.update();
+        if (this.blockState != null) this.blockState.save(s, false);
     }
 
     /**

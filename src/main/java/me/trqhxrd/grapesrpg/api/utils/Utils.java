@@ -26,6 +26,23 @@ public class Utils {
     }
 
     /**
+     * This method checks, if a string is numeric.
+     * @param strNum The string which should be checked.
+     * @return true if the string is convertible into a double. Otherwise false.
+     */
+    public static boolean isNumeric(String strNum) {
+        if (strNum == null) {
+            return false;
+        }
+        try {
+            double d = Double.parseDouble(strNum);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * @param text The string of text to apply color/effects to
      * @return Returns a string of text with color/effects applied
      */
@@ -48,6 +65,21 @@ public class Utils {
             }
         }
         return result.toString();
+    }
+
+    /**
+     * This method checks if a string is an integer.
+     * @param str The string for which you want to check, if it is an integer,
+     * @return true if the string is numeric and an integer.
+     */
+    public static boolean isInteger(String str) {
+        if (str == null) return true;
+        try {
+            int i = Integer.parseInt(str);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -111,8 +143,14 @@ public class Utils {
         player.sendMessage(translateColorCodes(this.prefix.getRaw() + message));
     }
 
+    /**
+     * This method sends the default "You don't have permission to use..."-message to the CommandSender, who was given in the arguments.
+     *
+     * @param sender The person, who should receive the message.
+     */
     public void noPermission(CommandSender sender) {
-        sender.sendMessage("&cI'm sorry, but you do not have permission to execute this command! If you believe that this is an error, please contact the server administrator!");
+        sender.sendMessage(Utils.translateColorCodes("&cI'm sorry, but you do not have permission to execute this command! " +
+                "If you believe that this is an error, please contact the server administrator!"));
     }
 
     /**

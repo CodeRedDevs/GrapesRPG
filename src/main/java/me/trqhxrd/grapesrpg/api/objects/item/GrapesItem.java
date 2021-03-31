@@ -3,6 +3,7 @@ package me.trqhxrd.grapesrpg.api.objects.item;
 import com.google.common.base.Preconditions;
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.attribute.Serializable;
+import me.trqhxrd.grapesrpg.api.objects.item.clickaction.ClickAction;
 import me.trqhxrd.grapesrpg.api.utils.Builder;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
 import me.trqhxrd.grapesrpg.api.utils.group.Group2;

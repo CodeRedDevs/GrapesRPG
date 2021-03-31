@@ -4,6 +4,7 @@ import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.utils.ClickType;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Player;
 
 /**
  * A GrapesBlockState is the data, a block stores.
@@ -26,6 +27,15 @@ public class GrapesBlockState {
      */
     public boolean onClick(GrapesPlayer player, GrapesBlock block, BlockFace face, ClickType type) {
         return false;
+    }
+
+    /**
+     * This method will be executed as soon as a block will be placed.
+     *
+     * @param block  The location of the block that got placed.
+     * @param player The player, who placed the block.
+     */
+    public void onPlace(Location block, Player player) {
     }
 
     /**

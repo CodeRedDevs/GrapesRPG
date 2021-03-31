@@ -31,7 +31,7 @@ public class SkillsMenu extends Menu implements Owneable<Skills> {
      * @param skills The collection of skills, that should be displayed.
      */
     public SkillsMenu(Skills skills) {
-        super(Utils.translateColorCodes("&#524df0Skills:"), "menu_skills", 6 * 9, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName(" ").build(), false);
+        super(Utils.translateColorCodes("&#524df0Skills:"), "menu_skills", 5 * 9, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName(" ").build(), false);
         this.skills = skills;
         this.setupMenu(this.getContent());
     }

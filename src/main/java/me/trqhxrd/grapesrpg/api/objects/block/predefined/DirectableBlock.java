@@ -1,11 +1,14 @@
 package me.trqhxrd.grapesrpg.api.objects.block.predefined;
 
 import me.trqhxrd.grapesrpg.api.objects.block.GrapesBlockState;
-import me.trqhxrd.grapesrpg.api.utils.Direction;
+import me.trqhxrd.grapesrpg.api.utils.block.Direction;
 import me.trqhxrd.grapesrpg.game.config.BlockData;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Directional;
+import org.bukkit.entity.Player;
+
+import java.util.Objects;
 
 /**
  * This class represents a Blockstate with a certain direction.
@@ -13,7 +16,7 @@ import org.bukkit.block.data.Directional;
  *
  * @author Trqhxrd
  */
-public class DirectableBlock extends GrapesBlockState {
+public class DirectableBlock extends GrapesBlockState implements me.trqhxrd.grapesrpg.api.attribute.Directional {
 
     /**
      * The direction of this state.
@@ -26,6 +29,17 @@ public class DirectableBlock extends GrapesBlockState {
      */
     public DirectableBlock() {
         this.direction = Direction.NORTH;
+    }
+
+    /**
+     * This method will be executed as soon as a block will be placed.
+     *
+     * @param block  The location of the block that got placed.
+     * @param player The player, who placed the block.
+     */
+    @Override
+    public void onPlace(Location block, Player player) {
+        this.setDirection(Objects.requireNonNull(Direction.getDirection(player.getLocation().getYaw())).getOpposite());
     }
 
     /**
@@ -66,16 +80,20 @@ public class DirectableBlock extends GrapesBlockState {
 
     /**
      * Getter for the block's direction
+     *
      * @return The block's direction
      */
+    @Override
     public Direction getDirection() {
         return direction;
     }
 
     /**
      * Setter for the block's direction
+     *
      * @param direction The blocks direction.
      */
+    @Override
     public void setDirection(Direction direction) {
         this.direction = direction;
     }
