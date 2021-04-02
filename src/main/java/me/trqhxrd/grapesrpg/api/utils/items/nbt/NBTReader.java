@@ -85,8 +85,8 @@ public class NBTReader {
      * @param is The item, from which you want to get all NBT-Values.
      * @return A Map containing all NBT-Values and their Paths.
      */
-    public static Map<String, NBTValue<?>> getAllNBTValues(ItemStack is) {
-        Map<String, NBTValue<?>> out = new HashMap<>();
+    public static Map<String, Object> getAllNBTValues(ItemStack is) {
+        Map<String, Object> out = new HashMap<>();
         net.minecraft.server.v1_16_R3.ItemStack nms = CraftItemStack.asNMSCopy(is);
         NBTTagCompound nbt = nms.getOrCreateTag();
         List<String> list = detectEntries(nbt);
@@ -95,14 +95,9 @@ public class NBTReader {
             if (!s.isBlank()) {
                 NBTBase base = getNBTValue(is, s);
                 if (base instanceof NBTTagCompound) continue;
-                if (base instanceof NBTTagInt) out.put(s, new NBTValue.Integer(((NBTTagInt) base).asInt()));
-                else if (base instanceof NBTTagString) out.put(s, new NBTValue.String(base.asString()));
-                else if (base instanceof NBTTagIntArray) {
-                    List<Integer> ints = new ArrayList<>();
-                    NBTTagInt[] nbts = ((NBTTagIntArray) base).toArray(new NBTTagInt[0]);
-                    for (NBTTagInt tag : nbts) ints.add(tag.asInt());
-                    out.put(s, new NBTValue.IntegerArray(ints));
-                } else if (base instanceof NBTTagDouble) out.put(s, new NBTValue.Double(((NBTTagDouble) base).asDouble()));
+                if (base instanceof NBTTagInt) out.put(s, ((NBTTagInt) base).asInt());
+                else if (base instanceof NBTTagString) out.put(s, base.asString());
+                else if (base instanceof NBTTagDouble) out.put(s, ((NBTTagDouble) base).asDouble());
             }
         }
         return out;

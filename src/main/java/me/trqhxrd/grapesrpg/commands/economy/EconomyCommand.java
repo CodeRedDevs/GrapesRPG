@@ -125,7 +125,7 @@ public class EconomyCommand implements CommandExecutor, TabCompleter {
             } else if (args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("remove")) {
                 if (args.length == 2) Bukkit.getOnlinePlayers().forEach(p -> l.add(p.getName()));
                 else if (args.length == 3) GrapesConfig.getInstance().getEcoCommandTabCompletions().forEach(tab -> l.add(String.valueOf(tab)));
-                else if (args.length == 4) return Arrays.asList("wallet", "bank");
+                else if (args.length == 4) l.addAll(Arrays.asList("wallet", "bank"));
             }
         }
 

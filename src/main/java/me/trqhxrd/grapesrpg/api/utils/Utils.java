@@ -27,6 +27,7 @@ public class Utils {
 
     /**
      * This method checks, if a string is numeric.
+     *
      * @param strNum The string which should be checked.
      * @return true if the string is convertible into a double. Otherwise false.
      */
@@ -69,6 +70,7 @@ public class Utils {
 
     /**
      * This method checks if a string is an integer.
+     *
      * @param str The string for which you want to check, if it is an integer,
      * @return true if the string is numeric and an integer.
      */

@@ -3,7 +3,7 @@ package me.trqhxrd.grapesrpg.api;
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.attribute.Savable;
 import me.trqhxrd.grapesrpg.api.economy.EcoSet;
-import me.trqhxrd.grapesrpg.api.event.GrapesPlayerInitEvent;
+import me.trqhxrd.grapesrpg.api.event.player.GrapesPlayerInitEvent;
 import me.trqhxrd.grapesrpg.api.skill.Skills;
 import me.trqhxrd.grapesrpg.api.utils.Prefix;
 import me.trqhxrd.grapesrpg.api.utils.Wrapper;

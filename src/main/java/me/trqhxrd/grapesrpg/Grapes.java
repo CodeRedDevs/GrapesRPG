@@ -12,6 +12,7 @@ import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesShapedRecipe;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
 import me.trqhxrd.grapesrpg.api.utils.reflection.Reflection;
 import me.trqhxrd.grapesrpg.game.GameClock;
+import me.trqhxrd.grapesrpg.game.config.ArtifactConfig;
 import me.trqhxrd.grapesrpg.game.config.GrapesConfig;
 import me.trqhxrd.grapesrpg.game.config.json.adapters.ConfigurationSerializableAdapter;
 import me.trqhxrd.grapesrpg.game.objects.recipe.armor.crop.CropBootsRecipe;
@@ -109,6 +110,9 @@ public class Grapes extends JavaPlugin {
 
         Menus.registerListeners(this);
 
+        ArtifactConfig.init();
+        ArtifactConfig.loadArtifacts();
+
         this.registerListeners("me.trqhxrd.grapesrpg");
         this.registerCommands("me.trqhxrd.grapesrpg");
         this.registerItems("me.trqhxrd.grapesrpg");
@@ -128,6 +132,7 @@ public class Grapes extends JavaPlugin {
         GrapesPlayer.forEach(p -> p.getPacketReader().uninject());
         GrapesPlayer.saveAll();
         GrapesBlock.save();
+        ArtifactConfig.saveArtifacts(true);
     }
 
     /**

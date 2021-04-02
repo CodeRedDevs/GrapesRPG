@@ -11,7 +11,6 @@ import me.trqhxrd.grapesrpg.api.utils.group.Group3;
 import me.trqhxrd.grapesrpg.api.utils.items.MapRendererImage;
 import me.trqhxrd.grapesrpg.api.utils.items.nbt.NBTEditor;
 import me.trqhxrd.grapesrpg.api.utils.items.nbt.NBTReader;
-import me.trqhxrd.grapesrpg.api.utils.items.nbt.NBTValue;
 import me.trqhxrd.grapesrpg.game.config.MapData;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -29,7 +28,8 @@ import java.util.List;
 import java.util.*;
 
 /**
- * This Class represents a serializable item from the GrapesAPI
+ * This Class represents a serializable item from the GrapesAPI.
+ * If you want to get an ItemStack from this GrapesItem, use {@link GrapesItem#build()}.
  *
  * @author Trqhxrd
  */
@@ -45,7 +45,7 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      * '.' in the path mean, that there is a subgroup of NBT-Tags.
      * ("test.helloWorld", "value" -> {test: {helloWorld:value}})
      */
-    private final Map<String, NBTValue<?>> nbt;
+    private final Map<String, Object> nbt;
     /**
      * This action will be executed, if you right click the item.
      */
@@ -170,9 +170,9 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      * @param maxDurability The Maximum durability of the item. sIf the value is set to -1 the item is unbreakable.
      */
     @SafeVarargs
-    public GrapesItem(int id, Material material, String name, Rarity rarity, int maxDurability, Group2<String, NBTValue<?>>... nbtEntries) {
+    public GrapesItem(int id, Material material, String name, Rarity rarity, int maxDurability, Group2<String, Object>... nbtEntries) {
         this(id, material, name, 1, rarity, DEFAULT_STATS, ItemType.MELEE, new Group2<>(maxDurability, maxDurability), new HashMap<>());
-        for (Group2<String, NBTValue<?>> entry : nbtEntries) this.nbt.put(entry.getX(), entry.getY());
+        for (Group2<String, Object> entry : nbtEntries) this.nbt.put(entry.getX(), entry.getY());
     }
 
     /**
@@ -205,7 +205,7 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      * @param maxDurability This is the items maximum durability. If set to -1 the item is unbreakable.
      */
     public GrapesItem(int id, Material material, String name, int amount, Rarity rarity, int statsPhysical, int statsMagical, int statsVoid,
-                      ItemType type, int maxDurability, Map<String, NBTValue<?>> nbt) {
+                      ItemType type, int maxDurability, Map<String, Object> nbt) {
         this(id, material, name, amount, rarity, new Group3<>(statsPhysical, statsMagical, statsVoid), type, new Group2<>(maxDurability, maxDurability), nbt);
     }
 
@@ -223,7 +223,7 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      * @param durability The durability of the item. The first value in the group is the items current durability. The second value is the items maximum durability. If the maximum durability is -1 the item is unbreakable.
      */
     public GrapesItem(int id, Material material, String name, int amount, Rarity rarity, Group3<Integer, Integer, Integer> stats,
-                      ItemType type, Group2<Integer, Integer> durability, Map<String, NBTValue<?>> nbt) {
+                      ItemType type, Group2<Integer, Integer> durability, Map<String, Object> nbt) {
         this.nbt = nbt;
         this.id = id;
         this.material = material;
@@ -264,33 +264,33 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
                 item.getNbt().remove("display.Name");
                 item.getNbt().remove("display.Lore");
 
-                if (item.getNbt().containsKey("grapes.name")) item.setName((String) item.getNbt().get("grapes.name").getValue());
+                if (item.getNbt().containsKey("grapes.name")) item.setName((String) item.getNbt().get("grapes.name"));
                 else item.setName(null);
-                if (item.getNbt().containsKey("grapes.rarity")) item.setRarity(Rarity.getById(((int) item.getNbt().get("grapes.rarity").getValue())));
+                if (item.getNbt().containsKey("grapes.rarity")) item.setRarity(Rarity.getById(((int) item.getNbt().get("grapes.rarity"))));
                 else item.setRarity(Rarity.DEFAULT_RARITY);
 
                 Group3<Integer, Integer, Integer> statsNew = new Group3<>(DEFAULT_STATS);
-                if (item.getNbt().containsKey("grapes.stats.physical")) statsNew.setX((Integer) item.getNbt().get("grapes.stats.physical").getValue());
-                if (item.getNbt().containsKey("grapes.stats.magical")) statsNew.setY((Integer) item.getNbt().get("grapes.stats.magical").getValue());
-                if (item.getNbt().containsKey("grapes.stats.void")) statsNew.setZ((Integer) item.getNbt().get("grapes.stats.void").getValue());
+                if (item.getNbt().containsKey("grapes.stats.physical")) statsNew.setX((Integer) item.getNbt().get("grapes.stats.physical"));
+                if (item.getNbt().containsKey("grapes.stats.magical")) statsNew.setY((Integer) item.getNbt().get("grapes.stats.magical"));
+                if (item.getNbt().containsKey("grapes.stats.void")) statsNew.setZ((Integer) item.getNbt().get("grapes.stats.void"));
                 item.setStats(statsNew);
 
                 Group2<Integer, Integer> durability = new Group2<>(-1, -1);
-                if (item.getNbt().containsKey("grapes.durability.current")) durability.setX(((Integer) item.getNbt().get("grapes.durability.current").getValue()));
-                if (item.getNbt().containsKey("grapes.durability.max")) durability.setY(((Integer) item.getNbt().get("grapes.durability.max").getValue()));
+                if (item.getNbt().containsKey("grapes.durability.current")) durability.setX(((Integer) item.getNbt().get("grapes.durability.current")));
+                if (item.getNbt().containsKey("grapes.durability.max")) durability.setY(((Integer) item.getNbt().get("grapes.durability.max")));
 
                 item.setDurability(durability);
 
                 ItemType typeNew = ItemType.DEFAULT_TYPE;
-                if (item.getNbt().containsKey("grapes.stats.type")) typeNew = ItemType.valueOf(((String) item.getNbt().get("grapes.stats.type").getValue()));
+                if (item.getNbt().containsKey("grapes.stats.type")) typeNew = ItemType.valueOf(((String) item.getNbt().get("grapes.stats.type")));
                 item.setType(typeNew);
 
                 if (item.getRarity() == null) item.setRarity(Rarity.DEFAULT_RARITY);
 
                 // Removing all NBT-Values, which are stored in variables in an object of this class.
-                Set<String> remove = new HashSet<>();
+                /*Set<String> remove = new HashSet<>();
                 for (String s : item.getNbt().keySet()) if (s.startsWith("grapes.")) remove.add(s);
-                for (String s : remove) item.getNbt().remove(s);
+                for (String s : remove) item.getNbt().remove(s);*/
 
                 // Clone the click-action from the reference item.
                 item.setClickAction(ClickAction.getClickAction(item.getID()));
@@ -451,64 +451,9 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      * @param value The value, that will be stored at the path.
      * @return The GrapesItem, for which this method got called. Used for creating command chains.
      */
-    public GrapesItem addNBT(String path, NBTValue<?> value) {
+    public GrapesItem addNBT(String path, Object value) {
         this.nbt.put(path, value);
         return this;
-    }
-
-    /**
-     * This method adds a custom NBT-Value to the map of values, that will be set as soon as the {@link GrapesItem#build()}-method gets called.
-     *
-     * @param path  The path of the NBT-Value, which you want to set.
-     * @param value The value, that will be stored at the path.
-     * @return The GrapesItem, for which this method got called. Used for creating command chains.
-     */
-    public GrapesItem addNBT(String path, String value) {
-        return this.addNBT(path, new NBTValue.String(value));
-    }
-
-    /**
-     * This method adds a custom NBT-Value to the map of values, that will be set as soon as the {@link GrapesItem#build()}-method gets called.
-     *
-     * @param path  The path of the NBT-Value, which you want to set.
-     * @param value The value, that will be stored at the path.
-     * @return The GrapesItem, for which this method got called. Used for creating command chains.
-     */
-    public GrapesItem addNBT(String path, int value) {
-        return this.addNBT(path, new NBTValue.Integer(value));
-    }
-
-    /**
-     * This method adds a custom NBT-Value to the map of values, that will be set as soon as the {@link GrapesItem#build()}-method gets called.
-     *
-     * @param path  The path of the NBT-Value, which you want to set.
-     * @param value The value, that will be stored at the path.
-     * @return The GrapesItem, for which this method got called. Used for creating command chains.
-     */
-    public GrapesItem addNBT(String path, double value) {
-        return this.addNBT(path, new NBTValue.Double(value));
-    }
-
-    /**
-     * This method adds a custom NBT-Value to the map of values, that will be set as soon as the {@link GrapesItem#build()}-method gets called.
-     *
-     * @param path  The path of the NBT-Value, which you want to set.
-     * @param value The value, that will be stored at the path.
-     * @return The GrapesItem, for which this method got called. Used for creating command chains.
-     */
-    public GrapesItem addNBT(String path, Integer... value) {
-        return this.addNBT(path, new NBTValue.IntegerArray(Arrays.asList(value)));
-    }
-
-    /**
-     * This method adds a custom NBT-Value to the map of values, that will be set as soon as the {@link GrapesItem#build()}-method gets called.
-     *
-     * @param path  The path of the NBT-Value, which you want to set.
-     * @param value The value, that will be stored at the path.
-     * @return The GrapesItem, for which this method got called. Used for creating command chains.
-     */
-    public GrapesItem addNBT(String path, Collection<Integer> value) {
-        return this.addNBT(path, new NBTValue.IntegerArray(value));
     }
 
     /**
@@ -536,7 +481,7 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      *
      * @return A map of Strings. The Key is the nbt path while the maps value represents the entry into the items nbt data.
      */
-    public Map<String, NBTValue<?>> getNbt() {
+    public Map<String, Object> getNbt() {
         return nbt;
     }
 
@@ -738,6 +683,12 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
         return durability.getX();
     }
 
+    /**
+     * Setter for the current durability of the item.
+     *
+     * @param currentDurability The current durability of the item.
+     * @return The GrapesItem. Used for creating command chains.
+     */
     public GrapesItem setCurrentDurability(int currentDurability) {
         this.durability.setX(currentDurability);
         return this;
@@ -793,7 +744,7 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      * @return The item itself. If you want to get an itemStack use {@code yourItem.use().build}!
      */
     public GrapesItem use() {
-        this.setCurrentDurability(this.getCurrentDurability() - 1);
+        if (this.getCurrentDurability() > 0 && this.getMaxDurability() != -1) this.setCurrentDurability(this.getCurrentDurability() - 1);
         return this;
     }
 
@@ -882,7 +833,8 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
             is.setItemMeta(meta);
         }
 
-        for (String path : nbt.keySet()) is = NBTEditor.setNBTValue(is, path, this.nbt.get(path));
+        for (String path : nbt.keySet()) is = NBTEditor.setNBTValue(is, path, nbt.get(path));
+
         is = NBTEditor.setNBTValue(is, "grapes.name", this.name);
         is = NBTEditor.setNBTValue(is, "grapes.id", this.id);
         is = NBTEditor.setNBTValue(is, "grapes.rarity", this.rarity != null ? this.rarity.getId() : Rarity.DEFAULT_RARITY.getId());
@@ -894,23 +846,6 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
         is = NBTEditor.setNBTValue(is, "grapes.durability.max", this.durability != null ? this.durability.getY() : 0);
 
         return is;
-    }
-
-    @Override
-    public String toString() {
-        return "GrapesItem{" +
-                "clickAction=" + clickAction +
-                ", nbt=" + nbt +
-                ", stats=" + stats +
-                ", durability=" + durability +
-                ", type=" + type +
-                ", rarity=" + rarity +
-                ", id=" + id +
-                ", material=" + material +
-                ", name='" + name + '\'' +
-                ", amount=" + amount +
-                ", color=" + Arrays.toString(color) +
-                '}';
     }
 
     @Override

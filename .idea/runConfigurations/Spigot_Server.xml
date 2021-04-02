@@ -5,7 +5,7 @@
     <option name="PROGRAM_PARAMETERS" value="nogui" />
     <option name="WORKING_DIRECTORY" value="D:\bjarn\Dokumente\Code\Java\GrapesRPG\Server" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
-    <option name="ALTERNATIVE_JRE_PATH" value="11" />
+    <option name="ALTERNATIVE_JRE_PATH" value="C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2020.2.3\jbr" />
     <method v="2">
       <option name="RunConfigurationTask" enabled="true" run_configuration_name="Build" run_configuration_type="MavenRunConfiguration" />
     </method>

@@ -190,7 +190,7 @@ public abstract class Skill implements InventoryDisplayable, StringKeyable, Owne
                 "&#ba03fcXP: &c" + this.xp,
                 "",
                 "&" + Objects.requireNonNull(this.displayPrototype.getX().getItemMeta()).getDisplayName()
-                        .toCharArray()[Objects.requireNonNull(this.displayPrototype.getX().getItemMeta()).getDisplayName().indexOf('§') + 1] + "Progress:",
+                        .toCharArray()[Objects.requireNonNull(this.displayPrototype.getX().getItemMeta()).getDisplayName().indexOf('\u00a7') + 1] + "Progress:",
                 "&8[&#03fcb5" + PROGRESS_TEXT.repeat(part) + "&7" + PROGRESS_TEXT.repeat(10 - part) + "&8]"
         };
 

@@ -46,6 +46,7 @@ public class MainMenuButton implements Owneable<GrapesPlayer>, Listener {
 
     /**
      * This method creates a new instance of this class and sets it's owner.
+     *
      * @param owner The player, who should receive the button.
      */
     public MainMenuButton(GrapesPlayer owner) {

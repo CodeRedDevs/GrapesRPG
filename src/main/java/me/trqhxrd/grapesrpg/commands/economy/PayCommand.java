@@ -38,7 +38,7 @@ public class PayCommand implements CommandExecutor, TabCompleter {
         GrapesPlayer p = GrapesPlayer.getByPlayer(player);
 
         if (!p.getWrappedObject().hasPermission("grapes.eco.pay")) {
-           Grapes.getGrapes().getUtils().noPermission(sender);
+            Grapes.getGrapes().getUtils().noPermission(sender);
             return true;
         }
 

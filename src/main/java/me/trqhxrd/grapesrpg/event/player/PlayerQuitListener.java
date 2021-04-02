@@ -3,7 +3,7 @@ package me.trqhxrd.grapesrpg.event.player;
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.attribute.Register;
-import me.trqhxrd.grapesrpg.api.event.GrapesPlayerQuitEvent;
+import me.trqhxrd.grapesrpg.api.event.player.GrapesPlayerQuitEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

@@ -16,6 +16,7 @@ import java.util.Map;
 
 /**
  * This menu will be opened if a player clicks the little chest-minecart in his inventory.
+ *
  * @author Trqhxrd
  */
 public class PlayerMenu extends Menu implements Owneable<GrapesPlayer> {
@@ -27,6 +28,7 @@ public class PlayerMenu extends Menu implements Owneable<GrapesPlayer> {
 
     /**
      * This constructor creates a new inventory and adds items to it.
+     *
      * @param owner The owner, from who the finance-data and other things will be loaded.
      */
     public PlayerMenu(GrapesPlayer owner) {

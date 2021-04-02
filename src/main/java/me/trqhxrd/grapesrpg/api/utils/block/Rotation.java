@@ -118,6 +118,7 @@ public enum Rotation {
     /**
      * Getter for the direction equivalent to this rotation.
      * This may be null.
+     *
      * @return The direction equivalent to this rotation.
      */
     public Direction getDirection() {
@@ -126,7 +127,8 @@ public enum Rotation {
 
     /**
      * Getter for the BlockFace, which is equivalent to this rotation.
-     * @return
+     *
+     * @return The BlockFace, which is equivalent to this rotation.
      */
     public BlockFace getBlockFace() {
         return face;

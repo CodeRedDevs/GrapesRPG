@@ -67,6 +67,7 @@ public class CrucibleBlock extends GrapesBlockState {
 
             this.items.stream().filter(new Predicate<>() {
                 int i = 0;
+
                 @Override
                 public boolean test(ItemStack itemStack) {
                     return i++ <= 64;

@@ -3,7 +3,7 @@ package me.trqhxrd.grapesrpg.api.objects.entity.npc;
 import com.mojang.authlib.GameProfile;
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;
-import me.trqhxrd.grapesrpg.api.event.GrapesPlayerClickNPCEvent;
+import me.trqhxrd.grapesrpg.api.event.player.GrapesPlayerClickNPCEvent;
 import me.trqhxrd.grapesrpg.api.utils.ClickType;
 import net.minecraft.server.v1_16_R3.*;
 import org.bukkit.Bukkit;

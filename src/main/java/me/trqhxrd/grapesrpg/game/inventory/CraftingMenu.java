@@ -2,7 +2,7 @@ package me.trqhxrd.grapesrpg.game.inventory;
 
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;
-import me.trqhxrd.grapesrpg.api.event.GrapesPlayerCraftEvent;
+import me.trqhxrd.grapesrpg.api.event.player.GrapesPlayerCraftEvent;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipe;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipeChoice;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesShapedRecipe;
@@ -255,7 +255,7 @@ public class CraftingMenu extends Menu {
     public void handleMenuClose(InventoryCloseEvent e) {
         if (e.getView().getTitle().equals(Utils.translateColorCodes(CraftingMenu.TITLE))) {
             this.dropItems((Player) e.getPlayer(), e.getInventory(), CraftingMenu.CRAFTING_SLOTS);
-            this.dropItems((Player) e.getPlayer(),e.getInventory(), CraftingMenu.BINDING_SLOTS);
+            this.dropItems((Player) e.getPlayer(), e.getInventory(), CraftingMenu.BINDING_SLOTS);
             this.dropItems((Player) e.getPlayer(), e.getInventory(), CraftingMenu.UPGRADE_SLOTS);
         }
     }

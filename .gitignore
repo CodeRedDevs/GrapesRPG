@@ -20,5 +20,7 @@ dependency-reduced-pom.xml
 # Javadoc
 JavaDoc/
 
+# Project specific
 Server
 install
+src/main/java/me/trqhxrd/grapesrpg/event/player/DebugListener.java
