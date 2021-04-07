@@ -4,6 +4,8 @@ import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.CommandSender;
 
+import java.util.UUID;
+
 /**
  * A utils class used for sending messages.
  *
@@ -82,6 +84,25 @@ public class Utils {
             return false;
         }
         return true;
+    }
+
+    /**
+     * This method formats a string to a uuid.
+     * @param uuid The string, which should be formatted.
+     * @return The UUID with the value of the string.
+     */
+    public static UUID formatStringToUUID(String uuid) {
+        int[] hyphen = new int[]{8, 12, 16, 20};
+
+        StringBuilder s = new StringBuilder();
+
+        char[] chars = uuid.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            for (int hyphenIndex : hyphen) if (i == hyphenIndex) s.append("-");
+            s.append(chars[i]);
+        }
+
+        return UUID.fromString(s.toString());
     }
 
     /**

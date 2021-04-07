@@ -160,24 +160,13 @@ public class GrapesShapelessRecipe extends GrapesRecipe implements Serializable<
     }
 
     /**
-     * This method serializes an Object (t) into a String.
-     *
-     * @param grapesShapelessRecipe The Object, which you want to serialize.
-     * @return The String containing all data about the object.
-     */
-    @Override
-    public String serialize(GrapesShapelessRecipe grapesShapelessRecipe) {
-        return Grapes.GSON.toJson(grapesShapelessRecipe);
-    }
-
-    /**
      * This method serializes the Object, from which it will be executed.
      *
      * @return The serialized object.
      */
     @Override
     public String serialize() {
-        return this.serialize(this);
+        return Grapes.GSON.toJson(this);
     }
 
     /**

@@ -11,14 +11,6 @@ package me.trqhxrd.grapesrpg.api.attribute;
 public interface Serializable<T> {
 
     /**
-     * This method serializes an Object (t) into a String.
-     *
-     * @param t The Object, which you want to serialize.
-     * @return The String containing all data about the object.
-     */
-    String serialize(T t);
-
-    /**
      * This method serializes the Object, from which it will be executed.
      *
      * @return The serialized object.

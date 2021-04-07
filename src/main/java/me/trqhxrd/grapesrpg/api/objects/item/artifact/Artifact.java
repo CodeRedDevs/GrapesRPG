@@ -293,23 +293,12 @@ public class Artifact implements Serializable<Artifact> {
     }
 
     /**
-     * This method serializes an Object (t) into a String.
-     *
-     * @param artifact The Object, which you want to serialize.
-     * @return The String containing all data about the object.
-     */
-    @Override
-    public String serialize(Artifact artifact) {
-        return Grapes.GSON.toJson(artifact);
-    }
-
-    /**
      * This method serializes the Object, from which it will be executed.
      *
      * @return The serialized object.
      */
     @Override
     public String serialize() {
-        return this.serialize(this);
+        return Grapes.GSON.toJson(this);
     }
 }

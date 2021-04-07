@@ -1,117 +1,150 @@
 package me.trqhxrd.grapesrpg.api.objects.entity.npc;
 
 import com.google.gson.JsonObject;
-import com.mojang.authlib.properties.Property;
-import me.trqhxrd.grapesrpg.Grapes;
-import net.minecraft.server.v1_16_R3.EntityPlayer;
+import com.google.gson.JsonParser;
+import me.trqhxrd.grapesrpg.api.utils.Utils;
+import net.citizensnpcs.trait.SkinTrait;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
- * This class stores skin data for NPCs.
+ * This class represents a skin, that can be applied to an NPC.
  *
  * @author Trqhxrd
  */
 public class Skin {
 
     /**
-     * This constant contains the default skin, if no skin can be loaded.
+     * This field contains cached names and their UUIDs.
      */
-    public static final Skin DEFAULT_SKIN = Skin.getSkin("Notch");
+    private static final Map<String, UUID> cachedNames = new HashMap<>();
+    /**
+     * This field contains cached UUIDs and their names.
+     */
+    private static final Map<UUID, String> cachedUUIDs = new HashMap<>();
+    /**
+     * This field contains UUIDs and their Skins.
+     */
+    private static final Map<UUID, Skin> cachedSkins = new HashMap<>();
 
     /**
-     * This constant contains the data about the skin of Trqhxrd.
+     * The id of the skin, in which this field is included.
      */
-    public static final Skin TRQHXRD = Skin.getSkin("Trqhxrd");
-
+    private final UUID id;
     /**
-     * This constant contains the data about the skin of Tabbyplayz.
-     */
-    public static final Skin TABBYPLAYZ = Skin.getSkin("Tabbyplayz");
-
-    /**
-     * Every Skin is stored in a value and a signature.
-     * This field contains the value of the skin.
+     * The value of the skin.
      */
     private final String value;
-
     /**
-     * Every Skin is stored in a value and a signature.
-     * This field contains the signature of the skin.
+     * The signature of the skin.
      */
     private final String signature;
 
     /**
-     * This constructor creates a new Skin-Object, with the value and signature, you gave in the parameters.
+     * This constructor creates a new skin.
      *
-     * @param value     The value of the skin.
-     * @param signature The signature of the skin.
+     * @param id        The id of the new skin.
+     * @param value     The value of the new skin.
+     * @param signature The signature of the new skin.
      */
-    public Skin(String value, String signature) {
+    public Skin(UUID id, String value, String signature) {
+        this.id = id;
         this.value = value;
         this.signature = signature;
+
+        cachedSkins.put(this.id, this);
     }
 
     /**
-     * This method returns the Skin of a certain Player.
+     * This method fetches and downloads the skin of the player with the name given and returns it.
+     * If the player does not exist, this method returns null.
      *
-     * @param name The name of the player, from which you want to get the skin.
-     * @return The Skin of the player, store in a skin-object.
+     * @param name The name of the player, from which you want to steal the skin.
+     * @return The skin of the player, of which you entered the name.
      */
-    public static Skin getSkin(String name) {
+    public static Skin from(String name) {
         try {
-            URL url = new URL("https://api.mojang.com/users/profiles/minecraft/" + name);
-            InputStreamReader reader = new InputStreamReader(url.openStream());
-            String uuid = Grapes.GSON.fromJson(reader, JsonObject.class).get("id").getAsString();
+            if (!cachedNames.containsKey(name)) {
+                URL url = new URL("https://api.mojang.com/users/profiles/minecraft/" + name);
+                InputStreamReader reader = new InputStreamReader(url.openStream());
+                String uuid = new JsonParser().parse(reader).getAsJsonObject().get("id").getAsString();
+                cachedNames.put(name, Utils.formatStringToUUID(uuid));
+            }
 
-            URL url1 = new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid + "?unsigned=false");
-            InputStreamReader reader1 = new InputStreamReader(url1.openStream());
-            JsonObject property = Grapes.GSON.fromJson(reader1, JsonObject.class).get("properties").getAsJsonArray().get(0).getAsJsonObject();
-            String value = property.get("value").getAsString();
-            String signature = property.get("signature").getAsString();
-            return new Skin(value, signature);
+            return Skin.from(cachedNames.get(name));
         } catch (IOException e) {
-            e.printStackTrace();
-            return DEFAULT_SKIN;
+            return null;
         }
     }
 
     /**
-     * This method applies a skin to the given NPC.
+     * This method fetches and downloads the skin of the player with the uuid given and returns it.
+     * If the player does not exist, this method returns null.
      *
-     * @param npc  The NPC, who is supposed to get the skin.
-     * @param skin The skin for the NPC.
+     * @param uuid The uuid of the player, from which you want to steal the skin.
+     * @return The skin of the player, of which you entered the name.
      */
-    public static void apply(EntityPlayer npc, Skin skin) {
-        skin.apply(npc);
+    public static Skin from(UUID uuid) {
+        if (cachedSkins.containsKey(uuid)) return cachedSkins.get(uuid);
+
+        try {
+            URL url = new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString() + "?unsigned=false");
+            InputStreamReader reader = new InputStreamReader(url.openStream());
+
+            JsonObject root = new JsonParser().parse(reader).getAsJsonObject();
+            JsonObject texture = root.get("properties").getAsJsonArray().get(0).getAsJsonObject();
+            String value = texture.get("value").getAsString();
+            String signature = texture.get("signature").getAsString();
+
+            if (!cachedUUIDs.containsKey(uuid)) {
+                String name = root.get("name").getAsString();
+                cachedUUIDs.put(uuid, name);
+            }
+
+            return new Skin(uuid, value, signature);
+        } catch (IOException ex) {
+            return null;
+        }
     }
 
     /**
-     * This method applies the skin to the NPC, you gave in the parameters.
+     * This method applies the skin given to the NPC.
      *
-     * @param npc The NPC, who should get its skin changed.
+     * @param npc The npc, who should get this skin applied.
      */
-    public void apply(EntityPlayer npc) {
-        npc.getProfile().getProperties().put("textures", new Property("textures", this.value, this.signature));
+    public void apply(GrapesNPC npc) {
+        npc.getWrappedObject().getOrAddTrait(SkinTrait.class).setSkinPersistent(this.id.toString(), signature, value);
     }
 
     /**
-     * Getter for the Skins value.
+     * Getter for the skins value.
      *
-     * @return The Skins value.
+     * @return The skins value.
      */
     public String getValue() {
         return value;
     }
 
     /**
-     * This method returns the skins signature.
+     * Getter for the skins signature.
      *
      * @return The skins signature.
      */
     public String getSignature() {
         return signature;
+    }
+
+    /**
+     * Getter for the skins UUID.
+     *
+     * @return The skins UUID.
+     */
+    public UUID getID() {
+        return id;
     }
 }

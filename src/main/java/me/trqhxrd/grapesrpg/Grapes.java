@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.attribute.Register;
 import me.trqhxrd.grapesrpg.api.objects.block.GrapesBlock;
+import me.trqhxrd.grapesrpg.api.objects.entity.npc.GrapesNPC;
 import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipe;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesShapedRecipe;
@@ -130,6 +131,7 @@ public class Grapes extends JavaPlugin {
     @Override
     public void onDisable() {
         GrapesPlayer.forEach(p -> p.getPacketReader().uninject());
+        GrapesNPC.destroyAll();
         GrapesPlayer.saveAll();
         GrapesBlock.save();
         ArtifactConfig.saveArtifacts(true);

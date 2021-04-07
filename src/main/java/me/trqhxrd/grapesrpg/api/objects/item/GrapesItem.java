@@ -749,24 +749,13 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
     }
 
     /**
-     * This method serializes an Object (t) into a String.
-     *
-     * @param grapesItem The Object, which you want to serialize.
-     * @return The String containing all data about the object.
-     */
-    @Override
-    public String serialize(GrapesItem grapesItem) {
-        return Grapes.GSON.toJson(this);
-    }
-
-    /**
      * This method serializes the Object, from which it will be executed.
      *
      * @return The serialized object.
      */
     @Override
     public String serialize() {
-        return this.serialize(this);
+        return Grapes.GSON.toJson(this);
     }
 
     /**

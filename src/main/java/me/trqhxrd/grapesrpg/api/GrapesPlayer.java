@@ -10,7 +10,6 @@ import me.trqhxrd.grapesrpg.api.utils.Wrapper;
 import me.trqhxrd.grapesrpg.api.utils.packet.PacketReader;
 import me.trqhxrd.grapesrpg.game.config.PlayerFile;
 import me.trqhxrd.grapesrpg.game.inventory.EnderChestMenu;
-import me.trqhxrd.grapesrpg.game.tasks.packet.NPCInteractionTask;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -69,7 +68,6 @@ public class GrapesPlayer extends Wrapper<Player> implements Savable {
         this.ecoSet = new EcoSet(this);
 
         this.packetReader = new PacketReader(this);
-        new NPCInteractionTask(this);
 
         //Call GrapesPlayerInitEvent
         GrapesPlayerInitEvent event = new GrapesPlayerInitEvent(Grapes.getGrapes(), this);

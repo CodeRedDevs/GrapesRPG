@@ -222,24 +222,13 @@ public class GrapesRecipeChoice implements Serializable<GrapesRecipeChoice> {
     }
 
     /**
-     * This method serializes an Object (t) into a String.
-     *
-     * @param grapesRecipeChoice The Object, which you want to serialize.
-     * @return The String containing all data about the object.
-     */
-    @Override
-    public String serialize(GrapesRecipeChoice grapesRecipeChoice) {
-        return Grapes.GSON.toJson(grapesRecipeChoice);
-    }
-
-    /**
      * This method serializes the Object, from which it will be executed.
      *
      * @return The serialized object.
      */
     @Override
     public String serialize() {
-        return this.serialize(this);
+        return Grapes.GSON.toJson(this);
     }
 
     /**
