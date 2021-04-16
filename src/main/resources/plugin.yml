@@ -2,6 +2,10 @@ name: GrapesRPG
 main: me.trqhxrd.grapesrpg.Grapes
 version: ${project.version}
 api-version: 1.16
+
+depend:
+  - Citizens
+
 commands:
   grapes:
     description: GrapesRPG Main-Command.
@@ -25,3 +29,14 @@ commands:
     usage: Do /economy help for more information
     aliases:
       - eco
+  skin:
+    description: Writes your skin-data to a file.
+    usage: /skin
+  npclocation:
+    description: Sets the location for a specific npc.
+    usage: /npclocation <name>
+    aliases:
+      - npcloc
+  center:
+    description: Centers you on the block, that you're standing on.
+    usage: /center

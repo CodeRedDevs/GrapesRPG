@@ -4,8 +4,8 @@ import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.attribute.Register;
 import me.trqhxrd.grapesrpg.api.objects.entity.npc.GrapesNPC;
 import me.trqhxrd.grapesrpg.api.utils.ClickType;
-import net.citizensnpcs.api.event.NPCClickEvent;
 import net.citizensnpcs.api.event.NPCLeftClickEvent;
+import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,11 +14,20 @@ import org.bukkit.event.Listener;
 public class NPCClickListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
-    public void onNPCClick(NPCClickEvent e) {
+    public void onNPCClick(NPCLeftClickEvent e) {
         GrapesPlayer player = GrapesPlayer.getByPlayer(e.getClicker());
         NPC npc = e.getNPC();
 
         GrapesNPC grapesNPC = GrapesNPC.getByNative(npc);
-        if (grapesNPC != null) grapesNPC.getClickAction().onClick(player, grapesNPC, (e instanceof NPCLeftClickEvent ? ClickType.LEFT : ClickType.RIGHT));
+        if (grapesNPC != null) grapesNPC.getClickAction().onClick(player, grapesNPC, ClickType.LEFT);
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onNPCClick(NPCRightClickEvent e) {
+        GrapesPlayer player = GrapesPlayer.getByPlayer(e.getClicker());
+        NPC npc = e.getNPC();
+
+        GrapesNPC grapesNPC = GrapesNPC.getByNative(npc);
+        if (grapesNPC != null) grapesNPC.getClickAction().onClick(player, grapesNPC, ClickType.RIGHT);
     }
 }

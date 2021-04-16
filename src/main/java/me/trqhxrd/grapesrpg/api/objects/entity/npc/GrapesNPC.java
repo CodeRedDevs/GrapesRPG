@@ -220,8 +220,7 @@ public class GrapesNPC extends Wrapper<NPC> {
         if (!this.isSpawned()) {
             this.getWrappedObject().spawn(this.spawn);
             return true;
-        }
-        return false;
+        } else return false;
     }
 
     /**
@@ -233,8 +232,7 @@ public class GrapesNPC extends Wrapper<NPC> {
         if (this.isSpawned()) {
             this.getWrappedObject().despawn();
             return true;
-        }
-        return false;
+        } else return false;
     }
 
     /**

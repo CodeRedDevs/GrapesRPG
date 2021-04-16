@@ -16,6 +16,7 @@ import me.trqhxrd.grapesrpg.game.GameClock;
 import me.trqhxrd.grapesrpg.game.config.ArtifactConfig;
 import me.trqhxrd.grapesrpg.game.config.GrapesConfig;
 import me.trqhxrd.grapesrpg.game.config.json.adapters.ConfigurationSerializableAdapter;
+import me.trqhxrd.grapesrpg.game.objects.entity.npc.NPCOperations;
 import me.trqhxrd.grapesrpg.game.objects.recipe.armor.crop.CropBootsRecipe;
 import me.trqhxrd.grapesrpg.game.objects.recipe.armor.crop.CropChestplateRecipe;
 import me.trqhxrd.grapesrpg.game.objects.recipe.armor.crop.CropHelmetRecipe;
@@ -113,6 +114,7 @@ public class Grapes extends JavaPlugin {
 
         ArtifactConfig.init();
         ArtifactConfig.loadArtifacts();
+        NPCOperations.setupNPCs();
 
         this.registerListeners("me.trqhxrd.grapesrpg");
         this.registerCommands("me.trqhxrd.grapesrpg");

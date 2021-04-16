@@ -21,10 +21,11 @@ public class AsyncPlayerChatListener implements Listener {
      */
     @EventHandler(ignoreCancelled = true)
     public void onAsyncPlayerChat(AsyncPlayerChatEvent e) {
-        StringBuilder builder = new StringBuilder();
-        if (e.getPlayer().isOp()) builder.append("&#e83333");
-        else builder.append("&#e7ed2f");
-        builder.append(e.getPlayer().getName()).append(" &#1ed67a&l>>> &7").append(e.getMessage());
-        e.setFormat(Utils.translateColorCodes(builder.toString()));
+
+        String color;
+        if (e.getPlayer().isOp()) color = "&#e83333";
+        else color = "&#e7ed2f";
+
+        e.setFormat(Utils.toChatMessage(color, e.getPlayer().getName(), e.getMessage()));
     }
 }

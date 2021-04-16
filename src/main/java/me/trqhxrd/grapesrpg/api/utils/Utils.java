@@ -88,6 +88,7 @@ public class Utils {
 
     /**
      * This method formats a string to a uuid.
+     *
      * @param uuid The string, which should be formatted.
      * @return The UUID with the value of the string.
      */
@@ -103,6 +104,18 @@ public class Utils {
         }
 
         return UUID.fromString(s.toString());
+    }
+
+    /**
+     * This method returns a string, which is formatted to a chat-message with color-codes and everything.
+     *
+     * @param nameColor The color of the name of the sender of the message.
+     * @param name      The name of the sender of the message.
+     * @param message   The text, that the sender sends.
+     * @return The chat-output formatted to a message.
+     */
+    public static String toChatMessage(String nameColor, String name, String message) {
+        return Utils.translateColorCodes(nameColor + name + " &#1ed67a&l>>> &7" + message);
     }
 
     /**
