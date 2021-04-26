@@ -107,7 +107,7 @@ public class GrapesPlayer extends Wrapper<Player> implements Savable {
     public static GrapesPlayer getByUniqueId(UUID uuid) {
         for (GrapesPlayer p : GrapesPlayer.getPlayers())
             if (p.getUniqueId().equals(uuid)) return p;
-        throw new NullPointerException("The Player with UUID=" + uuid.toString() + " is null.");
+        return null;
     }
 
     /**

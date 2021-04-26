@@ -131,7 +131,9 @@ public class Artifact implements Serializable<Artifact> {
      * @return The artifact with the same item as the one given.
      */
     public static Artifact fromGrapesItem(GrapesItem item) {
-        return Artifact.getArtifact((Integer) item.getNbt().get("grapes.artifact.id"));
+        Integer id = (Integer) item.getNbt().get("grapes.artifact.id");
+        if (id == null) return null;
+        return Artifact.getArtifact(id);
     }
 
     /**

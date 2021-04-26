@@ -161,7 +161,6 @@
         <!-- Spigot Repository -->
         <repository>
             <id>spigot-repo</id>
-            <name>Spigot Repository</name>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
         <!-- GrapesDevs Library Repository -->
@@ -184,7 +183,7 @@
         </repository>
         <!-- Citizens 2 Repository -->
         <repository>
-            <id>citizens</id>
+            <id>everything</id>
             <url>https://repo.citizensnpcs.co/</url>
         </repository>
     </repositories>
