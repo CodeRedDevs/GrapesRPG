@@ -14,8 +14,10 @@ public class ItemDespawnListener implements Listener {
     public void onItemDespawn(ItemDespawnEvent e) {
         GrapesItem item = GrapesItem.fromItemStack(e.getEntity().getItemStack());
         if (item != null) {
-            Artifact a = Artifact.fromGrapesItem(item);
-            e.setCancelled(a != null);
+            try {
+                Artifact a = Artifact.fromGrapesItem(item);
+                e.setCancelled(a != null);
+            } catch (NullPointerException ignored) { }
         }
     }
 }
