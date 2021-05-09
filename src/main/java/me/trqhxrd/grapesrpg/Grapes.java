@@ -3,6 +3,7 @@ package me.trqhxrd.grapesrpg;
 import com.github.lalyos.jfiglet.FigletFont;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import me.trqhxrd.grapesrpg.anticheat.GrapesAntiCheat;
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.attribute.Register;
 import me.trqhxrd.grapesrpg.api.objects.block.GrapesBlock;
@@ -125,6 +126,8 @@ public class Grapes extends JavaPlugin {
         this.addRecipe(new CropChestplateRecipe());
         this.addRecipe(new CropLeggingsRecipe());
         this.addRecipe(new CropBootsRecipe());
+
+        GrapesAntiCheat.init(this);
     }
 
     /**
@@ -137,6 +140,7 @@ public class Grapes extends JavaPlugin {
         GrapesPlayer.saveAll();
         GrapesBlock.save();
         ArtifactConfig.saveArtifacts(true);
+        GrapesAntiCheat.unload();
     }
 
     /**

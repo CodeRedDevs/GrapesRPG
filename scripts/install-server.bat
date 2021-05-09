@@ -2,6 +2,7 @@
 REM BY RUNNING THIS SCRIPT YOU AGREE TO MINECRAFTS EULA.
 
 set /p Input=Enter the version: || set Input=latest
+set /p eula=Do you agree with the EULA? (TRUE / FALSE) || set eula=false
 
 mkdir ..\Server
 mkdir ..\install
@@ -26,7 +27,7 @@ for %%f in (*.jar) do (
 (
     echo #Some Comment
 	echo #Some other Comment
-    echo eula=true
+    echo eula=%eula%
 ) >> eula.txt
 
 echo Your server was set up successfully.

@@ -75,20 +75,7 @@ public class Prefix {
      * @return the prefix but with colors in it.
      */
     public String colorize() {
-        return this.colorize(colorChar);
-    }
-
-    /**
-     * Colorizes the prefix using a custom char.
-     *
-     * @param colorChar the character you want to use.
-     * @return The colorized version of raw.
-     * @deprecated
-     */
-    @Deprecated
-    public String colorize(char colorChar) {
-        this.raw = ChatColor.translateAlternateColorCodes(colorChar, raw);
-        return this.raw;
+        return Utils.translateColorCodes(this.raw);
     }
 
     /**
