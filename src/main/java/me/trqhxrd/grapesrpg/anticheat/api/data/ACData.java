@@ -6,6 +6,7 @@ import me.trqhxrd.grapesrpg.anticheat.api.check.Check;
 /**
  * ACData and it's extensions are used for giving additional information into a check.
  * Just make a class extend ACData and add some fields.
+ *
  * @author Trqhxrd
  */
 public abstract class ACData {
@@ -21,8 +22,9 @@ public abstract class ACData {
 
     /**
      * This constructor creates a new instance of ACData.
+     *
      * @param checkClass The Class of the Check to which this data corresponds to.
-     * @param player The player, who wil get checked.
+     * @param player     The player, who wil get checked.
      */
     public ACData(Class<? extends Check<? extends ACData>> checkClass, User player) {
         this.checkClass = checkClass;
@@ -31,6 +33,7 @@ public abstract class ACData {
 
     /**
      * This method returns true, if the class of the check given is assignable from the check-class, that is stored in this object.
+     *
      * @param check The check, which should be checked.
      * @return true, if this data corresponds to the check given. otherwise false.
      */
@@ -40,6 +43,7 @@ public abstract class ACData {
 
     /**
      * Getter for the check-class.
+     *
      * @return The class of the check to which this data-class corresponds to.
      */
     public Class<? extends Check<? extends ACData>> getCheckClass() {
@@ -48,6 +52,7 @@ public abstract class ACData {
 
     /**
      * Getter for the player, that was checked.
+     *
      * @return The player, that was checked.
      */
     public User getPlayer() {

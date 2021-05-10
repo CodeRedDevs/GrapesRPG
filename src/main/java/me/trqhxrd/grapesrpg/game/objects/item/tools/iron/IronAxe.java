@@ -8,5 +8,6 @@ import org.bukkit.Material;
 public class IronAxe extends GrapesItem {
 
     public IronAxe() {
-        super(102, Material.IRON_AXE, "Iron Axe", 1, Rarity.COMMON, 10, 0, 0, ItemType.MELEE, 350, null);}
+        super(102, Material.IRON_AXE, "Iron Axe", 1, Rarity.COMMON, 10, 0, 0, ItemType.MELEE, 350, null);
+    }
 }

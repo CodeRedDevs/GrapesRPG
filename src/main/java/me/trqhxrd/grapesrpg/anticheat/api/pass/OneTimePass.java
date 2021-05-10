@@ -17,7 +17,8 @@ public class OneTimePass extends Pass {
 
     /**
      * This constructor creates a new check.
-     * @param id The ID of the check, that the player can bypass.
+     *
+     * @param id    The ID of the check, that the player can bypass.
      * @param owner The player, which can bypass the check.
      */
     public OneTimePass(String id, User owner) {
@@ -27,6 +28,7 @@ public class OneTimePass extends Pass {
 
     /**
      * This method resets the state of the pass.
+     *
      * @return If the check was used, this will return true. Otherwise false.
      */
     public boolean reset() {
@@ -38,6 +40,7 @@ public class OneTimePass extends Pass {
 
     /**
      * This method allows the player to bypass a check one time.
+     *
      * @return Whether the player is allowed to bypass the check.
      */
     @Override

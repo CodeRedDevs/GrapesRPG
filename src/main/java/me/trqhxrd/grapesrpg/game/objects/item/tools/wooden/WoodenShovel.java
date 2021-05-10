@@ -8,6 +8,6 @@ import org.bukkit.Material;
 public class WoodenShovel extends GrapesItem {
 
     public WoodenShovel() {
-        super(36, Material.WOODEN_SHOVEL,"Wooden Shovel", 1, Rarity.COMMON, 5,0,0, ItemType.MELEE, 100, null);
+        super(36, Material.WOODEN_SHOVEL, "Wooden Shovel", 1, Rarity.COMMON, 5, 0, 0, ItemType.MELEE, 100, null);
     }
 }

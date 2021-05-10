@@ -151,7 +151,7 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      * @param material The material of the new item.
      * @param name     The name of the new item. Can be left empty in which case the name of the item will be set to it's material name in the players language.
      */
-    public GrapesItem(int id, Material material, String name,Rarity rarity) {
+    public GrapesItem(int id, Material material, String name, Rarity rarity) {
         this(id, material, name, 1, rarity, DEFAULT_STATS, ItemType.MELEE, new Group2<>(-1, -1), new HashMap<>());
     }
 

@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 /**
  * This command centers you on your current block.
  * This can be used for positioning NPCs correctly.
+ *
  * @author Trqhxrd
  */
 @Register(command = "center")

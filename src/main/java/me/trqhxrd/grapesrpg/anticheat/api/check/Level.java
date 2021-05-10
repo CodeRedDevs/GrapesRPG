@@ -2,6 +2,7 @@ package me.trqhxrd.grapesrpg.anticheat.api.check;
 
 /**
  * This Level describes the severity of the cheats a player used.
+ *
  * @author Trqhxrd
  */
 public enum Level {

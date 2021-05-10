@@ -5,6 +5,7 @@ import me.trqhxrd.grapesrpg.api.utils.ClickType;
 
 /**
  * This interface represents an action, that can be executed, if you click on the NPC.
+ *
  * @author Trqhxrd
  */
 public interface NPCClickAction {

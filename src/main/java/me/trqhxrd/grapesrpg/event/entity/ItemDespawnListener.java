@@ -17,7 +17,8 @@ public class ItemDespawnListener implements Listener {
             try {
                 Artifact a = Artifact.fromGrapesItem(item);
                 e.setCancelled(a != null);
-            } catch (NullPointerException ignored) { }
+            } catch (NullPointerException ignored) {
+            }
         }
     }
 }

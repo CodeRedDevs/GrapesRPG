@@ -9,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * This is the API-Class with a lot of static method that you can use for manually running checks and stuff.
+ *
  * @author Trqhxrd
  */
 public class GrapesAntiCheat {
@@ -24,6 +25,7 @@ public class GrapesAntiCheat {
 
     /**
      * This should be called in the onEnable of your plugin.
+     *
      * @param plugin The plugin, which should register the listeners.
      */
     public static void init(JavaPlugin plugin) {
@@ -42,6 +44,7 @@ public class GrapesAntiCheat {
 
     /**
      * This method sends a message to all players, who have the "grapes.anticheat.notify" and the console.
+     *
      * @param s The message.
      */
     public static void log(String s) {
@@ -52,6 +55,7 @@ public class GrapesAntiCheat {
 
     /**
      * Getter for the plugin, which owns the anticheat,
+     *
      * @return The plugin, which registers the listeners.
      */
     public static JavaPlugin getPlugin() {
@@ -60,6 +64,7 @@ public class GrapesAntiCheat {
 
     /**
      * getter for the anticheat-clock.
+     *
      * @return The anticheat-clock.
      */
     public static ACClock getClock() {

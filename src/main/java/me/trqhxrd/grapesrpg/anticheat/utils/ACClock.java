@@ -5,6 +5,7 @@ import org.bukkit.plugin.Plugin;
 
 /**
  * This clock manages all the tasks regarding the anticheat.
+ *
  * @author Trqhxrd
  */
 public class ACClock extends Clock {

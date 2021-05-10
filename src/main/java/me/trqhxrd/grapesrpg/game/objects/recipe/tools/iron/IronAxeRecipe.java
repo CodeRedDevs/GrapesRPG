@@ -6,7 +6,7 @@ import me.trqhxrd.grapesrpg.game.objects.item.tools.iron.IronAxe;
 import org.bukkit.Material;
 
 public class IronAxeRecipe {
-    public static class First extends GrapesShapedRecipe{
+    public static class First extends GrapesShapedRecipe {
         public First() {
             super(new IronAxe());
             super.addBinding(1, new IronToolBinding());
@@ -14,7 +14,9 @@ public class IronAxeRecipe {
             super.setIngredient('a', Material.IRON_INGOT);
             super.setIngredient('c', Material.STICK);
         }
-    }public static class Second extends GrapesShapedRecipe{
+    }
+
+    public static class Second extends GrapesShapedRecipe {
         public Second() {
             super(new IronAxe());
             super.addBinding(1, new IronToolBinding());

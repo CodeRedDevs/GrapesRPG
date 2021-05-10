@@ -8,6 +8,7 @@ import java.util.UUID;
 
 /**
  * This task reduces the time left in timed passes.
+ *
  * @author Trqhxrd
  */
 public class TimedPassTask implements ClockTask {

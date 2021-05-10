@@ -7,6 +7,6 @@ import org.bukkit.Material;
 
 public class IronSword extends GrapesItem {
     public IronSword() {
-        super(100, Material.IRON_SWORD, "Iron Sword", 1, Rarity.COMMON, 30,0,0, ItemType.MELEE,350,null);
+        super(100, Material.IRON_SWORD, "Iron Sword", 1, Rarity.COMMON, 30, 0, 0, ItemType.MELEE, 350, null);
     }
 }
