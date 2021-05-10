@@ -148,9 +148,7 @@ public class GrapesRecipeChoice implements Serializable<GrapesRecipeChoice> {
         if (mode == Mode.ITEM) {
             if (item == null) return false;
             for (GrapesItem grapesItem : this.grapesItems)
-                if (grapesItem.getID() == item.getID())
-                    if (grapesItem.getNbt().equals(item.getNbt()))
-                        return true;
+                if (grapesItem.getID() == item.getID()) if (grapesItem.getDurability().getX().equals(item.getDurability().getX())) return true;
         }
         return false;
     }

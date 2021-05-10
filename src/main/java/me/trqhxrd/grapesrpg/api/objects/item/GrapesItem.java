@@ -874,4 +874,20 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
         result = 31 * result + Arrays.hashCode(color);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "GrapesItem{" +
+                "clickAction=" + clickAction +
+                ", stats=" + stats +
+                ", durability=" + durability +
+                ", type=" + type +
+                ", rarity=" + rarity +
+                ", id=" + id +
+                ", material=" + material +
+                ", name='" + name + '\'' +
+                ", amount=" + amount +
+                ", color=" + Arrays.toString(color) +
+                '}';
+    }
 }

@@ -4,13 +4,9 @@ import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.attribute.Register;
 import me.trqhxrd.grapesrpg.api.event.player.GrapesPlayerJoinEvent;
-import me.trqhxrd.grapesrpg.api.objects.block.GrapesBlockType;
-import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
-import me.trqhxrd.grapesrpg.api.objects.item.clickaction.ClickActionPlaceBlock;
 import me.trqhxrd.grapesrpg.game.mechanics.MainMenuButton;
 import me.trqhxrd.grapesrpg.game.objects.item.PlantFiber;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -70,6 +66,8 @@ public class PlayerJoinListener implements Listener {
             String message = joins.get(player.getUniqueId());
             e.setJoinMessage(message);
             joins.remove(e.getPlayer().getUniqueId());
+
+            e.getPlayer().getInventory().addItem(new PlantFiber().build());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
