@@ -7,7 +7,6 @@
 *.iml
 *.iws
 .idea/*
-!.idea/runConfigurations/
 
 # Mac
 .DS_Store

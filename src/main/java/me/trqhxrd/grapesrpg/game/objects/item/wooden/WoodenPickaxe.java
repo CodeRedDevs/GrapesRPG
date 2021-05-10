@@ -8,6 +8,6 @@ import org.bukkit.Material;
 public class WoodenPickaxe extends GrapesItem {
 
     public WoodenPickaxe() {
-        super(36, Material.WOODEN_PICKAXE,"Wooden Pickaxe", 1, Rarity.COMMON, 5,0,0, ItemType.MELEE, 100, null);
+        super(36, Material.WOODEN_PICKAXE, "Wooden Pickaxe", 1, Rarity.COMMON, 5, 0, 0, ItemType.MELEE, 100, null);
     }
 }

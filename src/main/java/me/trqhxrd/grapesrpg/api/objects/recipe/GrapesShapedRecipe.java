@@ -24,6 +24,7 @@ public class GrapesShapedRecipe extends GrapesRecipe implements Serializable<Gra
      */
     private final Map<Character, GrapesRecipeChoice> ingredients;
     private final List<Group2<GrapesRecipeChoice, Integer>> bindings;
+    // TODO: 10.05.2021 FUCKING COMMENTARY!!! (later.)
 
     /**
      * This array stores the shape of the recipe.
