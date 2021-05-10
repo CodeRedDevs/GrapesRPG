@@ -3,6 +3,7 @@ package me.trqhxrd.grapesrpg;
 import com.github.lalyos.jfiglet.FigletFont;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import me.trqhxrd.color.Colors;
 import me.trqhxrd.grapesrpg.anticheat.GrapesAntiCheat;
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.attribute.Register;
@@ -104,6 +105,9 @@ public class Grapes extends JavaPlugin {
         }
 
         grapes = this;
+
+        Colors.init(this);
+
         this.grapesConfig = GrapesConfig.getInstance();
         this.utils = new Utils(this.grapesConfig.getPrefix());
         this.clock = new GameClock();
@@ -141,6 +145,7 @@ public class Grapes extends JavaPlugin {
         GrapesBlock.save();
         ArtifactConfig.saveArtifacts(true);
         GrapesAntiCheat.unload();
+        Colors.unload();
     }
 
     /**

@@ -1,9 +1,9 @@
 package me.trqhxrd.grapesrpg.api.economy;
 
+import me.trqhxrd.color.Colors;
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.attribute.Owneable;
 import me.trqhxrd.grapesrpg.api.attribute.Savable;
-import me.trqhxrd.grapesrpg.api.utils.Utils;
 import me.trqhxrd.grapesrpg.game.config.GrapesConfig;
 
 /**
@@ -131,7 +131,7 @@ public class EcoSet implements Owneable<GrapesPlayer>, Savable {
      * @return A chat-message, which gives information about the player's money.
      */
     public String getBalanceFormatted() {
-        return Utils.translateColorCodes("&a" + this.owner.getName() + " &ehas &c" + this.wallet +
+        return Colors.translateColors("&a" + this.owner.getName() + " &ehas &c" + this.wallet +
                 " coins &ein his/her wallet and &c" + this.bank + " coins &ein his/her bank-account!");
     }
 

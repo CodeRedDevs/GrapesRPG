@@ -1,9 +1,9 @@
 package me.trqhxrd.grapesrpg.api.objects.item.artifact;
 
+import me.trqhxrd.color.Colors;
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.attribute.Serializable;
 import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
-import me.trqhxrd.grapesrpg.api.utils.Utils;
 import me.trqhxrd.grapesrpg.api.utils.clock.Clock;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
@@ -204,7 +204,7 @@ public class Artifact implements Serializable<Artifact> {
             this.entity.setGlowing(true);
             this.entity.setVelocity(new Vector(0, 0, 0));
             this.entity.teleport(loc);
-            this.entity.setCustomName(Utils.translateColorCodes(this.item.getName()));
+            this.entity.setCustomName(Colors.translateColors(this.item.getName()));
             this.entity.setCustomNameVisible(true);
             return this.entity;
         }

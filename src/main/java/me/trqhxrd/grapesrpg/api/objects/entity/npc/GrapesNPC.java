@@ -1,6 +1,6 @@
 package me.trqhxrd.grapesrpg.api.objects.entity.npc;
 
-import me.trqhxrd.grapesrpg.api.utils.Utils;
+import me.trqhxrd.color.Colors;
 import me.trqhxrd.grapesrpg.api.utils.Wrapper;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
@@ -87,10 +87,10 @@ public class GrapesNPC extends Wrapper<NPC> {
      * @param skin  The skin of this npc.
      */
     public GrapesNPC(UUID uuid, String name, Location spawn, Skin skin) {
-        super(CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, Utils.translateColorCodes(name)));
+        super(CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, Colors.translateColors(name)));
 
         this.uuid = uuid;
-        this.name = Utils.translateColorCodes(name);
+        this.name = Colors.translateColors(name);
         this.spawn = spawn;
         this.clickAction = NPCClickAction.DEFAULT;
 

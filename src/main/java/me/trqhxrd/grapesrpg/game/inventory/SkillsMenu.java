@@ -1,8 +1,8 @@
 package me.trqhxrd.grapesrpg.game.inventory;
 
+import me.trqhxrd.color.Colors;
 import me.trqhxrd.grapesrpg.api.attribute.Owneable;
 import me.trqhxrd.grapesrpg.api.skill.Skills;
-import me.trqhxrd.grapesrpg.api.utils.Utils;
 import me.trqhxrd.grapesrpg.api.utils.items.ItemBuilder;
 import me.trqhxrd.menus.Menu;
 import org.bukkit.Material;
@@ -31,7 +31,7 @@ public class SkillsMenu extends Menu implements Owneable<Skills> {
      * @param skills The collection of skills, that should be displayed.
      */
     public SkillsMenu(Skills skills) {
-        super(Utils.translateColorCodes("&#524df0Skills:"), "menu_skills", 5 * 9, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName(" ").build(), false);
+        super(Colors.translateColors("&#524df0Skills:"), "menu_skills", 5 * 9, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName(" ").build(), false);
         this.skills = skills;
         this.setupMenu(this.getContent());
     }

@@ -1,5 +1,6 @@
 package me.trqhxrd.grapesrpg.api.utils;
 
+import me.trqhxrd.color.Colors;
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -48,7 +49,9 @@ public class Utils {
     /**
      * @param text The string of text to apply color/effects to
      * @return Returns a string of text with color/effects applied
+     * @deprecated This will be replaced with a custom-api written by Trqhxrd soon.
      */
+    @Deprecated
     public static String translateColorCodes(String text) {
         String[] message = text.replace("&", "统&").split("统");
 
@@ -115,7 +118,7 @@ public class Utils {
      * @return The chat-output formatted to a message.
      */
     public static String toChatMessage(String nameColor, String name, String message) {
-        return Utils.translateColorCodes(nameColor + name + " &#1ed67a&l>>> &7" + message);
+        return Colors.translateColors(nameColor + name + " &#1ed67a&l>>> &7" + message);
     }
 
     /**
@@ -134,7 +137,7 @@ public class Utils {
      * @param message The message itself.
      */
     public void sendMessage(GrapesPlayer player, String message) {
-        player.getWrappedObject().sendMessage(translateColorCodes(prefix.getRaw() + message));
+        player.getWrappedObject().sendMessage(Colors.translateColors(prefix.getRaw() + message));
     }
 
     /**
@@ -155,7 +158,7 @@ public class Utils {
      * @param message The message, which you want to send.
      */
     public void sendMessage(Prefix p, GrapesPlayer player, String message) {
-        player.getWrappedObject().sendMessage(translateColorCodes(p.getRaw() + message));
+        player.getWrappedObject().sendMessage(Colors.translateColors(p.getRaw() + message));
     }
 
     /**
@@ -166,7 +169,7 @@ public class Utils {
      * @param message The message, which you want to send.
      */
     public void sendMessage(Prefix p, CommandSender player, String message) {
-        player.sendMessage(translateColorCodes(p.getRaw() + message));
+        player.sendMessage(Colors.translateColors(p.getRaw() + message));
     }
 
     /**
@@ -176,7 +179,7 @@ public class Utils {
      * @param message The message, which you want to send.
      */
     public void sendMessage(CommandSender player, String message) {
-        player.sendMessage(translateColorCodes(this.prefix.getRaw() + message));
+        player.sendMessage(Colors.translateColors(this.prefix.getRaw() + message));
     }
 
     /**
@@ -185,7 +188,7 @@ public class Utils {
      * @param sender The person, who should receive the message.
      */
     public void noPermission(CommandSender sender) {
-        sender.sendMessage(Utils.translateColorCodes("&cI'm sorry, but you do not have permission to execute this command! " +
+        sender.sendMessage(Colors.translateColors("&cI'm sorry, but you do not have permission to execute this command! " +
                 "If you believe that this is an error, please contact the server administrator!"));
     }
 

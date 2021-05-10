@@ -1,8 +1,8 @@
 package me.trqhxrd.grapesrpg.event.inventory;
 
+import me.trqhxrd.color.Colors;
 import me.trqhxrd.grapesrpg.api.attribute.Register;
 import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
-import me.trqhxrd.grapesrpg.api.utils.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -38,10 +38,10 @@ public class InventoryClickListener implements Listener {
             ItemMeta meta = is.getItemMeta();
             if (meta != null) {
                 if (meta.getDisplayName().equals(ChatColor.stripColor(meta.getDisplayName()))) {
-                    if (meta.hasDisplayName()) meta.setDisplayName(Utils.translateColorCodes(meta.getDisplayName()));
+                    if (meta.hasDisplayName()) meta.setDisplayName(Colors.translateColors(meta.getDisplayName()));
                     if (meta.hasLore()) {
                         List<String> lore = meta.getLore();
-                        if (lore != null) for (int i = 0; i < lore.size(); i++) lore.set(i, Utils.translateColorCodes(lore.get(i)));
+                        if (lore != null) for (int i = 0; i < lore.size(); i++) lore.set(i, Colors.translateColors(lore.get(i)));
                         meta.setLore(lore);
                     }
                     is.setItemMeta(meta);

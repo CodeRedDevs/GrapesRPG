@@ -1,8 +1,8 @@
 package me.trqhxrd.grapesrpg.commands;
 
+import me.trqhxrd.color.Colors;
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.attribute.Register;
-import me.trqhxrd.grapesrpg.api.utils.Utils;
 import me.trqhxrd.grapesrpg.game.skills.SkillTypes;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -41,11 +41,11 @@ public class SkillsCommand implements CommandExecutor, TabCompleter {
                 p.sendMessage("&aHere you go!");
             } else if (args.length == 1) {
                 if (args[0].equalsIgnoreCase("help")) {
-                    p.sendMessage(Utils.translateColorCodes("/skill -> Menu"));
-                    p.sendMessage(Utils.translateColorCodes("/skill <name> -> Menu for player"));
-                    p.sendMessage(Utils.translateColorCodes("/skill <name> set <xp|level> skill <amount>"));
-                    p.sendMessage(Utils.translateColorCodes("/skill <name> add <xp|level> skill <amount>"));
-                    p.sendMessage(Utils.translateColorCodes("/skill <name> remove <xp|level> <skill> <amount>"));
+                    p.sendMessage(Colors.translateColors("/skill -> Menu"));
+                    p.sendMessage(Colors.translateColors("/skill <name> -> Menu for player"));
+                    p.sendMessage(Colors.translateColors("/skill <name> set <xp|level> skill <amount>"));
+                    p.sendMessage(Colors.translateColors("/skill <name> add <xp|level> skill <amount>"));
+                    p.sendMessage(Colors.translateColors("/skill <name> remove <xp|level> <skill> <amount>"));
                     return true;
                 }
             }
@@ -102,7 +102,7 @@ public class SkillsCommand implements CommandExecutor, TabCompleter {
                     } else p.sendMessage("&cPlease use /skill help");
                 } else p.sendMessage("There is no player with the name " + args[0] + "!");
             }
-        } else sender.sendMessage(Utils.translateColorCodes("&cYou have to be a Player to execute this command!"));
+        } else sender.sendMessage(Colors.translateColors("&cYou have to be a Player to execute this command!"));
         return true;
     }
 

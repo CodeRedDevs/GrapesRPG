@@ -1,12 +1,12 @@
 package me.trqhxrd.grapesrpg.game.inventory;
 
+import me.trqhxrd.color.Colors;
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.event.player.GrapesPlayerCraftEvent;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipe;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipeChoice;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesShapedRecipe;
-import me.trqhxrd.grapesrpg.api.utils.Utils;
 import me.trqhxrd.grapesrpg.api.utils.group.Group2;
 import me.trqhxrd.grapesrpg.api.utils.items.ItemBuilder;
 import me.trqhxrd.grapesrpg.event.inventory.InventoryClickListener;
@@ -78,7 +78,7 @@ public class CraftingMenu extends Menu {
      * This constructor creates a new CraftingInventory.
      */
     public CraftingMenu() {
-        super(Utils.translateColorCodes(TITLE), "menu_crafting", 6 * 9, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName(" ").build(), false);
+        super(Colors.translateColors(TITLE), "menu_crafting", 6 * 9, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName(" ").build(), false);
         this.status = Status.INVALID;
         this.setupMenu(this.getContent());
     }
@@ -101,7 +101,7 @@ public class CraftingMenu extends Menu {
      */
     @Override
     public void handleMenuClick(InventoryClickEvent e) {
-        if (e.getView().getTitle().equals(Utils.translateColorCodes(TITLE))) {
+        if (e.getView().getTitle().equals(Colors.translateColors(TITLE))) {
             if (e.getClickedInventory() != null) {
                 ItemStack cursor = e.getCursor() != null ? e.getCursor().clone() : null;
                 ItemStack result = e.getClickedInventory().getItem(OUTPUT_SLOT) != null ?
@@ -253,7 +253,7 @@ public class CraftingMenu extends Menu {
      */
     @Override
     public void handleMenuClose(InventoryCloseEvent e) {
-        if (e.getView().getTitle().equals(Utils.translateColorCodes(CraftingMenu.TITLE))) {
+        if (e.getView().getTitle().equals(Colors.translateColors(CraftingMenu.TITLE))) {
             this.dropItems((Player) e.getPlayer(), e.getInventory(), CraftingMenu.CRAFTING_SLOTS);
             this.dropItems((Player) e.getPlayer(), e.getInventory(), CraftingMenu.BINDING_SLOTS);
             this.dropItems((Player) e.getPlayer(), e.getInventory(), CraftingMenu.UPGRADE_SLOTS);

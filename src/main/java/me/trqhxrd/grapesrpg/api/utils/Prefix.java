@@ -1,5 +1,6 @@
 package me.trqhxrd.grapesrpg.api.utils;
 
+import me.trqhxrd.color.Colors;
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import org.bukkit.ChatColor;
 
@@ -75,7 +76,7 @@ public class Prefix {
      * @return the prefix but with colors in it.
      */
     public String colorize() {
-        return Utils.translateColorCodes(this.raw);
+        return Colors.translateColors(this.raw);
     }
 
     /**

@@ -38,12 +38,12 @@
         <repository>
             <id>deployment</id>
             <name>Nexus Repository</name>
-            <url>${project.trqhxrd.link}/repository/maven-releases/</url>
+            <url>${project.trqhxrd.link}/repository/grapes/</url>
         </repository>
         <snapshotRepository>
             <id>deployment</id>
             <name>Nexus Repository</name>
-            <url>${project.trqhxrd.link}/repository/maven-snapshots/</url>
+            <url>${project.trqhxrd.link}/repository/grapes/</url>
         </snapshotRepository>
     </distributionManagement>
 
@@ -172,9 +172,15 @@
         </repository>
         <!-- GrapesDevs Snapshot Repository -->
         <repository>
-            <id>deployment</id>
+            <id>snapshots</id>
             <name>GrapesDev's Repository</name>
             <url>${project.trqhxrd.link}/repository/maven-snapshots/</url>
+        </repository>
+        <!-- GrapesDevs Release Repository -->
+        <repository>
+            <id>releases</id>
+            <name>GrapesDev's Repository</name>
+            <url>${project.trqhxrd.link}/repository/maven-releases/</url>
         </repository>
         <!-- Maven Central -->
         <repository>
@@ -231,6 +237,12 @@
             <artifactId>citizens-main</artifactId>
             <version>2.0.27-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+        <!-- Color Dependency -->
+        <dependency>
+            <groupId>me.trqhxrd</groupId>
+            <artifactId>color</artifactId>
+            <version>1.1.1-RELEASE</version>
         </dependency>
     </dependencies>
 </project>

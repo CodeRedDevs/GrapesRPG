@@ -1,9 +1,9 @@
 package me.trqhxrd.grapesrpg.anticheat;
 
+import me.trqhxrd.color.Colors;
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.anticheat.utils.ACClock;
 import me.trqhxrd.grapesrpg.anticheat.utils.tasks.TimedPassTask;
-import me.trqhxrd.grapesrpg.api.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -45,7 +45,7 @@ public class GrapesAntiCheat {
      * @param s The message.
      */
     public static void log(String s) {
-        String message = Grapes.getGrapes().getUtils().getPrefix().colorize() + Utils.translateColorCodes(s);
+        String message = Grapes.getGrapes().getUtils().getPrefix().colorize() + Colors.translateColors(s);
         Bukkit.getOnlinePlayers().stream().filter(p -> p.hasPermission("grapes.anticheat.notify")).forEach(p -> p.sendMessage(message));
         Bukkit.getConsoleSender().sendMessage(message);
     }

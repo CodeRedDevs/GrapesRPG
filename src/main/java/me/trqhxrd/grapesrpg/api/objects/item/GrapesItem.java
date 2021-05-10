@@ -1,11 +1,11 @@
 package me.trqhxrd.grapesrpg.api.objects.item;
 
 import com.google.common.base.Preconditions;
+import me.trqhxrd.color.Colors;
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.attribute.Serializable;
 import me.trqhxrd.grapesrpg.api.objects.item.clickaction.ClickAction;
 import me.trqhxrd.grapesrpg.api.utils.Builder;
-import me.trqhxrd.grapesrpg.api.utils.Utils;
 import me.trqhxrd.grapesrpg.api.utils.group.Group2;
 import me.trqhxrd.grapesrpg.api.utils.group.Group3;
 import me.trqhxrd.grapesrpg.api.utils.items.MapRendererImage;
@@ -14,6 +14,7 @@ import me.trqhxrd.grapesrpg.api.utils.items.nbt.NBTReader;
 import me.trqhxrd.grapesrpg.game.config.MapData;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
@@ -774,8 +775,11 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
 
         ItemMeta meta = is.getItemMeta();
         if (meta != null) {
+
+            meta.addItemFlags(ItemFlag.values());
+
             if (this.name != null && !this.name.isBlank() && !this.name.isEmpty())
-                meta.setDisplayName(Utils.translateColorCodes("&" + this.rarity.getColor() + this.name));
+                meta.setDisplayName(Colors.translateColors("&" + this.rarity.getColor() + this.name));
 
             if (meta instanceof LeatherArmorMeta && color != null) ((LeatherArmorMeta) meta).setColor(org.bukkit.Color.fromRGB(color[0], color[1], color[2]));
 
@@ -814,9 +818,7 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
                 lore.add(this.rarity.getFormattedName());
             }
 
-            String[] strings = new String[lore.size()];
-            for (int i = 0; i < strings.length; i++) strings[i] = Utils.translateColorCodes(lore.get(i));
-            lore = Arrays.asList(strings);
+            Colors.translateColors(lore);
 
             meta.setLore(lore);
             is.setItemMeta(meta);

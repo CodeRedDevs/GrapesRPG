@@ -1,10 +1,10 @@
 package me.trqhxrd.grapesrpg.game.inventory;
 
+import me.trqhxrd.color.Colors;
 import me.trqhxrd.grapesrpg.Grapes;
 import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.attribute.Owneable;
 import me.trqhxrd.grapesrpg.api.attribute.Savable;
-import me.trqhxrd.grapesrpg.api.utils.Utils;
 import me.trqhxrd.menus.Menu;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -38,7 +38,7 @@ public class EnderChestMenu extends Menu implements Owneable<GrapesPlayer>, Sava
      * @param owner The owner of this enderchest.
      */
     public EnderChestMenu(GrapesPlayer owner) {
-        super(Utils.translateColorCodes("&d" + owner.getName() + "'s &5Enderchest"),
+        super(Colors.translateColors("&d" + owner.getName() + "'s &5Enderchest"),
                 "enderchest_" + owner.getUniqueId().toString(),
                 (owner.getFile().contains("enderchest.size") ? owner.getFile().getInt("enderchest.size") * 9 : 9),
                 null,

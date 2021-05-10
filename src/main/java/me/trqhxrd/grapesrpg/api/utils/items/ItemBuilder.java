@@ -1,8 +1,8 @@
 package me.trqhxrd.grapesrpg.api.utils.items;
 
 import com.google.common.base.Preconditions;
+import me.trqhxrd.color.Colors;
 import me.trqhxrd.grapesrpg.api.utils.Builder;
-import me.trqhxrd.grapesrpg.api.utils.Utils;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -53,8 +53,10 @@ public class ItemBuilder implements Builder<ItemStack> {
     public ItemBuilder setName(String name) {
         if (name.isBlank()) name = "&c&d&l&a";
         ItemMeta meta = is.getItemMeta();
-        meta.setDisplayName(Utils.translateColorCodes(name));
-        is.setItemMeta(meta);
+        if (meta != null) {
+            meta.setDisplayName(Colors.translateColors(name));
+            is.setItemMeta(meta);
+        }
 
         return this;
     }
@@ -84,7 +86,7 @@ public class ItemBuilder implements Builder<ItemStack> {
 
     public ItemBuilder setLore(List<String> displayLore) {
         List<String> colored = new ArrayList<>();
-        displayLore.forEach(s -> colored.add(Utils.translateColorCodes(s)));
+        displayLore.forEach(s -> colored.add(Colors.translateColors(s)));
         ItemMeta meta = is.getItemMeta();
         if (meta != null) meta.setLore(colored);
         is.setItemMeta(meta);

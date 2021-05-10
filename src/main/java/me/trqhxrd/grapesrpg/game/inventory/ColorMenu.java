@@ -1,7 +1,7 @@
 package me.trqhxrd.grapesrpg.game.inventory;
 
+import me.trqhxrd.color.Colors;
 import me.trqhxrd.grapesrpg.Grapes;
-import me.trqhxrd.grapesrpg.api.utils.Utils;
 import me.trqhxrd.grapesrpg.api.utils.items.ItemBuilder;
 import me.trqhxrd.menus.Menu;
 import org.bukkit.Color;
@@ -30,7 +30,7 @@ public class ColorMenu extends Menu {
     private final int[] rgb;
 
     public ColorMenu() {
-        super(Utils.translateColorCodes("&cChoose &ayour &9color!"),
+        super(Colors.translateColors("&cChoose &ayour &9color!"),
                 "menu_color",
                 6 * 9,
                 new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName(" ").build(),
