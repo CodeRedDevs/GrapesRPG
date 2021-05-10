@@ -1,9 +1,8 @@
-package me.trqhxrd.grapesrpg.game.objects.recipe.wooden;
+package me.trqhxrd.grapesrpg.game.objects.recipe.tools.wooden;
 
-import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesShapedRecipe;
 import me.trqhxrd.grapesrpg.game.objects.item.PlantFiber;
-import me.trqhxrd.grapesrpg.game.objects.item.wooden.WoodenPickaxe;
+import me.trqhxrd.grapesrpg.game.objects.item.tools.wooden.WoodenPickaxe;
 import org.bukkit.Material;
 
 public class WoodenPickaxeRecipe extends GrapesShapedRecipe {

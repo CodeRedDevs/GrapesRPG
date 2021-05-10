@@ -1,4 +1,4 @@
-package me.trqhxrd.grapesrpg.game.objects.item.wooden;
+package me.trqhxrd.grapesrpg.game.objects.item.tools.wooden;
 
 import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
 import me.trqhxrd.grapesrpg.api.objects.item.ItemType;
