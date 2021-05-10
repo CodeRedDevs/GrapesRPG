@@ -8,9 +8,9 @@ import me.trqhxrd.grapesrpg.api.GrapesPlayer;
 import me.trqhxrd.grapesrpg.api.attribute.Register;
 import me.trqhxrd.grapesrpg.api.objects.block.GrapesBlock;
 import me.trqhxrd.grapesrpg.api.objects.entity.npc.GrapesNPC;
-import me.trqhxrd.grapesrpg.api.objects.item.GrapesItem;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesRecipe;
 import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesShapedRecipe;
+import me.trqhxrd.grapesrpg.api.objects.recipe.GrapesShapelessRecipe;
 import me.trqhxrd.grapesrpg.api.utils.Utils;
 import me.trqhxrd.grapesrpg.api.utils.reflection.Reflection;
 import me.trqhxrd.grapesrpg.game.GameClock;
@@ -18,12 +18,6 @@ import me.trqhxrd.grapesrpg.game.config.ArtifactConfig;
 import me.trqhxrd.grapesrpg.game.config.GrapesConfig;
 import me.trqhxrd.grapesrpg.game.config.json.adapters.ConfigurationSerializableAdapter;
 import me.trqhxrd.grapesrpg.game.objects.entity.npc.NPCOperations;
-import me.trqhxrd.grapesrpg.game.objects.recipe.armor.crop.CropBootsRecipe;
-import me.trqhxrd.grapesrpg.game.objects.recipe.armor.crop.CropChestplateRecipe;
-import me.trqhxrd.grapesrpg.game.objects.recipe.armor.crop.CropHelmetRecipe;
-import me.trqhxrd.grapesrpg.game.objects.recipe.armor.crop.CropLeggingsRecipe;
-import me.trqhxrd.grapesrpg.game.objects.recipe.bindings.IronToolBindingRecipe;
-import me.trqhxrd.grapesrpg.game.objects.recipe.wooden.WoodenPickaxeRecipe;
 import me.trqhxrd.menus.Menus;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
@@ -118,15 +112,7 @@ public class Grapes extends JavaPlugin {
 
         this.registerListeners("me.trqhxrd.grapesrpg");
         this.registerCommands("me.trqhxrd.grapesrpg");
-        this.registerItems("me.trqhxrd.grapesrpg");
-
-        //Registering Recipes
-        this.addRecipe(new CropHelmetRecipe());
-        this.addRecipe(new CropChestplateRecipe());
-        this.addRecipe(new CropLeggingsRecipe());
-        this.addRecipe(new CropBootsRecipe());
-        this.addRecipe(new WoodenPickaxeRecipe());
-        this.addRecipe(new IronToolBindingRecipe());
+        this.registerRecipes("me.trqhxrd.grapesrpg");
 
         GrapesAntiCheat.init(this);
     }
@@ -208,12 +194,15 @@ public class Grapes extends JavaPlugin {
      *
      * @param aPackage The package, that should be scanned.
      */
-    public void registerItems(String aPackage) {
-        Reflection.executeIfClassExtends(aPackage, GrapesItem.class, c -> {
-            try {
-                c.getConstructor().newInstance();
-            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException ignored) {
-                System.err.println("I am sorry, but the item \"" + c.getName() + "\" is not registrable. Please add a constructor with no parameters to the class.");
+    public void registerRecipes(String aPackage) {
+        Reflection.executeIfClassExtends(aPackage, GrapesRecipe.class, c -> {
+            if (!c.getName().equals(GrapesShapedRecipe.class.getName()) &&
+                    !c.getName().equals(GrapesShapelessRecipe.class.getName())) {
+                try {
+                    this.addRecipe((GrapesRecipe) c.getConstructor().newInstance());
+                } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException ignored) {
+                    System.err.println("I am sorry, but the item \"" + c.getName() + "\" is not registrable. Please add a constructor with no parameters to the class.");
+                }
             }
         });
     }
