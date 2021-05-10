@@ -176,6 +176,7 @@ public class User extends Wrapper<Player> {
     /**
      * Checks if the player has a certain permission
      *
+     * @param perm The permission, for which you want to check
      * @return Whether the player has a certain permission.
      */
     public boolean hasPermission(String perm) {
@@ -185,6 +186,7 @@ public class User extends Wrapper<Player> {
     /**
      * Checks if the player has a certain permission
      *
+     * @param perm The permission, for which you want to check
      * @return Whether the player has a certain permission.
      */
     public boolean hasPermission(Permission perm) {

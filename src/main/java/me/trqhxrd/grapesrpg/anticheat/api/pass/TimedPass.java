@@ -49,7 +49,7 @@ public class TimedPass extends Pass implements Tickable {
     /**
      * This method checks, if the pass is invalid or if there is still time left.
      *
-     * @return true -> The player can bypass the check.
+     * @return true {@literal ->} The player can bypass the check.
      */
     @Override
     public boolean bypass() {

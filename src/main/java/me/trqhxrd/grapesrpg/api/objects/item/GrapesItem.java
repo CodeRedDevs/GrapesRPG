@@ -44,7 +44,7 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      * Any custom NBT-Tags.
      * The Key is the path for the value.
      * '.' in the path mean, that there is a subgroup of NBT-Tags.
-     * ("test.helloWorld", "value" -> {test: {helloWorld:value}})
+     * ("test.helloWorld", "value" {@literal ->} {test: {helloWorld:value}})
      */
     private final Map<String, Object> nbt;
     /**

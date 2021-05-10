@@ -23,6 +23,9 @@ public class GrapesShapedRecipe extends GrapesRecipe implements Serializable<Gra
      * A map of all ingredients and their character in the {@link GrapesShapedRecipe#shape}.
      */
     private final Map<Character, GrapesRecipeChoice> ingredients;
+    /**
+     * This List contains all the different bindings, which are required for the recipe.
+     */
     private final List<Group2<GrapesRecipeChoice, Integer>> bindings;
     // TODO: 10.05.2021 FUCKING COMMENTARY!!! (later.)
 
@@ -97,18 +100,38 @@ public class GrapesShapedRecipe extends GrapesRecipe implements Serializable<Gra
         return this;
     }
 
+    /**
+     * This method adds a certain recipe-choice one time to the binding-list.
+     * @param choice The choice, that you want to add.
+     * @return The Object from which it was executed. This makes it possible to chain commands.
+     */
     public GrapesShapedRecipe addBinding(GrapesRecipeChoice choice) {
         return this.addBinding(choice, 1);
     }
-
+    /**
+     * This method adds a certain recipe-choice one time to the binding-list.
+     * @param amount The amount, that is required.
+     * @param materials An array of all the different materials, which can be inserted.
+     * @return The Object from which it was executed. This makes it possible to chain commands.
+     */
     public GrapesShapedRecipe addBinding(int amount, Material... materials) {
         return this.addBinding(new GrapesRecipeChoice(materials), amount);
     }
-
+    /**
+     * This method adds a certain recipe-choice one time to the binding-list.
+     * @param amount The amount, that is required.
+     * @param items An array of all the different itemStacks, which can be inserted.
+     * @return The Object from which it was executed. This makes it possible to chain commands.
+     */
     public GrapesShapedRecipe addBinding(int amount, ItemStack... items) {
         return this.addBinding(new GrapesRecipeChoice(items), amount);
     }
-
+    /**
+     * This method adds a certain recipe-choice one time to the binding-list.
+     * @param amount The amount, that is required.
+     * @param items An array of all the different GrapesItems, which can be inserted.
+     * @return The Object from which it was executed. This makes it possible to chain commands.
+     */
     public GrapesShapedRecipe addBinding(int amount, GrapesItem... items) {
         return this.addBinding(new GrapesRecipeChoice(items), amount);
     }
@@ -263,6 +286,10 @@ public class GrapesShapedRecipe extends GrapesRecipe implements Serializable<Gra
         return out;
     }
 
+    /**
+     * Getter for the list of all bindings.
+     * @return A list, which contains all the different bindings.
+     */
     public List<Group2<GrapesRecipeChoice, Integer>> getBindings() {
         return bindings;
     }
