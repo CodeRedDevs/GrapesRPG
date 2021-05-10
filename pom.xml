@@ -84,6 +84,12 @@
                                         <exclude>plugin.yml</exclude>
                                     </excludes>
                                 </filter>
+                                <filter>
+                                    <artifact>me.trqhxrd:color</artifact>
+                                    <excludes>
+                                        <exclude>plugin.yml</exclude>
+                                    </excludes>
+                                </filter>
                             </filters>
                         </configuration>
                     </execution>
@@ -209,13 +215,6 @@
             <artifactId>craftbukkit</artifactId>
             <version>1.16.5-R0.3-SNAPSHOT</version>
             <scope>provided</scope>
-        </dependency>
-        <!-- JFiglet Dependency -->
-        <dependency>
-            <groupId>com.github.lalyos</groupId>
-            <artifactId>jfiglet</artifactId>
-            <version>0.0.8</version>
-            <scope>compile</scope>
         </dependency>
         <!-- Reflections Dependency -->
         <dependency>

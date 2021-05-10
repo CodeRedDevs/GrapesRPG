@@ -1,6 +1,5 @@
 package me.trqhxrd.grapesrpg;
 
-import com.github.lalyos.jfiglet.FigletFont;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import me.trqhxrd.color.Colors;
@@ -98,12 +97,6 @@ public class Grapes extends JavaPlugin {
      */
     @Override
     public void onEnable() {
-        try {
-            Bukkit.getConsoleSender().sendMessage("\n" + FigletFont.convertOneLine("GrapesRPG"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         grapes = this;
 
         Colors.init(this);

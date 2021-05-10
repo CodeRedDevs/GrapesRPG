@@ -225,7 +225,7 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      */
     public GrapesItem(int id, Material material, String name, int amount, Rarity rarity, Group3<Integer, Integer, Integer> stats,
                       ItemType type, Group2<Integer, Integer> durability, Map<String, Object> nbt) {
-        this.nbt = nbt;
+        this.nbt = (nbt != null ? nbt : new HashMap<>());
         this.id = id;
         this.material = material;
         this.name = name;
