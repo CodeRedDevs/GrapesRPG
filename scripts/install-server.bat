@@ -10,7 +10,7 @@ mkdir ..\install
 cd ..\install
 
 curl -z BuildTools.jar -o BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
-java -jar BuildTools.jar --rev %Input%
+java -Xmx1G -jar BuildTools.jar --rev %Input%
 
 move spigot-*.jar ..\Server\
 

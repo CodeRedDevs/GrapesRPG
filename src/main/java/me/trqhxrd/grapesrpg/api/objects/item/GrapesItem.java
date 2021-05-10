@@ -147,6 +147,17 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
     /**
      * A basic constructor to create a new GrapesItem.
      *
+     * @param id       The id of the new item.
+     * @param material The material of the new item.
+     * @param name     The name of the new item. Can be left empty in which case the name of the item will be set to it's material name in the players language.
+     */
+    public GrapesItem(int id, Material material, String name,Rarity rarity) {
+        this(id, material, name, 1, rarity, DEFAULT_STATS, ItemType.MELEE, new Group2<>(-1, -1), new HashMap<>());
+    }
+
+    /**
+     * A basic constructor to create a new GrapesItem.
+     *
      * @param id             The id of the new item.
      * @param material       The material of the new item.
      * @param name           The name of the new item. Can be left empty in which case the name of the item will be set to it's material name in the players language.
@@ -267,23 +278,30 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
 
                 if (item.getNbt().containsKey("grapes.name")) item.setName((String) item.getNbt().get("grapes.name"));
                 else item.setName(null);
-                if (item.getNbt().containsKey("grapes.rarity")) item.setRarity(Rarity.getById(((int) item.getNbt().get("grapes.rarity"))));
+                if (item.getNbt().containsKey("grapes.rarity"))
+                    item.setRarity(Rarity.getById(((int) item.getNbt().get("grapes.rarity"))));
                 else item.setRarity(Rarity.DEFAULT_RARITY);
 
                 Group3<Integer, Integer, Integer> statsNew = new Group3<>(DEFAULT_STATS);
-                if (item.getNbt().containsKey("grapes.stats.physical")) statsNew.setX((Integer) item.getNbt().get("grapes.stats.physical"));
-                if (item.getNbt().containsKey("grapes.stats.magical")) statsNew.setY((Integer) item.getNbt().get("grapes.stats.magical"));
-                if (item.getNbt().containsKey("grapes.stats.void")) statsNew.setZ((Integer) item.getNbt().get("grapes.stats.void"));
+                if (item.getNbt().containsKey("grapes.stats.physical"))
+                    statsNew.setX((Integer) item.getNbt().get("grapes.stats.physical"));
+                if (item.getNbt().containsKey("grapes.stats.magical"))
+                    statsNew.setY((Integer) item.getNbt().get("grapes.stats.magical"));
+                if (item.getNbt().containsKey("grapes.stats.void"))
+                    statsNew.setZ((Integer) item.getNbt().get("grapes.stats.void"));
                 item.setStats(statsNew);
 
                 Group2<Integer, Integer> durability = new Group2<>(-1, -1);
-                if (item.getNbt().containsKey("grapes.durability.current")) durability.setX(((Integer) item.getNbt().get("grapes.durability.current")));
-                if (item.getNbt().containsKey("grapes.durability.max")) durability.setY(((Integer) item.getNbt().get("grapes.durability.max")));
+                if (item.getNbt().containsKey("grapes.durability.current"))
+                    durability.setX(((Integer) item.getNbt().get("grapes.durability.current")));
+                if (item.getNbt().containsKey("grapes.durability.max"))
+                    durability.setY(((Integer) item.getNbt().get("grapes.durability.max")));
 
                 item.setDurability(durability);
 
                 ItemType typeNew = ItemType.DEFAULT_TYPE;
-                if (item.getNbt().containsKey("grapes.stats.type")) typeNew = ItemType.valueOf(((String) item.getNbt().get("grapes.stats.type")));
+                if (item.getNbt().containsKey("grapes.stats.type"))
+                    typeNew = ItemType.valueOf(((String) item.getNbt().get("grapes.stats.type")));
                 item.setType(typeNew);
 
                 if (item.getRarity() == null) item.setRarity(Rarity.DEFAULT_RARITY);
@@ -745,7 +763,8 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
      * @return The item itself. If you want to get an itemStack use {@code yourItem.use().build}!
      */
     public GrapesItem use() {
-        if (this.getCurrentDurability() > 0 && this.getMaxDurability() != -1) this.setCurrentDurability(this.getCurrentDurability() - 1);
+        if (this.getCurrentDurability() > 0 && this.getMaxDurability() != -1)
+            this.setCurrentDurability(this.getCurrentDurability() - 1);
         return this;
     }
 
@@ -781,7 +800,8 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
             if (this.name != null && !this.name.isBlank() && !this.name.isEmpty())
                 meta.setDisplayName(Colors.translateColors("&" + this.rarity.getColor() + this.name));
 
-            if (meta instanceof LeatherArmorMeta && color != null) ((LeatherArmorMeta) meta).setColor(org.bukkit.Color.fromRGB(color[0], color[1], color[2]));
+            if (meta instanceof LeatherArmorMeta && color != null)
+                ((LeatherArmorMeta) meta).setColor(org.bukkit.Color.fromRGB(color[0], color[1], color[2]));
 
             List<String> lore = new ArrayList<>();
 
@@ -804,7 +824,8 @@ public class GrapesItem implements Serializable<GrapesItem>, Builder<ItemStack> 
                     if (((double) durability.getY()) / 100. * 5. > durability.getX()) color = '4';
 
                     String line;
-                    if (durability.getX() != 0) line = "&" + color + "&lDurability: " + durability.getX() + " / " + durability.getY();
+                    if (durability.getX() != 0)
+                        line = "&" + color + "&lDurability: " + durability.getX() + " / " + durability.getY();
                     else line = "&c&lBROKEN";
 
                     lore.add("");

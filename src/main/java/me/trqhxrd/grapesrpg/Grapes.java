@@ -22,6 +22,8 @@ import me.trqhxrd.grapesrpg.game.objects.recipe.armor.crop.CropBootsRecipe;
 import me.trqhxrd.grapesrpg.game.objects.recipe.armor.crop.CropChestplateRecipe;
 import me.trqhxrd.grapesrpg.game.objects.recipe.armor.crop.CropHelmetRecipe;
 import me.trqhxrd.grapesrpg.game.objects.recipe.armor.crop.CropLeggingsRecipe;
+import me.trqhxrd.grapesrpg.game.objects.recipe.bindings.IronToolBindingRecipe;
+import me.trqhxrd.grapesrpg.game.objects.recipe.wooden.WoodenPickaxeRecipe;
 import me.trqhxrd.menus.Menus;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
@@ -123,6 +125,8 @@ public class Grapes extends JavaPlugin {
         this.addRecipe(new CropChestplateRecipe());
         this.addRecipe(new CropLeggingsRecipe());
         this.addRecipe(new CropBootsRecipe());
+        this.addRecipe(new WoodenPickaxeRecipe());
+        this.addRecipe(new IronToolBindingRecipe());
 
         GrapesAntiCheat.init(this);
     }
